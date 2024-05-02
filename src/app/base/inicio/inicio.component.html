@@ -1,0 +1,86 @@
+<div class="position-fixed w-100 bg-white">
+    <div
+        class="container-fluid px-0 d-flex flex-column flex-md-row flex-lg-row flex-xl-row flex-xxl-row  border-bottom">
+        <div id="divOcultarRedes" class="social-icons redesInternas">
+            <a class="img-red" target="_blank" [href]="red?.url" *ngFor="let red of redes">
+                <img [src]="red?.img" [alt]="red?.alt" class="iconoRed" /></a>
+        </div>
+        <span id="divOcultarTitulo" class="w-100 text-center titulo-coneval">{{ nombreSistema }}</span>
+    </div>
+
+    <div class="d-flex bd-highlight preguntas m-2">
+        <div class="p-2 flex-grow-1 bd-highlight text-center">
+            <strong class="pregunta">¿Qué es un Mapa de Brechas de Evidencia (MBE)?</strong>
+        </div>
+        <div class="p-2 bd-highlight">
+            <fa-icon [icon]="faUser"></fa-icon>
+            <span class="sesion"> Iniciar sesión</span>
+        </div>
+    </div>
+
+</div>
+<div class="m-auto w-75 contendorInicial" [ngStyle]="{'padding-top':alto+'px'}" id="total" id="padre">
+    <div class="h-75 overflow">
+        <table class="table table-borderless mt-4" id="seccion1">
+            <caption></caption>
+            <th id="th1" class="p-0"></th>
+            <tbody>
+                <tr>
+                    <td>
+                        <div>
+                            <p>
+                                Los MBE son herramientas visuales que permiten organizar y sintetizar la evidencia a
+                                partir de un marco conceptual que asocia intervenciones evaluadas y resultados
+                                documentados mediante estudios y evaluaciones disponibles. El objetivo de los MBE es
+                                identificar las áreas en las que se concentra la evidencia y aquellas en las que no
+                                existe, lo que permite identificar brechas de evidencia. En este sentido, proveen un
+                                panorama de los estudios y revisiones en torno a un sector o subsector, en términos de
+                                los programas evaluados y los resultados medidos. Con los Mapas CONEVAL de Brechas de
+                                Evidencia se busca contribuir al conocimiento y uso de la evidencia mediante
+                                herramientas novedosas y accesibles.
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            <div class="d-flex bd-highlight preguntas m-2">
+                                <div class="p-2 flex-grow-1 bd-highlight text-center">
+                                    <strong class="pregunta" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="true" aria-controls="collapseExample" (click)="mostrarTexto()">
+                                        ¿Cómo utilizar el MBE? 
+                                        <fa-icon [icon]="faSortUp" *ngIf="textoAbajo"></fa-icon>
+                                        <fa-icon [icon]="faSortDown" *ngIf="!textoAbajo"></fa-icon>
+
+                                    </strong>
+                                </div>
+                            </div>
+                                <ol class="collapse show" id="collapseExample">
+                                    <li>
+                                        Selecciona el Mapa de Brechas de Evidencia de tu interés;
+                                    </li>
+                                    <li>
+                                        Acerca el cursor a cada burbuja para ver el detalle de los estudios y evaluaciones
+                                        disponibles;
+                                    </li>
+                                    <li>
+                                        Al dar clic sobre algún enlace de interés, accederás a la información específica de
+                                        los estudios y evaluaciones, clasificadas de acuerdo con el tipo de apoyo evaluado y el
+                                        derecho social al que se asocian los resultados que se documentan.
+                                    </li>
+                                </ol>
+                                Consulte a continuación los MBE elaborados por el CONEVAL.
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="mb-3 shadow">
+            <div class="row justify-content-md-center">
+                <div class="col-lg-3 col-md-4 col-sm-1 m-2 " *ngFor="let m of mbes">
+                    <app-objeto-mbe [data]="m"></app-objeto-mbe>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
