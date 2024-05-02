@@ -19,7 +19,7 @@ export class InicioComponent implements OnInit{
   celular = false;
   @ViewChild('main')
   main!: ElementRef;
-  alto = 100;
+  alto = 0;
   faUser= faUser;
   faSortDown= faSortDown;
   faSortUp= faSortUp;

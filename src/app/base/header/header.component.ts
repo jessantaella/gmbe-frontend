@@ -5,10 +5,10 @@ import { DataDynamic } from '../services/dinamic-data.services';
 import { tap } from 'rxjs/operators';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 
-
 @Component({
   selector: 'app-header',
-  templateUrl: './header.component.html'
+  templateUrl: './header.component.html',
+  styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
 
@@ -34,7 +34,6 @@ export class HeaderComponent {
   constructor(private servicio: DataDynamic, private router: Router, private titleService: Title,@Inject(DOCUMENT) private document: Document,@Inject(PLATFORM_ID) private platformId:any) {
     this.isBrowser = isPlatformBrowser(this.platformId);
     if(this.isBrowser){
-      this.consultarData();
       this.router.events.subscribe((event: any) => {
         if (event instanceof NavigationEnd) {
           this.currentRoute = event.url;
@@ -43,33 +42,6 @@ export class HeaderComponent {
     }
   }
 
-  consultarData() {
-    if(this.isBrowser){
-    this.servicio.getInformacion()
-      .pipe(
-        tap((res) => {
-          this.generales = res.generales;
-          this.gmbe = res.mbe;
-          this.opciones = res.mbe.opciones;
-          this.redes = res.generales.redes;
-          this.minWrap = res.mbe.configuracion.minimoWrap;
-          this.cambiarPagina();
-        })
-      )
-      .subscribe({
-        next: (result) => {
-          // La función "otraFuncion" se llamará después de completar la lógica en "tap".
-          if (this.isBrowser) {
-         this.otraFuncion(); 
-          }
-         
-        },
-        error: (error) => {
-          // Manejo de errores si es necesario.
-        },
-      });
-    }
-  }
 
   cambiarTitulo(nombre: string) {
     if(this.isBrowser){

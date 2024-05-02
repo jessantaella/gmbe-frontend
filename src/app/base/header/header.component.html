@@ -1,28 +1,35 @@
-<div class="container-fluid p-0">
-  <div class="d-flex flex-row w-100">
-    <span id="nombreSistema" class="float-start mx-1 nombre-sistema">
-      {{cortarNombre(gmbe?.sistemaCorto)}}
-    </span>
-    <a class="navbar-brand d-flex flex-column mx-0 py-0" target="_blank" [href]="generales?.logos?.header?.url" >
-      <img [src]="generales?.logos.header?.logoConevalHeader" class="logoConeval"
-        [alt]="generales?.logos.header?.alt" />
-        <img alt="logos" [src]="generales?.logos?.fraseConeval?.logoConevalHeader" width="180" classs="mt-5" />
-    </a>
-    <ul class="list-unstyled d-flex justify-content-evenly w-100 ps-4 links color-menu my-0">
-      <li *ngFor="let item of opciones;index as i" class="nav-item opt-text mx-1" style="min-width: 8rem !important;"
-        [ngClass]="{'opcionseleccionada':opcionSeleccionada(item?.url,i),'text-wrap':obtenerPalabraLarga(item?.nombre)<=minWrap,'text-break':obtenerPalabraLarga(item?.nombre)>minWrap}">
-        <a class="nav-link text-light" [href]="item?.url" *ngIf="!item.interna" >{{item?.nombre}}</a>
-        <a class="nav-link text-light" [routerLink]="[item?.url]" *ngIf="item.interna" (click)="cambiarTitulo(item?.nombre)">{{item?.nombre}}</a>
-      </li>
-    </ul>
-
-    <button class="navbar-toggler menu-priority d-none" data-bs-toggle="collapse" data-bs-target="#navcol-1">
-      <em class="fas fa-bars"></em>
-    </button>
-  </div>
-  <div class="w-100">
-    <div id="navcol-1" class="collapse navbar-collapse  color-menu-collapsable">
-      <ul class="navbar-nav hidden-links"></ul>
+<header>
+  <div class="d-flex justify-content-center align-items-center flex-wrap flex-column flex-sm-column flex-md-row flex-lg-row flex-xl-row flex-xxl-row justify-content-md-between justify-content-lg-between justify-content-xl-between justify-content-xxl-between py-2">
+    <div class="d-flex align-items-center coneval-sarc">
+      <a class="border-coneval mx-0" type="button" rel="noopener noreferrer" href="https://www.coneval.org.mx/Paginas/principal.aspx" target ="_blank">
+        <img class="img-logo-cnvl" [src]="'assets/img/LOGO_CONEVAL.svg'" width="225px" height="60px" alt="Logo CONEVAL"  />
+      </a>
+      <span class="ms-2 nombre-sistema-cnvl"><strong>GMBE</strong> </span>
+    </div>
+    <div class="redes">
+      <img [src]="'assets/img/FRASE-CONEVAL.svg'" alt="Frase coneval" />
+      <div class="d-flex justify-content-around align-items-center px-4">
+        <a class="img-red" href="https://www.facebook.com/Coneval/" target="_blank" rel="noopener noreferrer">
+          <img [src]="'assets/img/icono_facebook.svg'" alt="facebook" />
+        </a>
+        <a class="img-red" href="https://twitter.com/coneval" target="_blank" rel="noopener noreferrer">
+            <img [src]="'assets/img/icono_twitter.svg'" alt="twitter"  />
+        </a>
+        <a class="img-red" href="https://www.youtube.com/user/CONEVALVIDEO" target="_blank" rel="noopener noreferrer">
+          <img [src]="'assets/img/icono_youtube.svg'" alt="youtube"  />
+        </a>
+        <a class="img-red" href="https://www.instagram.com/coneval_mx/" target="_blank" rel="noopener noreferrer">
+          <img [src]="'assets/img/icono_instagram.svg'" alt="instagram" />
+        </a>
+        <a class="img-red" href="http://blogconeval.gob.mx/wordpress/" target="_blank" rel="noopener noreferrer">
+          <img [src]="'assets/img/icono_wordpress.svg'" alt="wordpress"  />
+        </a>
+        <a class="img-red" href="https://www.coneval.org.mx/SalaPrensa/Paginas/Newsletter/Podcasts_CONEVAL.aspx" target="_blank" rel="noopener noreferrer">
+          <img [src]="'assets/img/icono_podcast.svg'" alt="podcast"  />
+        </a>
+      </div>
     </div>
   </div>
-</div>
+
+
+</header>

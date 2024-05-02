@@ -1,21 +1,11 @@
-<div class="position-fixed w-100 bg-white">
-    <div
-        class="container-fluid px-0 d-flex flex-column flex-md-row flex-lg-row flex-xl-row flex-xxl-row  border-bottom">
-        <div id="divOcultarRedes" class="social-icons redesInternas">
-            <a class="img-red" target="_blank" [href]="red?.url" *ngFor="let red of redes">
-                <img [src]="red?.img" [alt]="red?.alt" class="iconoRed" /></a>
-        </div>
-        <span id="divOcultarTitulo" class="w-100 text-center titulo-coneval">{{ nombreSistema }}</span>
-    </div>
+<div class="bg-white">
+
 
     <div class="d-flex bd-highlight preguntas m-2">
         <div class="p-2 flex-grow-1 bd-highlight text-center">
             <strong class="pregunta">¿Qué es un Mapa de Brechas de Evidencia (MBE)?</strong>
         </div>
-        <div class="p-2 bd-highlight">
-            <fa-icon [icon]="faUser"></fa-icon>
-            <span class="sesion"> Iniciar sesión</span>
-        </div>
+       
     </div>
 
 </div>
