@@ -1,0 +1,23 @@
+.tamanioLetraTitulo {
+    font-size: 24px !important;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  
+  .barraAzul {
+    background: #2e3e97;
+    color: white;
+    width: 100%;
+    height: 45px;
+  }
+
+  @media (min-width: 0px) and (max-width: 576px) {
+    .tamanioLetraTitulo {
+      font-size: 18px !important;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+  }
+  b, strong {
+    font-weight: bolder;
+    font-size: 22px;
+    font-family: Arial, Helvetica, sans-serif;
+}

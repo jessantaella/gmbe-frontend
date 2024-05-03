@@ -19,8 +19,8 @@ if (environment.production) {
 export function app(): express.Express {
   const server = express();
 
-  const distFolder = join(process.cwd(), '/gmbe/browser');  //Despliegue
-  //const distFolder = join(process.cwd(), 'dist/gmbe/browser'); //LOCAL
+  //const distFolder = join(process.cwd(), '/GMBE/browser');  //Despliegue
+  const distFolder = join(process.cwd(), 'dist/GMBE/browser'); //LOCAL 
   const indexHtml = existsSync(join(distFolder, 'index.original.html')) ? 'index.original.html' : 'index';
 
   // Our Universal express-engine (found @ https://github.com/angular/universal/tree/main/modules/express-engine)
@@ -60,7 +60,7 @@ export function app(): express.Express {
   console.log('server->',server.locals['environment'].server);
 
   server.all('*', function(req, res) {
-    res.redirect(301,server.locals['environment'].server+'/gmbe');
+    res.redirect(301,server.locals['environment'].server+'/GMBE');
   });
 
 

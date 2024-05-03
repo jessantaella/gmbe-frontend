@@ -1,7 +1,12 @@
-<div id="y" >
-  <app-header id="header-priority" class="navbar sticky-top bg-body my-0 p-0"></app-header>
-  <div class="container-fluid px-0">
-    <router-outlet></router-outlet>
+<div class="d-flex flex-column min-vh-100 fondoPagina">
+  <app-header></app-header>
+  <app-start-bar></app-start-bar>
+
+  <app-barra-azul></app-barra-azul>
+  <div class="d-flex flex-row flex-grow-1 p-0">
+      <div class="w-100" style="overflow: auto;" >
+          <router-outlet></router-outlet>
+      </div>
   </div>
   <app-footer></app-footer>
 </div>

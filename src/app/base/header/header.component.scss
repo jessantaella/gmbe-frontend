@@ -1,0 +1,65 @@
+
+.img-red {
+    min-width: 2rem;
+  }
+
+  .redes {
+    width: 225px;
+    margin-left: auto;
+  }
+
+
+  .img-logo-cnvl{
+    min-width: 225px;
+    max-width: 225px;
+    height: 70px;
+  }
+
+  .coneval-sarc {
+    height: 60px;
+  }
+
+  .border-coneval {
+    border-right: 3px solid #737277;
+  }
+
+  .nombre-sistema-cnvl {
+    font-size: 30px;
+    max-width: 3rem;
+    color: rgb(33, 64, 154);
+    font-family: 'ITC Avant Garde Gothic Std Demi',Arial, Helvetica, sans-serif !important;
+  }
+
+  //XS
+  @media (min-width: 0px) and (max-width: 340px){
+    .nombre-sistema-cnvl {
+      font-size: 1.125rem ;
+      color: rgb(33, 64, 154);
+      font-family: 'ITC Avant Garde Gothic Std Demi',Arial, Helvetica, sans-serif !important;
+    }
+    .redes{
+      margin: auto;
+    }
+  }
+
+  //SM
+  @media screen and (min-width: 340px) and (max-width: 580px) {
+    .nombre-sistema-cnvl {
+      font-size: 1.125rem;
+      color: rgb(33, 64, 154);
+      font-family: 'ITC Avant Garde Gothic Std Demi',Arial, Helvetica, sans-serif !important;
+    }
+    .redes{
+      margin: auto;
+    }
+  }
+
+  //LG,XL,XXL
+  @media screen and (min-width: 992px) {
+    .nombre-sistema-cnvl {
+      font-size: 1.875;
+      max-width: 12rem;
+      font-family: 'ITC Avant Garde Gothic Std Demi',Arial, Helvetica, sans-serif !important;
+    }
+  }
+

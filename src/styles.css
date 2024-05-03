@@ -1,2 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~bootstrap/dist/css/bootstrap.css";
+.sticky-wrapper {
+    position: sticky;
+    top: 0;
+    background-color: white; /* Cambia al color de fondo de tu header */
+    z-index: 1000; /* Asegura que el header esté sobre otros elementos */
+  }
+  
+  #header-priority {
+    /* Ajusta estilos adicionales de tu header aquí si es necesario */
+  }
+  

@@ -1,0 +1,118 @@
+/* You can add global styles to this file, and also import other style files */
+/* Importing Bootstrap SCSS file. */
+@import "bootstrap/scss/bootstrap";
+@import "bootstrap-icons/font/bootstrap-icons.css";
+
+/* You can add global styles to this file, and also import other style files */
+
+.swal2-confirm {
+  color: #ffffff !important;
+  background: #21409a !important;
+}
+
+.swal2-cancel {
+  color: #ffffff !important;
+  background: #737277 !important;
+}
+.swal2-title{
+  font-size: 18px !important;
+}
+
+/* Importing Bootstrap SCSS file. */
+
+.botonesPrincipales {
+  background: #2e3e97;
+  color: white;
+  border: none;
+  border-radius: 0px;
+  --bs-btn-active-bg: #2e3e97;
+  --bs-btn-active-color: white;
+  --bs-btn-color: white;
+}
+
+.botonesPrincipales:hover {
+  background: #2e3e97;
+  color: white;
+  border: none;
+  border-radius: 0px;
+  --bs-btn-active-bg: #2e3e97;
+  --bs-btn-active-color: white;
+  --bs-btn-color: white;
+}
+
+.botonesDesactivados {
+  background: #737277;
+  color: white;
+  --bs-btn-active-bg: #737277;
+  --bs-btn-color: white;
+  --bs-btn-active-color: white;
+  border: none;
+}
+
+.botonesDesactivados:hover {
+  background: #737277;
+  color: white;
+  --bs-btn-active-bg: #737277;
+  --bs-btn-active-color: white;
+  --bs-btn-color: white;
+  border: none;
+}
+
+ 
+  
+.botonLimpiarDatos {
+  background: #3081b9;
+  color: white;
+  --bs-btn-active-bg: #3081b9;
+  --bs-btn-color: white;
+  --bs-btn-active-color: white;
+  border: none;
+}
+
+.botonLimpiarDatos:hover {
+  background: #3081b9;
+  color: white;
+  --bs-btn-active-bg: #3081b9;
+  --bs-btn-color: white;
+  --bs-btn-active-color: white;
+  border: none;
+}
+
+.tipoButton{
+  cursor: pointer;
+}
+
+.tamanioLetraTitulo {
+  font-size: 22px !important;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.barraAzul {
+  background: #2e3e97;
+  color: white;
+  width: 100%;
+  height: 90px;
+}
+
+@media (min-width: 0px) and (max-width: 576px) {
+  .tamanioLetraTitulo {
+    font-size: 16px !important;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+}
+
+/*!SECTION se quita texto current ngb-pagination*/
+.sr-only{
+  font: 0/0 a;
+  text-shadow: transparent;
+  color: transparent;
+  text-decoration: none;
+}
+
+.modal-backdrop {
+  background-color: rgba(0,0,0,0.5);
+}
+b, strong {
+  font-weight: bolder;
+  font-size: 24px;
+}
