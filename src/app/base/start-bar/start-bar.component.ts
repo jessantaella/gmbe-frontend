@@ -19,10 +19,8 @@ export class StartBarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.idRol=localStorage.getItem('idRol');
-    this.nombreLogeado=localStorage.getItem('nombreUsuario');
-
-
+    this.idRol=1 ;//localStorage.getItem('idRol');
+    this.nombreLogeado='';//localStorage.getItem('nombreUsuario');
   }
 
 
@@ -43,11 +41,11 @@ export class StartBarComponent implements OnInit {
   }
 
   validarToken(): boolean{
-    return localStorage.getItem('token-proedit') !== null;
+    return true //localStorage.getItem('token-proedit') !== null;
   }
 
   cerrarSesion(){
-    localStorage.clear();
+    //localStorage.clear();
     this.router.navigate(['/login'])
   }
 

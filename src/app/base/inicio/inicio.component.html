@@ -1,15 +1,11 @@
 <div class="bg-white">
-
-
     <div class="d-flex bd-highlight preguntas m-2">
         <div class="p-2 flex-grow-1 bd-highlight text-center">
             <strong class="pregunta">¿Qué es un Mapa de Brechas de Evidencia (MBE)?</strong>
         </div>
-       
     </div>
-
 </div>
-<div class="m-auto w-75 contendorInicial" [ngStyle]="{'padding-top':alto+'px'}" id="total" id="padre">
+<div class="m-auto w-75 contendorInicial" id="total" id="padre">
     <div class="h-75 overflow">
         <table class="table table-borderless mt-4" id="seccion1">
             <caption></caption>
@@ -37,15 +33,10 @@
                         <div>
                             <div class="d-flex bd-highlight preguntas m-2">
                                 <div class="p-2 flex-grow-1 bd-highlight text-center">
-                                    <strong class="pregunta" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="true" aria-controls="collapseExample" (click)="mostrarTexto()">
-                                        ¿Cómo utilizar el MBE? 
-                                        <fa-icon [icon]="faSortUp" *ngIf="textoAbajo"></fa-icon>
-                                        <fa-icon [icon]="faSortDown" *ngIf="!textoAbajo"></fa-icon>
-
-                                    </strong>
+                                    <strong class="pregunta"> ¿Cómo utilizar el MBE? </strong>
                                 </div>
                             </div>
-                                <ol class="collapse show" id="collapseExample">
+                                <ol>
                                     <li>
                                         Selecciona el Mapa de Brechas de Evidencia de tu interés;
                                     </li>
@@ -59,18 +50,20 @@
                                         derecho social al que se asocian los resultados que se documentan.
                                     </li>
                                 </ol>
-                                Consulte a continuación los MBE elaborados por el CONEVAL.
+                                <p>Consulte a continuación los MBE elaborados por el CONEVAL.</p>
                         </div>
                     </td>
                 </tr>
             </tbody>
         </table>
-        <div class="mb-3 shadow">
-            <div class="row justify-content-md-center">
-                <div class="col-lg-3 col-md-4 col-sm-1 m-2 " *ngFor="let m of mbes">
-                    <app-objeto-mbe [data]="m"></app-objeto-mbe>
-                </div>
-            </div>
+    </div>
+</div>
+
+<div class="mb-3 shadow mbes">
+    <div class="row justify-content-center text-center">
+        <div class="col-lg-3 col-md-4 col-sm-6 m-2" *ngFor="let m of mbes">
+            <app-objeto-mbe [data]="m"></app-objeto-mbe>
         </div>
     </div>
+    
 </div>

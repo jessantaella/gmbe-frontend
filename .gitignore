@@ -363,3 +363,9 @@ node_modules
 .angular/cache/16.2.8/angular-webpack/f513f3c28462103f701d4d7c035f780f9e89d909/10.pack
 .angular/cache/16.2.8/angular-webpack/f513f3c28462103f701d4d7c035f780f9e89d909/1.pack
 .angular/cache/16.2.8/angular-webpack/f513f3c28462103f701d4d7c035f780f9e89d909/0.pack
+
+*.pack
+
+.angular/cache/16.2.8/angular-webpack/bdaac58d9f78d86090626fd203818c6ea0f383a8/index.pack.old
+
+.angular/cache/16.2.8/babel-webpack/

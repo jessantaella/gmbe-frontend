@@ -8,14 +8,14 @@
     </div>
 
       <div class="escritorio" >
-        <div class="p-2 bd-highlight" style="color: aliceblue;">
+        <div class="p-1 bd-highlight" style="color: aliceblue;">
           <fa-icon [icon]="faUser"></fa-icon>
           <span class="sesion"> Iniciar sesión</span>
       </div>
       </div>
 
 
-    <div class="navbar movil p-0 m-0" *ngIf="validarToken()">
+    <div class="navbar movil p-0 m-0" *ngIf="!validarToken()">
       <button class="white-button mx-0 text-nowrap" type="button" (click)="desplegar();">
         <span class="navbar-toggler-icon color-menu"></span>
       </button>

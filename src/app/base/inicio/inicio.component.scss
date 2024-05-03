@@ -14,7 +14,7 @@
     font-size: 24px;
     font-family: Arial, Helvetica, sans-serif;
     color: #21409A;
-    margin-left: 12%;
+    font-weight: bold;
   }
   
   .sesion{
@@ -27,6 +27,12 @@
 
   p,ol{
     text-align: justify;
+    font-family: Arial, Helvetica, sans-serif;
+    font-style: normal;
+  }
+  .mbes{
+    width: 98%;
+    margin: auto;
   }
 
   @media only screen and (max-width: 450px) {

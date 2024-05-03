@@ -12,7 +12,7 @@
   .img-logo-cnvl{
     min-width: 225px;
     max-width: 225px;
-    height: 60px;
+    height: 70px;
   }
 
   .coneval-sarc {
@@ -37,14 +37,20 @@
       color: rgb(33, 64, 154);
       font-family: 'ITC Avant Garde Gothic Std Demi',Arial, Helvetica, sans-serif !important;
     }
+    .redes{
+      margin: auto;
+    }
   }
 
   //SM
-  @media screen and (min-width: 340px) and (max-width: 540px) {
+  @media screen and (min-width: 340px) and (max-width: 580px) {
     .nombre-sistema-cnvl {
       font-size: 1.125rem;
       color: rgb(33, 64, 154);
       font-family: 'ITC Avant Garde Gothic Std Demi',Arial, Helvetica, sans-serif !important;
+    }
+    .redes{
+      margin: auto;
     }
   }
 

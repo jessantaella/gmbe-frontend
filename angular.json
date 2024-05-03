@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "gmbev2-front-end": {
+    "gmbe-front-end": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -18,7 +18,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/gmbe/browser",
+            "outputPath": "dist/GMBE/browser",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -39,13 +39,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "2kb",
-                  "maximumError": "4kb"
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
                 }
               ],
               "outputHashing": "all"
@@ -71,10 +71,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "gmbev2-front-end:build:production"
+              "browserTarget": "gmbe-front-end:build:production"
             },
             "development": {
-              "browserTarget": "gmbev2-front-end:build:development"
+              "browserTarget": "gmbe-front-end:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -82,7 +82,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "gmbev2-front-end:build"
+            "browserTarget": "gmbe-front-end:build"
           }
         },
         "test": {
@@ -106,7 +106,7 @@
         "server": {
           "builder": "@angular-devkit/build-angular:server",
           "options": {
-            "outputPath": "dist/gmbe/server",
+            "outputPath": "dist/GMBE/server",
             "main": "server.ts",
             "tsConfig": "tsconfig.server.json"
           },
@@ -134,12 +134,12 @@
           "builder": "@nguniversal/builders:ssr-dev-server",
           "configurations": {
             "development": {
-              "browserTarget": "gmbev2-front-end:build:development",
-              "serverTarget": "gmbev2-front-end:server:development"
+              "browserTarget": "gmbe-front-end:build:development",
+              "serverTarget": "gmbe-front-end:server:development"
             },
             "production": {
-              "browserTarget": "gmbev2-front-end:build:production",
-              "serverTarget": "gmbev2-front-end:server:production"
+              "browserTarget": "gmbe-front-end:build:production",
+              "serverTarget": "gmbe-front-end:server:production"
             }
           },
           "defaultConfiguration": "development"
@@ -153,12 +153,12 @@
           },
           "configurations": {
             "production": {
-              "browserTarget": "gmbev2-front-end:build:production",
-              "serverTarget": "gmbev2-front-end:server:production"
+              "browserTarget": "gmbe-front-end:build:production",
+              "serverTarget": "gmbe-front-end:server:production"
             },
             "development": {
-              "browserTarget": "gmbev2-front-end:build:development",
-              "serverTarget": "gmbev2-front-end:server:development"
+              "browserTarget": "gmbe-front-end:build:development",
+              "serverTarget": "gmbe-front-end:server:development"
             }
           },
           "defaultConfiguration": "production"

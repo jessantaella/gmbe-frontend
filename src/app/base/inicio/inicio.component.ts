@@ -3,6 +3,7 @@ import { DataDynamic } from '../services/dinamic-data.services';
 import { Router } from '@angular/router';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { faUser,faSortDown, faSortUp } from '@fortawesome/free-solid-svg-icons';
+import { TitulosService } from 'src/app/services/titulos.services';
 
 @Component({
   selector: 'app-inicio',
@@ -25,6 +26,8 @@ export class InicioComponent implements OnInit{
   faSortUp= faSortUp;
   textoAbajo = true;
 
+  textoBienvenida = 'Mapas CONEVAL de Brechas de Evidencia (MBE)';
+
   rutaImagenAlimentacion: string = 'assets/img/Alimentacion.png';
   rutaImagenCuidadoInfantil: string = 'assets/img/CuidadoInfantil.png';
   rutaImagenSeguridadSocial: string = 'assets/img/SeguridadSocial.png';
@@ -36,13 +39,14 @@ export class InicioComponent implements OnInit{
     {urlImg:this.rutaImagenSeguridadSocial,nombre:"Seguridad Social"}]
 
   constructor(
-    private servicio: DataDynamic,
+    private titulos :TitulosService,
     private router: Router,
     private breakpointObserver: BreakpointObserver,
-    @Inject(PLATFORM_ID) private platformId: any
   ){
-    this.consultarData();
-    if (this.isBrowser) {
+    //if (this.isBrowser) {
+      this.titulos.changeBienvenida(this.textoBienvenida);
+      this.titulos.changePestaña('Inicio');
+
       this.breakpointObserver
         .observe(['(max-width: 768px)'])
         .subscribe((result: BreakpointState) => {
@@ -56,7 +60,7 @@ export class InicioComponent implements OnInit{
             this.celular = false;
           }
         });
-    }
+    //}
   }
 
   ngOnInit(): void {
@@ -64,19 +68,6 @@ export class InicioComponent implements OnInit{
       window.history.replaceState(null, '', '/');
       this.router.navigateByUrl('/');
     }
-  }
-  consultarData() {
-    //if (this.isBrowser) {
-      this.servicio.getInformacion().subscribe((res) => {
-        this.nombreSistema = res?.mbe?.sistema;
-        this.redes = res.generales.redes;
-        console.log(this.redes);
-      });
-    //}
-  }
-
-  mostrarTexto(){
-    this.textoAbajo = !this.textoAbajo;
   }
 
 }

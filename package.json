@@ -8,7 +8,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "dev:ssr": "ng run gmbe-front-end:serve-ssr",
-    "serve:ssr": "node dist/gmbe/server/main.js",
+    "serve:ssr": "node dist/GMBE/server/main.js",
     "build:ssr": "ng build && ng run gmbe-front-end:server",
     "prerender": "ng run gmbe-front-end:prerender",
     "sonar": "sonar-scanner"
