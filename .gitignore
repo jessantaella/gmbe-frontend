@@ -369,3 +369,5 @@ node_modules
 .angular/cache/16.2.8/angular-webpack/bdaac58d9f78d86090626fd203818c6ea0f383a8/index.pack.old
 
 .angular/cache/16.2.8/babel-webpack/
+
+*.old
