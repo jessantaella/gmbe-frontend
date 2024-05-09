@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { DataDynamic } from '../services/dinamic-data.services';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-footer',
@@ -12,10 +13,13 @@ export class FooterComponent {
   datos:any;
   redes:any;
 
+  logoBlanco = '';
+
   constructor(private servicio:DataDynamic) { }
 
   ngOnInit(): void {
     this.consultarData();
+    this.logoBlanco = environment.recursos + 'LOGO_CONEVAL-BLANCO.svg';
   }
 
   consultarData(){

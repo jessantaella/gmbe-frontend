@@ -3,6 +3,8 @@
     min-width: 2rem;
   }
 
+
+
   .redes {
     width: 225px;
     margin-left: auto;
@@ -26,7 +28,7 @@
   .nombre-sistema-cnvl {
     font-size: 30px;
     max-width: 3rem;
-    color: rgb(33, 64, 154);
+    color: #27b052;
     font-family: 'ITC Avant Garde Gothic Std Demi',Arial, Helvetica, sans-serif !important;
   }
 
@@ -34,7 +36,7 @@
   @media (min-width: 0px) and (max-width: 340px){
     .nombre-sistema-cnvl {
       font-size: 1.125rem ;
-      color: rgb(33, 64, 154);
+      color: #27b052;
       font-family: 'ITC Avant Garde Gothic Std Demi',Arial, Helvetica, sans-serif !important;
     }
     .redes{
@@ -45,17 +47,29 @@
   //SM
   @media screen and (min-width: 340px) and (max-width: 580px) {
     .nombre-sistema-cnvl {
-      font-size: 1.125rem;
-      color: rgb(33, 64, 154);
+      font-size: 20px;
+      color: #27b052;
       font-family: 'ITC Avant Garde Gothic Std Demi',Arial, Helvetica, sans-serif !important;
+      margin-left: 10% !important;
     }
     .redes{
       margin: auto;
     }
+    .coneval-sarc{
+      width: 100%;
+    }
+    .img-logo-cnvl {
+      min-width: 100px;
+      max-width: 200px;
+  }
+  
   }
 
   //LG,XL,XXL
   @media screen and (min-width: 992px) {
+    .header-contenedor{
+      max-height: 76px;
+    }
     .nombre-sistema-cnvl {
       font-size: 1.875;
       max-width: 12rem;

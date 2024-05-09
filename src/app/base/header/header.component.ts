@@ -2,6 +2,7 @@ import { Component, Inject, PLATFORM_ID } from '@angular/core';
 import { Title } from "@angular/platform-browser";
 import { isPlatformBrowser } from '@angular/common';
 import { TitulosService } from 'src/app/services/titulos.services';
+import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -27,6 +28,15 @@ export class HeaderComponent {
 
   isBrowser = false;
   nombreCorto = 'GMBE'
+  fraseConeval = ''
+  facebook = '';
+  twitter = '';
+  youtube = '';
+  instagram = '';
+  blog = '';
+  podcast = '';
+
+
 
 
   constructor( private titulos:TitulosService, private titleService: Title,@Inject(PLATFORM_ID) private platformId:any) {
@@ -36,13 +46,13 @@ export class HeaderComponent {
         res=>{
           this.cambiarTitulo(res);
         })
-      /*this.router.events.subscribe((event: any) => {
-        if (event instanceof NavigationEnd) {
-          this.currentRoute = event.url;
-          console.log(this.currentRoute)
-          this.cambiarPagina();
-        }
-      });*/
+        this.fraseConeval =  environment.recursos + 'FRASE-CONEVAL.svg';
+        this.facebook = environment.recursos + 'icono_facebook.svg';
+        this.twitter = environment.recursos + 'tw_nuevo.svg';
+        this.youtube = environment.recursos + 'icono_youtube.svg';
+        this.instagram = environment.recursos + 'icono_instagram.svg';
+        this.blog = environment.recursos + 'icono_nuevo_blog.svg';
+        this.podcast = environment.recursos + 'icono_podcast.svg';
     }
   }
 
