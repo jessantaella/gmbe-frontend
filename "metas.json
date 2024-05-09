@@ -1,4 +1,4 @@
-      "metas": [
+      {"metas": [
             {
                 "name": "description",
                 "content": "Sistema para la Generación de Mapas de Brechas de Evidencia (GMBE)"
@@ -23,4 +23,4 @@
                 "name": "charset",
                 "content": "UTF-8"
             }
-        ],
+        ]}
