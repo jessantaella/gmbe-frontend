@@ -21,12 +21,8 @@ constructor(private http:HttpClient,@Inject(PLATFORM_ID) private platformId:any)
   getInformacion(): Observable<any> {
     const headers = new HttpHeaders()
     this.isBrowser = isPlatformBrowser(this.platformId);
-    if (this.isBrowser) {
     const url:string = this.ruta;
     return this.http.get<any>(url,{ headers: headers });
-    }else{
-      const url:string = this.ruta;
-      return this.http.get<any>(url,{ headers: headers });
-    }
+
   }
 }
