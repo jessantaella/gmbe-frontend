@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { faUser,faSortDown, faSortUp } from '@fortawesome/free-solid-svg-icons';
 import { TitulosService } from 'src/app/services/titulos.services';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-inicio',
@@ -26,16 +27,16 @@ export class InicioComponent implements OnInit{
   faSortUp= faSortUp;
   textoAbajo = true;
 
-  textoBienvenida = 'Mapas CONEVAL de Brechas de Evidencia (MBE)';
+  textoBienvenida = 'Bienvenido al Sistema para la Generación de Mapas de Brechas de Evidencia (GMBE)';
 
-  rutaImagenAlimentacion: string = 'assets/img/Alimentacion.png';
-  rutaImagenCuidadoInfantil: string = 'assets/img/CuidadoInfantil.png';
-  rutaImagenSeguridadSocial: string = 'assets/img/SeguridadSocial.png';
+  rutaImagenAlimentacion: string = environment.recursos +'Alimentacion.png';
+  rutaImagenCuidadoInfantil: string =  environment.recursos + 'CuidadoInfantil.png';
+  rutaImagenSeguridadSocial: string =  environment.recursos + 'SeguridadSocial.png';
 
 
   mbes = [
     {urlImg:this.rutaImagenAlimentacion,nombre:"Alimentación"},
-    {urlImg:this.rutaImagenCuidadoInfantil,nombre:"Cuidado Infantil"},
+    //{urlImg:this.rutaImagenCuidadoInfantil,nombre:"Cuidado Infantil"},
     {urlImg:this.rutaImagenSeguridadSocial,nombre:"Seguridad Social"}]
 
   constructor(

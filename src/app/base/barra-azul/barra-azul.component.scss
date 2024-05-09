@@ -1,5 +1,5 @@
 .tamanioLetraTitulo {
-    font-size: 24px !important;
+    font-size: 22px !important;
     font-family: Arial, Helvetica, sans-serif;
   }
   
@@ -12,10 +12,20 @@
 
   @media (min-width: 0px) and (max-width: 576px) {
     .tamanioLetraTitulo {
+      font-size: 16px !important;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+  }
+
+  @media (min-width: 577px) and (max-width: 923px) {
+    .tamanioLetraTitulo {
       font-size: 18px !important;
       font-family: Arial, Helvetica, sans-serif;
     }
   }
+
+
+
   b, strong {
     font-weight: bolder;
     font-size: 22px;

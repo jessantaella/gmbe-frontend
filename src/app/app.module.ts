@@ -12,7 +12,6 @@ import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import {APP_BASE_HREF} from '@angular/common';
-import { WINDOW_PROVIDERS } from './base/services/window.service';
 import { ObjetoMbeComponent } from './objeto-mbe/objeto-mbe.component';
 import { StartBarComponent } from './base/start-bar/start-bar.component';
 import { BarraAzulComponent } from './base/barra-azul/barra-azul.component';
@@ -35,7 +34,7 @@ import { BarraAzulComponent } from './base/barra-azul/barra-azul.component';
     HttpClientModule,
     AccordionModule
   ],
-  providers: [{provide: APP_BASE_HREF, useValue: '/GMBE/'},WINDOW_PROVIDERS],
+  providers: [{provide: APP_BASE_HREF, useValue: '/GMBE/'}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
