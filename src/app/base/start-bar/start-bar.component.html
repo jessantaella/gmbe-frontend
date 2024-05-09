@@ -7,13 +7,19 @@
       </button>
     </div>
 
-      <div class="escritorio" >
-        <div class="p-1 bd-highlight">
-          <fa-icon [icon]="faUser"></fa-icon>
-          <span class="sesion"> Iniciar sesión</span>
+    <div class="escritorio">
+      <div class="p-1 bd-highlight">
+        <fa-icon [icon]="faUser"></fa-icon>
+        <span class="sesion"> Iniciar sesión</span>
       </div>
-      </div>
+    </div>
 
+    <div class="navbar movil p-0 m-0" >
+      <div class="p-1 bd-highlight">
+        <fa-icon [icon]="faUser"></fa-icon>
+        <span class="sesion"> Iniciar sesión</span>
+      </div>
+    </div>
 
     <div class="navbar movil p-0 m-0" *ngIf="!validarToken()">
       <button class="white-button mx-0 text-nowrap" type="button" (click)="desplegar();">
