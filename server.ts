@@ -19,7 +19,7 @@ if (environment.production) {
 export function app(): express.Express {
   const server = express();
 
-  const distFolder = join(process.cwd(), '/GMBE/browser');  //Despliegue
+  const distFolder = join(process.cwd(), '/GMBE/browser');  //Despliegue en servidor CONEVAL
   //const distFolder = join(process.cwd(), 'dist/GMBE/browser'); //LOCAL 
   const indexHtml = existsSync(join(distFolder, 'index.original.html')) ? 'index.original.html' : 'index';
 
@@ -47,6 +47,8 @@ export function app(): express.Express {
   }));
 
 
+
+
   // All regular routes use the Universal engine
   server.get('*',(req, res) => {
     //console.log(`APP_BASE_REF = ${APP_BASE_HREF}`);
@@ -55,13 +57,12 @@ export function app(): express.Express {
   });
 
 // Carga el archivo de entorno y lo hace accesible en toda la aplicación Express
-  // Carga el archivo de entorno y lo hace accesible en toda la aplicación Express
   server.locals['environment'] = environment;
-  console.log('server->',server.locals['environment'].server);
+  console.log('server->',server.locals['environment'].servidor);
 
-  server.all('*', function(req, res) {
-    res.redirect(301,server.locals['environment'].server+'/GMBE');
-  });
+  /*server.all('*', function(req, res) {
+    res.redirect(301,server.locals['environment'].servidor+'/GMBE');
+  });*/
 
 
   return server;

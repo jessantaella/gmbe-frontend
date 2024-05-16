@@ -22,12 +22,47 @@
 
   <link href="https://db.onlinewebfonts.com/c/0801c08e5412f54e4b4e9ad146d83a12?family=Ink+Free" rel="stylesheet">                                                
 
-
-
   <script src="https://www.coneval.org.mx/Style%20Library/wtscripts/google-analytics-sistemas.js" type="text/javascript"></script>
 </head>
 
 <body>
+  <script>
+    function actualizarScripts(servidor) {
+            // Transforma la URL del servidor según la descripción
+            if (servidor.startsWith('https://qa.coneval') || servidor.startsWith('https://sistemas.coneval')) {
+                // Es un dominio, mantener solo el dominio
+                servidor = new URL(servidor).origin;
+            } else if(servidor.startsWith('http://10')){
+                // Es una IP, quitar el puerto y agregar el puerto 81
+                //servidor = servidor.replace(/:\d+$/, '') + ':81';
+                servidor = servidor.replace('4002', '81'); 
+            }
+            // Agregar /conf/GMBE al final de la URL del servidor
+            const nuevaUrl = `${servidor}conf/GMBE`;
+
+            const scripts = document.querySelectorAll('script[type="module"]');
+            scripts.forEach(script => {
+                const src = script.getAttribute('src');
+                if (src) {
+                    const nuevoSrc = `${nuevaUrl}/${src}`;
+                    // Eliminar el script existente
+                    script.parentNode.removeChild(script);
+                    // Crear un nuevo script con la URL actualizada
+                    const nuevoScript = document.createElement('script');
+                    nuevoScript.setAttribute('type', 'module');
+                    nuevoScript.setAttribute('src', nuevoSrc);
+                    // Agregar el nuevo script al final del cuerpo del documento
+                    document.body.appendChild(nuevoScript);
+                }
+            });
+        }
+
+        // Llama a la función después de que el DOM esté completamente cargado
+        document.addEventListener('DOMContentLoaded', function () {
+            const urlActual = window.location.href;
+            actualizarScripts(urlActual);
+        });
+</script>
   <app-root></app-root>
 </body>
 
