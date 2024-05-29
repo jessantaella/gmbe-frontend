@@ -1,0 +1,26 @@
+
+<div class="sidebar ">
+    <div class="menu-des">
+    <div class="menu">
+        <em class='bi bi-list icon-menu m-3' (click)="activarSidebar()" id="btn"></em>
+    </div>
+        <ul class="nav">
+            <li>
+                <a class="p-0 border-0" [routerLink]="['/usuarios']">
+                    <em class="bi bi-people-fill"></em>
+                    <span class="link_name">
+                        Usuarios
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a [routerLink]="['/gmbe']">
+                    <em class='bi bi-cast'></em>
+                    <span class="link_name">
+                        MBE's
+                    </span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>

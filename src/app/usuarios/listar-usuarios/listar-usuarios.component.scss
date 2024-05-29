@@ -1,0 +1,10 @@
+.table-striped tbody tr:nth-of-type(odd) {
+    --bs-table-accent-bg: #d3e2ff; /* Color de fondo para filas impares */
+    color: #000; /* Color del texto */
+  }
+  
+  /* Cambia el color de las filas pares (opcional) */
+  .table-striped tbody tr:nth-of-type(even) {
+    --bs-table-accent-bg: #fff5e1; /* Color de fondo para filas pares */
+    color: #000; /* Color del texto */
+  }

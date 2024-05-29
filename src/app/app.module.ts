@@ -6,15 +6,22 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './base/header/header.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 import { InicioComponent } from './base/inicio/inicio.component';
 import { FooterComponent } from './base/footer/footer.component';
-import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import {APP_BASE_HREF} from '@angular/common';
 import { ObjetoMbeComponent } from './objeto-mbe/objeto-mbe.component';
 import { StartBarComponent } from './base/start-bar/start-bar.component';
 import { BarraAzulComponent } from './base/barra-azul/barra-azul.component';
+import { LoginComponent } from './base/login/login.component';
+import { NavSideComponent } from './base/nav-side/nav-side.component';
+import { ListarUsuariosComponent } from './usuarios/listar-usuarios/listar-usuarios.component';
+import { ListarGmbeComponent } from './gmbe/listar-gmbe/listar-gmbe.component';
+import { CrearGmbeComponent } from './gmbe/crear-gmbe/crear-gmbe.component';
 
 @NgModule({
   declarations: [
@@ -24,15 +31,20 @@ import { BarraAzulComponent } from './base/barra-azul/barra-azul.component';
     FooterComponent,
     ObjetoMbeComponent,
     StartBarComponent,
-    BarraAzulComponent
+    BarraAzulComponent,
+    LoginComponent,
+    ListarUsuariosComponent,
+    NavSideComponent,
+    ListarGmbeComponent,
+    CrearGmbeComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+    NgbModule,
     FontAwesomeModule,
-    HttpClientModule,
-    AccordionModule
+    HttpClientModule
   ],
   providers: [{provide: APP_BASE_HREF, useValue: '/GMBE/'}],
   bootstrap: [AppComponent]

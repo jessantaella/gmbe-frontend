@@ -1,0 +1,68 @@
+.custom-accordion-button {
+    background-color: #2B3172; /* Color de fondo personalizado */
+    color: white; /* Color del texto personalizado */
+    border: none;
+    font-size: 22px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.custom-accordion-button:not(.collapsed) {
+    background-color: #2B3172; /* Color de fondo cuando el acordeón está abierto */
+    font-size: 22px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.custom-accordion-button:hover {
+    background-color: #2B3172; /* Color de fondo al pasar el ratón por encima */
+    color: white; /* Color del texto al pasar el ratón por encima */
+    font-size: 22px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Cambiar el color de la flechita */
+.custom-accordion-button::after {
+    filter: invert(1); /* Cambiar el color de la flechita */
+}
+
+.custom-accordion-button:not(.collapsed)::after {
+    filter: invert(1); /* Cambiar el color de la flechita cuando el acordeón está abierto */
+}
+
+.accordion-collapse{
+    background-color: #eff3ec;
+}
+
+.file-upload-wrapper {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+  }
+  
+  .file-upload-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
+  
+  .upload-icon {
+    font-size: 24px;
+    color: #21409a;
+    background-color: none;
+    cursor: pointer;
+  }
+
+  .btnOtrasAcciones{
+    background-color: none;
+    font-size: 20px;
+    color: #21409a;
+    cursor: pointer;
+  }
+
+  .imagen{
+    max-width: 100px;
+    max-height: 100px;
+  }

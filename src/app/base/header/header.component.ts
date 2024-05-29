@@ -53,7 +53,7 @@ export class HeaderComponent {
       let url = window.location.hostname;
       
       if(url === 'localhost'){
-        return  'HTTP://' + url + ':4002/assets/img/' + imagen;
+        return  'HTTP://' + url + ':4200/assets/img/' + imagen;
 
       }else if(url.includes('qa') || url.includes('sistemas')){
         return url + '/conf/GMBE/assets/'+imagen;
