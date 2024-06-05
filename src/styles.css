@@ -14,4 +14,34 @@
   }
   
 
+ .btn-cancelar, .btn-cancelar:hover{
+    background-color: #B3273E;
+    color:#ffffff;
+ }
+
+ .btn-guardar, .btn-guardar:hover{
+    background-color: #00a94f;
+    color:#ffffff;
+ }
+
+ .btn-nuevo, .btn-nuevo:hover{
+   background-color: #21409A;
+   color: #ffffff;
+   font-size: 16px;
+   font-family: Arial, Helvetica, sans-serif;
+ }
+
+ .cabecera-tabla{
+   font-size: 16px;
+   font-family: Arial, Helvetica, sans-serif;
+ }
+
+ .columna-acciones{
+   width: 100px;
+
+ }
+ .btn-acciones{
+   color : #21409a
+ }
+
  

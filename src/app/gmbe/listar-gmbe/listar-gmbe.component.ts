@@ -10,7 +10,7 @@ import { faEye,faPencil,faTrashCan,faUserGroup } from '@fortawesome/free-solid-s
 })
 export class ListarGmbeComponent {
   textoBienvenida =
-    "Gestión de GMBE";
+    "MBE";
 
     //iconos
   faEye = faEye;
@@ -20,7 +20,7 @@ export class ListarGmbeComponent {
 
 
   constructor(private titulos :TitulosService,private modalService: NgbModal) {
-    this.titulos.changePestaña('Gestión de GMBE');
+    this.titulos.changePestaña('GMBE');
     this.titulos.changeBienvenida(this.textoBienvenida);
   }
 

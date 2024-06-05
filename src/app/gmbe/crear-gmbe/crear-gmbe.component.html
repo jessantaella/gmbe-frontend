@@ -1,7 +1,7 @@
 <div class="accordion w-75 m-auto mt-3" id="accordionExample">
     <div class="accordion-item">
         <h2 class="accordion-header" id="headingOne">
-            <button class="accordion-button custom-accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+            <button class="accordion-button custom-accordion-button collapsed mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
                 aria-expanded="true" aria-controls="collapseOne">
                 Datos generales
             </button>
@@ -38,7 +38,7 @@
 
                     <div class="col-12 mt-2">
                         <div class="row">
-                            <label for="icono" class="col-sm-2 col-form-label">* Carga de ícono MBE :</label>
+                            <label for="icono" class="col-sm-2 col-form-label text-end">* Carga de ícono MBE :</label>
                             <div class="col-sm-10">
                                 <div class="d-flex flex-row bd-highlight mb-3">
                                     <div class="p-2 bd-highlight">
@@ -62,20 +62,91 @@
     </div>
     <div class="accordion-item">
         <h2 class="accordion-header" id="headingTwo">
-            <button class="accordion-button custom-accordion-button" type="button" data-bs-toggle="collapse"
+            <button class="accordion-button custom-accordion-button " type="button" data-bs-toggle="collapse"
                 data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                Mapa Conceptual
+                Marco Conceptual
             </button>
         </h2>
         <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
             data-bs-parent="#accordionExample">
             <div class="accordion-body">
-                <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse
-                plugin adds the appropriate classes that we use to style each element. These classes control the overall
-                appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with
-                custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go
-                within the <code>.accordion-body</code>, though the transition does limit overflow.
+               <div class="row">
+                <div class="col-md-6 col-sm-12">
+                    <div class="row">
+                        <label for="nombre" class="col-sm-4 col-form-label text-end">* Tipo :</label>
+                        <div class="col-sm-8">
+                            <select class="form-select" aria-label="Seleccione una opción" (change)="changeTipo($event)">
+                                <option selected>Seleccione una opción</option>
+                                <option value="1">Fila</option>
+                                <option value="2">Columna</option>
+                              </select>
+                        </div>
+                      </div>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <div class="row">
+                        <label for="nombre" class="col-sm-4 col-form-label text-end">* Categoría :</label>
+                        <div class="col-sm-8">
+                            <select class="form-select" aria-label="Seleccione una opción" (change)="obtenerSubCategorias($event)">
+                                <option selected>Seleccione una opción</option>
+                                <option [value]="categoria.id" *ngFor="let categoria of arregloCategorias">{{categoria.nombre}}</option>
+                              </select>
+                        </div>
+                      </div>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <div class="row mt-2">
+                        <label for="nombre" class="col-sm-4 col-form-label text-end">* Sub-categoría :</label>
+                        <div class="col-sm-8 bg-light">
+                            <div class="form-check" *ngFor="let sub of mostrarSubcategoria">
+                                <input class="form-check-input" type="checkbox" (click)="subcategoriaSeleccionada(sub)" id="flexCheckDefault">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    {{sub.nombre}}
+                                </label>
+                              </div>
+                        </div>
+                      </div>
+                      <div class="text-center">
+                        <button class="btn btn-sm btn-success m-2" (click)="agregar()">
+                            Agregar
+                        </button>
+                    </div>
+                </div>
+               </div>
+               <table class="table table-bordered">
+                <thead>
+                  <tr class="text-center">
+                    <th colspan="2" *ngIf="estructuraFinalColumnasTitulos.length>0"></th>
+                    <th scope="col" *ngFor="let columna of estructuraFinalColumnasTitulos" [attr.colspan]="columna.subcategorias.length">{{columna.categoria.nombre}}</th>
+                  </tr>
+                  <tr>
+                    <th colspan="2" *ngIf="estructuraFinalColumnasTitulos.length>0"></th>
+                    <th *ngFor="let  subcolumna of estructuraFinalColumnasSubitulos">
+                            {{ subcolumna.nombre }}
+                     </th>
+                  </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf="estructuraFinalFilasTitulos.length>0"></tr>
+                    <tr *ngIf="estructuraFinalFilasTitulos.length>0"></tr>
+                  <tr *ngFor="let subFilas of estructuraFinalFilasSubitulos;let i = index" >
+                    <th id="padre" [attr.rowspan]="regresaPapa(subFilas.id_padre).subcategorias.length" *ngIf="estructuraFinalFilasSubitulos[i-1]?.id_padre !== subFilas.id_padre">{{regresaPapa(subFilas.id_padre).categoria.nombre}}</th>
+                    <th scope="row"> {{subFilas.nombre}} </th>
+                  </tr>
+                </tbody>
+              </table>
             </div>
         </div>
     </div>
+</div>
+
+<div class="container m-2 text-center">
+    <button class="btn btn-sm btn-cancelar m-2">
+        <fa-icon [icon]="faRotateLeft"></fa-icon>
+        Cancelar
+    </button>
+    <button class="btn btn-sm btn-guardar m-2">
+        <fa-icon [icon]="faFloppyDisk"></fa-icon>
+        Guardar
+    </button>
 </div>
