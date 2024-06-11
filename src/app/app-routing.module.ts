@@ -5,6 +5,7 @@ import { LoginComponent } from "./base/login/login.component";
 import { ListarUsuariosComponent } from "./usuarios/listar-usuarios/listar-usuarios.component";
 import { ListarGmbeComponent } from "./gmbe/listar-gmbe/listar-gmbe.component";
 import { CrearGmbeComponent } from "./gmbe/crear-gmbe/crear-gmbe.component";
+import { BurbujasComponent } from "./graficas/burbujas/burbujas.component";
 
 const routes: Routes = [
   { path: "", redirectTo: "inicio", pathMatch: "full" },
@@ -13,6 +14,7 @@ const routes: Routes = [
   { path: "usuarios", component: ListarUsuariosComponent },
   { path: "gmbe", component: ListarGmbeComponent },
   { path: "crear-gmbe", component: CrearGmbeComponent },
+  { path: "grafica", component: BurbujasComponent },
 ];
 
 @NgModule({

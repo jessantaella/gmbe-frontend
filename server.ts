@@ -19,8 +19,8 @@ if (environment.production) {
 export function app(): express.Express {
   const server = express();
 
-  const distFolder = join(process.cwd(), '/GMBE/browser');  //Despliegue en servidor CONEVAL
-  //const distFolder = join(process.cwd(), 'dist/GMBE/browser'); //LOCAL 
+  //const distFolder = join(process.cwd(), '/GMBE/browser');  //Despliegue en servidor CONEVAL
+  const distFolder = join(process.cwd(), 'dist/GMBE/browser'); //LOCAL 
   const indexHtml = existsSync(join(distFolder, 'index.original.html')) ? 'index.original.html' : 'index';
 
   // Our Universal express-engine (found @ https://github.com/angular/universal/tree/main/modules/express-engine)
@@ -53,7 +53,8 @@ export function app(): express.Express {
   server.get('*',(req, res) => {
     //console.log(`APP_BASE_REF = ${APP_BASE_HREF}`);
     //console.log(`req.baseUrl = ${req.baseUrl}`); 
-    res.render(indexHtml, { req, providers: [{ provide: APP_BASE_HREF, useValue: req.baseUrl }] });
+    const urlActual = req.protocol + '://' + req.get('host') + req.originalUrl;  //compilado unico
+    res.render(indexHtml, { req, providers: [{ provide: APP_BASE_HREF, useValue: req.baseUrl },  { provide: 'REQUEST_URL', useValue: urlActual }] });
   });
 
 // Carga el archivo de entorno y lo hace accesible en toda la aplicación Express

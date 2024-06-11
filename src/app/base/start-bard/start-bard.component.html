@@ -1,0 +1,55 @@
+
+
+<nav class="start-bar">
+    <div class="d-flex d-row justify-content-between">
+      <div *ngIf="validaToken()">
+        <button class="white-button etiquetaHome mx-0 text-nowrap" ngbTooltip="Inicio" [routerLink]="['/index']">
+          <em class="bi bi-house-door-fill"></em>
+          Inicio
+        </button>
+      </div>
+        <div class="escritorio" >
+          <label for="usuario" class="text-light me-3"  *ngIf="validaToken()">
+            <fa-icon [icon]="faUser"></fa-icon>
+            {{usuario}}
+          </label>
+          <button ngbTooltip="Cerrar sesión" class="white-button etiquetaHome mx-1 text-nowrap" (click)="cerrarSesion()"
+                  *ngIf="validaToken()">
+            <label for="sesion">Cerrar sesión</label>
+          </button>
+        </div>
+  
+  
+      <div class="navbar movil p-0 m-0" *ngIf="validaToken()">
+        <button class="white-button mx-0 text-nowrap" type="button" (click)="desplegar();">
+          <span class="navbar-toggler-icon color-menu"></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+  <div [ngClass]="{'navbar-collapse color-opciones collapsing movil':!abrir,'navbar-collapse color-opciones collapse movil show': abrir}" *ngIf="validaToken()">
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0 movil d-flex justify-content-start">
+      <li class="nav-item dropdown div-nav" *ngIf="this.rolUsuario() != 2">
+        <a class="dropdown-toggle nav-link link-color" aria-expanded="false" data-bs-toggle="dropdown" href="#"
+          (click)="desplegarAdmin();" >Administración</a>
+        <div
+          [ngClass]="{'dropdown-menu color-opciones nav-color texto': !abrirAdmin, 'dropdown-menu color-opciones nav-color texto show': abrirAdmin}">
+            <a class="nav-link link-color"  [routerLink]="['/usuarios/usuarios']" *ngIf="this.rolUsuario() != 2 && abrirAdmin" >Usuarios</a>
+            <a class="nav-link link-color" [routerLink]="['/planeacion/planeacion']" *ngIf="this.rolUsuario() != 3 && this.rolUsuario() != 2 && abrirAdmin" >Gestión de la Planeación Anual</a>
+        </div>
+      </li>
+      <li class="nav-item div-nav">
+        <a class="nav-link link-color" [routerLink]="['/requerimientos/requerimientos']">Requerimientos</a>
+      </li>
+      <li class="nav-item div-nav">
+        <a class="nav-link link-color" [routerLink]="['/aplicativos/aplicativos']">Aplicativos</a>
+      </li>
+      <li class="nav-item div-nav">
+        <a class="nav-link link-color" [routerLink]="['/necesidades/necesidades']">Necesidades</a>
+      </li>
+      <li class="nav-item div-nav">
+        <a class="nav-link link-color cursor" (click)="cerrarSesion()">Cerrar sesión</a>
+      </li>
+    </ul>
+  </div>
+  

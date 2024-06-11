@@ -18,7 +18,7 @@ export class NavSideComponent implements OnInit {
   getrol()
   {
 
-    return localStorage.getItem('idRol');
+    return 1 ;//localStorage.getItem('idRol');
   }
 
   activarSidebar()
@@ -28,7 +28,7 @@ export class NavSideComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.idRol=localStorage.getItem('idRol');
+    this.idRol=1;//localStorage.getItem('idRol');
   }
 
 }

@@ -15,13 +15,16 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import {APP_BASE_HREF} from '@angular/common';
 import { ObjetoMbeComponent } from './objeto-mbe/objeto-mbe.component';
-import { StartBarComponent } from './base/start-bar/start-bar.component';
 import { BarraAzulComponent } from './base/barra-azul/barra-azul.component';
 import { LoginComponent } from './base/login/login.component';
 import { NavSideComponent } from './base/nav-side/nav-side.component';
 import { ListarUsuariosComponent } from './usuarios/listar-usuarios/listar-usuarios.component';
 import { ListarGmbeComponent } from './gmbe/listar-gmbe/listar-gmbe.component';
 import { CrearGmbeComponent } from './gmbe/crear-gmbe/crear-gmbe.component';
+import { StartBardComponent } from './base/start-bard/start-bard.component';
+import { BurbujasComponent } from './graficas/burbujas/burbujas.component';
+
+
 
 @NgModule({
   declarations: [
@@ -30,13 +33,14 @@ import { CrearGmbeComponent } from './gmbe/crear-gmbe/crear-gmbe.component';
     InicioComponent,
     FooterComponent,
     ObjetoMbeComponent,
-    StartBarComponent,
     BarraAzulComponent,
     LoginComponent,
     ListarUsuariosComponent,
     NavSideComponent,
+    StartBardComponent,
     ListarGmbeComponent,
-    CrearGmbeComponent
+    CrearGmbeComponent,
+    BurbujasComponent
   ],
   imports: [
     BrowserModule,

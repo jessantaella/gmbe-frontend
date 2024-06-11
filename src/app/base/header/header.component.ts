@@ -2,7 +2,6 @@ import { Component, Inject, PLATFORM_ID } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { isPlatformBrowser } from '@angular/common';
 import { TitulosService } from 'src/app/services/titulos.services';
-import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -49,7 +48,7 @@ export class HeaderComponent {
   }
 
   getImagen(imagen: string) {
-    if (this.isBrowser) {
+   if (this.isBrowser) {
       let url = window.location.hostname;
       
       if(url === 'localhost'){
@@ -64,7 +63,7 @@ export class HeaderComponent {
       }
     } else {
       return '';
-    }
+    } 
   }
 
   // revisar para cambiar el nombre mostrado en la pestaña

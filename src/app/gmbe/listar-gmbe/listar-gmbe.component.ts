@@ -1,7 +1,7 @@
 import { Component, TemplateRef } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TitulosService } from 'src/app/services/titulos.services';
-import { faEye,faPencil,faTrashCan,faUserGroup } from '@fortawesome/free-solid-svg-icons';
+import { faEllipsisVertical, faEye,faTrashCan,faUserGroup } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-listar-gmbe',
@@ -14,7 +14,7 @@ export class ListarGmbeComponent {
 
     //iconos
   faEye = faEye;
-  faPencil = faPencil;
+  faEllipsisVertical = faEllipsisVertical;
   faTrashCan = faTrashCan;
   faUserGroup = faUserGroup;
 

@@ -31,4 +31,8 @@ export class ListarUsuariosComponent {
     const modalRef = this.modalService.open(content,{centered:true,size: 'lg'});
   }
 
+  //Obtener usuarios LDAP
+
+  //oBTENER LISTA DE GMBE
+
 }
