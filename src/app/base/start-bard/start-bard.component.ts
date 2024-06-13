@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import {faUser } from '@fortawesome/free-solid-svg-icons';
+import { CifradoService } from 'src/app/services/cifrado.service';
+import { StorageService } from 'src/app/services/storage-service.service';
 
 
 @Component({
@@ -15,16 +17,15 @@ export class StartBardComponent {
   faUser=faUser;
   abrirAdmin = false;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router,private storage:StorageService, private cifrado:CifradoService) { }
 
   validaToken(): boolean{
-    this.getUsuario();
-    //return localStorage.getItem('token-gpatic') !== null;
-    return true;
+    return this.storage.getItem('token-gmbe')!== null;
   }
   
   cerrarSesion(){
-    //localStorage.clear();
+    this.storage.removeItem('usr');
+    this.storage.removeItem('token-gmbe')
     this.router.navigate(['/login'])
   }
 
@@ -32,7 +33,8 @@ export class StartBardComponent {
     this.abrir = !this.abrir;
   }
   getUsuario(){
-    this.usuario = 'Prueba';//localStorage.getItem('nombreUsuario');
+    let objeto = JSON.parse(this.cifrado.descifrar(this.storage.getItem('usr')!));
+    return objeto.userName;
   }
 
   rolUsuario(): Number{

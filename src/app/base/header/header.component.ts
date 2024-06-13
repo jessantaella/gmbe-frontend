@@ -2,6 +2,7 @@ import { Component, Inject, PLATFORM_ID } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { isPlatformBrowser } from '@angular/common';
 import { TitulosService } from 'src/app/services/titulos.services';
+import { DataDynamic } from '../services/dinamic-data.services';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -37,7 +38,8 @@ export class HeaderComponent {
   constructor(
     private titulos: TitulosService,
     private titleService: Title,
-    @Inject(PLATFORM_ID) private platformId: any
+    @Inject(PLATFORM_ID) private platformId: any,
+    private dinamicService: DataDynamic
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
     if (this.isBrowser) {
@@ -48,22 +50,7 @@ export class HeaderComponent {
   }
 
   getImagen(imagen: string) {
-   if (this.isBrowser) {
-      let url = window.location.hostname;
-      
-      if(url === 'localhost'){
-        return  'HTTP://' + url + ':4200/assets/img/' + imagen;
-
-      }else if(url.includes('qa') || url.includes('sistemas')){
-        return url + '/conf/GMBE/assets/'+imagen;
-
-      }else{
-        return 'HTTP://' + url + ':81/conf/GMBE/assets/' + imagen;
-        
-      }
-    } else {
-      return '';
-    } 
+    return this.dinamicService.getImagen(imagen);
   }
 
   // revisar para cambiar el nombre mostrado en la pestaña

@@ -15,7 +15,8 @@ export class FooterComponent {
   isBrowser = false;
 
   constructor(private servicio:DataDynamic,
-    @Inject(PLATFORM_ID) private platformId: any
+    @Inject(PLATFORM_ID) private platformId: any,
+    private dinamicService: DataDynamic
   ) { 
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
@@ -34,22 +35,7 @@ export class FooterComponent {
    }
 
    getImagen(imagen: string) {
-    if (this.isBrowser) {
-      let url = window.location.hostname;
-      
-      if(url === 'localhost'){
-        return  'HTTP://' + url + ':4200/assets/img/' + imagen;
-
-      }else if(url.includes('qa') || url.includes('sistemas')){
-        return url + '/conf/GMBE/assets/'+imagen;
-
-      }else{
-        return 'HTTP://' + url + ':81/conf/GMBE/assets/' + imagen;
-        
-      }
-    } else {
-      return '';
-    } 
+    return this.dinamicService.getImagen(imagen);
   }
 
 }

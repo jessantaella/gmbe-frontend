@@ -2,7 +2,7 @@
   <div
       class="d-flex flex-column justify-content-center align-items-center flex-md-column flex-lg-row flex-xl-row flex-xxl-row color-div border border-white bordelabel div-tamanio">
       <div class="m-4 w-100">
-          <form >
+          <form [formGroup]="loginForm">
               <div class="my-2 mx-2 span-texto my-1"><span>Usuario</span>
                   <div class="d-flex flex-row my-1">
                       <fa-icon [icon]="faUser"
@@ -20,7 +20,7 @@
                   </div>
               </div>
               <div class="d-flex flex-column align-items-center my-2 span-texto">
-                <button class="btn btn-primary w-50 botones" type="button" >
+                <button class="btn btn-primary w-50 botones" type="button" (click)="loguear()">
                   Ingresar
                 </button>
               </div>

@@ -23,6 +23,7 @@ import { ListarGmbeComponent } from './gmbe/listar-gmbe/listar-gmbe.component';
 import { CrearGmbeComponent } from './gmbe/crear-gmbe/crear-gmbe.component';
 import { StartBardComponent } from './base/start-bard/start-bard.component';
 import { BurbujasComponent } from './graficas/burbujas/burbujas.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -48,7 +49,8 @@ import { BurbujasComponent } from './graficas/burbujas/burbujas.component';
     AppRoutingModule,
     NgbModule,
     FontAwesomeModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule
   ],
   providers: [{provide: APP_BASE_HREF, useValue: '/GMBE/'}],
   bootstrap: [AppComponent]

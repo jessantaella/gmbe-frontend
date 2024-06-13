@@ -9,12 +9,13 @@
         <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
             data-bs-parent="#accordionExample">
             <div class="accordion-body">
+                <form [formGroup]="generales">
                 <div class="row">
                     <div class="col-6 mt-2">
                         <div class="row">
                             <label for="nombre" class="col-sm-4 col-form-label text-end">* Nombre :</label>
                             <div class="col-sm-8">
-                              <input type="text" class="form-control" id="nombre">
+                              <input type="text" class="form-control" id="nombre" formControlName="nombre">
                             </div>
                           </div>
                     </div>
@@ -22,7 +23,7 @@
                         <div class="row">
                             <label for="objetivos" class="col-sm-4 col-form-label text-end">* Objetivos :</label>
                             <div class="col-sm-8">
-                              <input type="text" class="form-control" id="objetivos">
+                              <input type="text" class="form-control" id="objetivos" formControlName="objetivos">
                             </div>
                           </div>
                     </div>
@@ -31,7 +32,7 @@
                         <div class="row">
                             <label for="hallazgos" class="col-sm-2 col-form-label text-end">* Resumen con principales hallazgos :</label>
                             <div class="col-sm-10">
-                                <textarea class="form-control" placeholder="" id="hallazgos" style="height: 100px;"></textarea>
+                                <textarea class="form-control" placeholder="" id="hallazgos" style="height: 100px;" formControlName="hallazgos"></textarea>
                             </div>
                           </div>
                     </div>
@@ -57,7 +58,8 @@
                           </div>
                     </div>
                 </div>
-            </div>
+                </div>
+            </form>
         </div>
     </div>
     <div class="accordion-item">
@@ -141,11 +143,11 @@
 </div>
 
 <div class="container m-2 text-center">
-    <button class="btn btn-sm btn-cancelar m-2">
+    <button class="btn btn-sm btn-cancelar m-2" [routerLink]="['/gmbe']">
         <fa-icon [icon]="faRotateLeft"></fa-icon>
         Cancelar
     </button>
-    <button class="btn btn-sm btn-guardar m-2">
+    <button class="btn btn-sm btn-guardar m-2" (click)="guardar()">
         <fa-icon [icon]="faFloppyDisk"></fa-icon>
         Guardar
     </button>

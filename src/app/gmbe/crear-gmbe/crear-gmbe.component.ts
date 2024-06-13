@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TitulosService } from 'src/app/services/titulos.services';
 import { faX, faRotateLeft, faFloppyDisk} from "@fortawesome/free-solid-svg-icons";
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-crear-gmbe',
@@ -15,6 +16,8 @@ export class CrearGmbeComponent {
   faX = faX;
   faRotateLeft = faRotateLeft;
   faFloppyDisk = faFloppyDisk;
+
+  generales: FormGroup;
 
   /** Arreglos de pruebas */
 
@@ -54,9 +57,14 @@ ver =false;
   imageUrl: string | ArrayBuffer | null | undefined = null;
   imageFile: File | null = null;
 
-  constructor(private titulos :TitulosService,private modalService: NgbModal) {
+  constructor(private titulos :TitulosService,private modalService: NgbModal,private fb:FormBuilder) {
     this.titulos.changePestaña('Creación de  GMBE');
     this.titulos.changeBienvenida(this.textoBienvenida);
+    this.generales = this.fb.group({
+      nombre: ['', Validators.required],
+      objetivos: ['', Validators.required],
+      hallazgos: ['', Validators.required]
+    });
   }
 
   onFileChange(event: any): void {
@@ -126,6 +134,11 @@ ver =false;
   regresaPapa(idPadre:number){
     this.padreAnterior = idPadre;
     return this.estructuraFinalFilasTitulos.find((e:any)=>e.categoria.id === idPadre);
+  }
+
+  guardar(){
+
+    console.log(this.generales.value);
   }
 
 }

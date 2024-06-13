@@ -1,17 +1,23 @@
-.table-striped tbody tr:nth-of-type(odd) {
-    --bs-table-accent-bg: #d3e2ff; /* Color de fondo para filas impares */
-    color: #000; /* Color del texto */
-  }
-  
-  /* Cambia el color de las filas pares (opcional) */
-  .table-striped tbody tr:nth-of-type(even) {
-    --bs-table-accent-bg: #fff5e1; /* Color de fondo para filas pares */
-    color: #000; /* Color del texto */
-  }
+.table-striped>tbody>tr:nth-child(odd)>td, 
+.table-striped>tbody>tr:nth-child(odd)>th {
+   background-color: #21409a50; // Choose your own color here
+ }
 
+/*
+ .table-striped>tbody>tr:nth-child(even)>td, 
+.table-striped>tbody>tr:nth-child(even)>th {
+   background-color: #21409a50; // Choose your own color here
+ }*/
+ 
   th{
 
    background-color: #2e3e97 !important;
    color: #ffffff;
    font-family: Arial, Helvetica, sans-serif;
+  }
+
+
+  .modal-header{
+    background-color: #2e3e97;
+    color: #ffffff;
   }
