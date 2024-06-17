@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TitulosService } from 'src/app/services/titulos.services';
-import { faX, faRotateLeft, faFloppyDisk} from "@fortawesome/free-solid-svg-icons";
+import { faX, faRotateLeft, faFloppyDisk, faPlus} from "@fortawesome/free-solid-svg-icons";
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { GmbeServicesService } from '../services/gmbe-services.service';
 
 @Component({
   selector: 'app-crear-gmbe',
@@ -16,33 +17,18 @@ export class CrearGmbeComponent {
   faX = faX;
   faRotateLeft = faRotateLeft;
   faFloppyDisk = faFloppyDisk;
-
+  faPlus = faPlus;
   generales: FormGroup;
+
+  opcionesTipoEstructura! :any [];
 
   /** Arreglos de pruebas */
 
-arregloCategorias = [
-    { id: 1, nombre: 'Categoría 1' },
-    { id: 2, nombre: 'Categoría 2' },
-    { id: 3, nombre: 'Categoría 3' },
-    { id: 4, nombre: 'Categoría 4' },
-    { id: 5, nombre: 'Categoría 5' }
-];
+arregloCategorias! :any[];
 
 mostrarSubcategoria: { id: number; id_padre: number; nombre: string; }[] | undefined;
 
-subCategorias=[
-  { id: 1, id_padre: 1, nombre: 'Subcategoría 1.1' },
-    { id: 2, id_padre: 1, nombre: 'Subcategoría 1.2' },
-    { id: 3, id_padre: 2, nombre: 'Subcategoría 2.1' },
-    { id: 4, id_padre: 2, nombre: 'Subcategoría 2.2' },
-    { id: 5, id_padre: 3, nombre: 'Subcategoría 3.1' },
-    { id: 6, id_padre: 3, nombre: 'Subcategoría 3.2' },
-    { id: 7, id_padre: 4, nombre: 'Subcategoría 4.1' },
-    { id: 8, id_padre: 4, nombre: 'Subcategoría 4.2' },
-    { id: 9, id_padre: 5, nombre: 'Subcategoría 5.1' },
-    { id: 10, id_padre: 5, nombre: 'Subcategoría 5.2' }
-];
+subCategorias! : any[];
 
 tipo=0;
 categoria:any;
@@ -57,9 +43,11 @@ ver =false;
   imageUrl: string | ArrayBuffer | null | undefined = null;
   imageFile: File | null = null;
 
-  constructor(private titulos :TitulosService,private modalService: NgbModal,private fb:FormBuilder) {
+  constructor(private titulos :TitulosService,private modalService: NgbModal,private fb:FormBuilder, private gmbeservice:GmbeServicesService) {
     this.titulos.changePestaña('Creación de  GMBE');
     this.titulos.changeBienvenida(this.textoBienvenida);
+    this.tipoEstructura();
+    this.obtenerCategorias();
     this.generales = this.fb.group({
       nombre: ['', Validators.required],
       objetivos: ['', Validators.required],
@@ -85,59 +73,93 @@ ver =false;
     this.imageFile = null;
   }
 
-  changeTipo(valor:any){
-    this.tipo = parseInt(valor.target.value);
-  }
 
-  obtenerSubCategorias(idPadre:any){
-    let selectElement = idPadre.target as HTMLSelectElement;
-    let selectedValue = Number(selectElement.value);
-    this.categoria = this.arregloCategorias.find(c=>c.id === selectedValue);
-    this.mostrarSubcategoria = this.subCategorias.filter(subCategoria => subCategoria.id_padre === selectedValue);
-    this.subcategoriasAgregadas = [];
-    this.ver = false;
-  }
 
   subcategoriaSeleccionada(sub: any){
     if (!this.subcategoriasAgregadas) {
       this.subcategoriasAgregadas = [];
     }
-  
-    const pos = this.subcategoriasAgregadas.findIndex(e => e.id === sub.id);
+    const pos = this.subcategoriasAgregadas.findIndex(e => e.idCatalogo === sub.idCatalogo);
     
     if (pos === -1) {
       this.subcategoriasAgregadas.push(sub);
     } else{
-      const nuevoArreglo = this.subcategoriasAgregadas?.filter(elemento => elemento.id !== sub.id);
+      const nuevoArreglo = this.subcategoriasAgregadas?.filter(elemento => elemento.idCatalogo !== sub.idCatalogo);
       this.subcategoriasAgregadas = nuevoArreglo;
     }
   }
 
   agregar(){
-    //Fila
-    if(this.tipo ===1){
+    //Columna
+    if(this.tipo ===2){
+      //let index = this.estructuraFinalFilasTitulos.findIndex((obj: any) => obj.idCatalogo === this.categoria.idCatalogo);
 
       this.estructuraFinalFilasTitulos.push(
         {categoria:this.categoria,subcategorias:this.subcategoriasAgregadas}
       )
       this.estructuraFinalFilasSubitulos = this.estructuraFinalFilasSubitulos.concat(this.subcategoriasAgregadas);
     }else{
-    //columna
+    //Fila
       this.estructuraFinalColumnasTitulos.push(
         {categoria:this.categoria,subcategorias:this.subcategoriasAgregadas}
       )
     this.estructuraFinalColumnasSubitulos = this.estructuraFinalColumnasSubitulos.concat(this.subcategoriasAgregadas);
     }
+    console.log(this.estructuraFinalFilasTitulos);
     console.log(this.estructuraFinalFilasSubitulos);
   }
 
   regresaPapa(idPadre:number){
+    console.log(idPadre)
     this.padreAnterior = idPadre;
-    return this.estructuraFinalFilasTitulos.find((e:any)=>e.categoria.id === idPadre);
+    return this.estructuraFinalFilasTitulos.find((e:any)=>e.categoria.idCatalogo === idPadre);
   }
 
-  guardar(){
+// uno para obtener fila o columna
+  tipoEstructura(){
+    this.gmbeservice.listarCatalogo(1).subscribe(
+      res=>{
+        this.opcionesTipoEstructura = res;
+        console.log(res);
+      },
+    err=>{
 
+    });
+  }
+  
+  changeTipo(valor:any){
+    this.tipo = parseInt(valor.target.value);
+    this.subCategorias = []
+    this.obtenerCategorias()
+  }
+
+
+  obtenerCategorias(){
+    this.gmbeservice.listarCatalogo(2).subscribe(
+      res=>{
+        this.arregloCategorias = res;
+      },
+    err=>{
+
+    });
+  }
+
+
+  obtenerSubCategorias(idPadre:any){
+    let selectElement = idPadre.target as HTMLSelectElement;
+    let selectedValue = Number(selectElement.value);
+    this.categoria = this.arregloCategorias.find(c=>c.idCatalogo === selectedValue);
+    this.gmbeservice.listarSubcategorias(this.categoria.idCatalogo).subscribe(
+      res=>{
+        this.subCategorias = res;
+      }
+    )
+    this.subcategoriasAgregadas = [];
+    this.ver = false;
+  }
+
+
+  guardar(){
     console.log(this.generales.value);
   }
 

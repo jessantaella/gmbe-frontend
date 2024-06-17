@@ -14,4 +14,9 @@ export class UsuariosService {
     let url = this.serverConfigService.getServerConfig()+'api/gmbe-catalogos/api/usuarios/search-paginados?page='+pagina+'&size='+size+'&busqueda='+busqueda+'&filtro='+filtro;
     return this.http.get<any>(url);
   }
+
+  usuariosLDAP():Observable<any>{
+    let url = this.serverConfigService.getServerConfig()+'api/coneval-ms-ldap/api/ldap/users?sistema=gmbe';
+    return this.http.get<any>(url);
+  }
 }

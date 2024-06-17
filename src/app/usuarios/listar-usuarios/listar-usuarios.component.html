@@ -43,11 +43,14 @@
     <h4 class="modal-title w-100 text-center">Nuevo Usuario</h4>
   </div>
   <div class="modal-body">
-
+<form [formGroup]="usuarioForm">
     <div class="mb-3 row">
       <label for="usuario" class="col-sm-4 col-form-label text-end">Usuario</label>
       <div class="col-sm-6">
-        <input type="text" class="form-control" id="usuario">
+        <input type="text" class="form-control" id="usuario" (input)="filterUsuarios($event)" formControlName="usuario" >
+        <datalist id="usuariosList" style="display: block !important;"  [ngStyle]="{'max-height': filteredUsuarios && filteredUsuarios.length > 3 ? '100px' : 'auto', 'overflow-y': filteredUsuarios && filteredUsuarios.length > 3 ? 'auto' : 'initial'}">
+          <option *ngFor="let usuario of filteredUsuarios" [value]="usuario.samaccountname" (click)="selectUsuario(usuario)">{{ usuario.samaccountname }}</option>
+        </datalist>
       </div>
     </div>
     <div class="mb-3 row">
@@ -84,10 +87,10 @@
         </select>
       </div>
     </div>
-
+  </form>
   </div>
   <div class="modal-footer justify-content-center">
-    <button type="button" class="btn btn-sm btn-cancelar" >
+    <button type="button" class="btn btn-sm btn-cancelar" (click)="modal.dismiss('Cancelar')" >
       <fa-icon [icon]="faRotate"></fa-icon>
       Cancelar
     </button>
