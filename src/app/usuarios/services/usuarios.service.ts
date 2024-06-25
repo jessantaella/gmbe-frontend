@@ -19,4 +19,14 @@ export class UsuariosService {
     let url = this.serverConfigService.getServerConfig()+'api/coneval-ms-ldap/api/ldap/users?sistema=gmbe';
     return this.http.get<any>(url);
   }
+
+  getRoles():Observable<any>{
+    let url = this.serverConfigService.getServerConfig()+'api/gmbe-catalogos/api/roles/get-all';
+    return this.http.get<any>(url);
+  }
+
+  crearUsuario(usuario:any):Observable<any>{
+    let urlCrear=this.serverConfigService.getServerConfig()+'api/gmbe-catalogos/api/usuarios/registrar';
+    return this.http.post<any>(urlCrear,usuario,{});
+  }
 }

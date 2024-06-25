@@ -78,7 +78,6 @@
                         <label for="nombre" class="col-sm-4 col-form-label text-end">* Tipo :</label>
                         <div class="col-sm-8">
                             <select class="form-select" aria-label="Seleccione una opción" (change)="changeTipo($event)">
-                                <option selected>Seleccione una opción</option>
                                 <option [value]="tipo.idCatalogo" *ngFor="let tipo of opcionesTipoEstructura">{{tipo.catalogo}}</option>
                               </select>
                         </div>
@@ -103,7 +102,7 @@
                         <label for="nombre" class="col-sm-2 col-form-label text-end">* Sub-categoría :</label>
                         <div class="col-sm-7 bg-light listado">
                             <div class="form-check" *ngFor="let sub of subCategorias">
-                                <input class="form-check-input" type="checkbox" (click)="subcategoriaSeleccionada(sub)" id="flexCheckDefault">
+                                <input class="form-check-input" type="checkbox" (click)="subcategoriaSeleccionada(sub)" id="flexCheckDefault" [checked]="existeObjeto(sub)">
                                 <label class="form-check-label" for="flexCheckDefault">
                                     {{sub.catalogo}}
                                 </label>
@@ -121,7 +120,7 @@
                 </div>
                </div>
                <div class="d-flex align-items-center">
-                <div class="vertical-text">
+                <div class="vertical-text" *ngIf="estructuraFinalColumnasTitulos.length >0 || estructuraFinalFilasTitulos.length>0">
                   Variable de resultados
                 </div>
                <div class="table-responsive">
@@ -129,12 +128,14 @@
                 <caption class="text-center caption-original">Variable de resultados</caption>
                 <thead>
                   <tr class="text-center">
-                    <th colspan="2" class="titulos-tabla" *ngIf="estructuraFinalColumnasTitulos.length>0"></th>
-                    <th scope="col"  class="titulos-tabla" *ngFor="let columna of estructuraFinalColumnasTitulos" [attr.colspan]="columna.subcategorias.length">{{columna.categoria.catalogo}}</th>
+                    <th id="tituloTablaColumna" colspan="2" class="titulos-tabla" *ngIf="estructuraFinalColumnasTitulos.length>0"></th>
+                    <th id="subtituloTablaColumna" scope="col"  class="titulos-tabla" *ngFor="let columna of estructuraFinalColumnasTitulos" [attr.colspan]="columna.subcategorias.length">
+                        <fa-icon [icon]="faTrash" (click)="eliminarCategoria(1,columna.categoria)"></fa-icon>{{columna.categoria.catalogo}}
+                    </th>
                   </tr>
                   <tr>
-                    <th colspan="2" class="titulos-tabla" *ngIf="estructuraFinalColumnasTitulos.length>0"></th>
-                    <th class="subtitulos-tabla" *ngFor="let  subcolumna of estructuraFinalColumnasSubitulos">
+                    <th id="tituloTablaFila" colspan="2" class="titulos-tabla" *ngIf="estructuraFinalColumnasTitulos.length>0"></th>
+                    <th id="subtituloTablaFila" class="subtitulos-tabla" *ngFor="let  subcolumna of estructuraFinalColumnasSubitulos">
                             {{ subcolumna.catalogo }}
                      </th>
                   </tr>
@@ -143,7 +144,9 @@
                     <tr *ngIf="estructuraFinalFilasTitulos.length>0" class="titulos-tabla"></tr>
                     <tr *ngIf="estructuraFinalFilasTitulos.length>0" class="titulos-tabla"></tr>
                   <tr *ngFor="let subFilas of estructuraFinalFilasSubitulos;let i = index" >
-                    <th  class="subtitulos-tabla" id="padre" [ngStyle]="{'padding-top': (regresaPapa(subFilas.idRelacion).subcategorias.length * 2)+'%'}" [attr.rowspan]="regresaPapa(subFilas.idRelacion).subcategorias.length" *ngIf="estructuraFinalFilasSubitulos[i-1]?.idRelacion !== subFilas.idRelacion">{{regresaPapa(subFilas.idRelacion).categoria.catalogo}}</th>
+                    <th  class="subtitulos-tabla" id="padre" [ngStyle]="{'padding-top': (regresaPapa(subFilas.idRelacion).subcategorias.length * 2)+'%'}" [attr.rowspan]="regresaPapa(subFilas.idRelacion).subcategorias.length" *ngIf="estructuraFinalFilasSubitulos[i-1]?.idRelacion !== subFilas.idRelacion">
+                        <fa-icon [icon]="faTrash" (click)="eliminarCategoria(2,regresaPapa(subFilas.idRelacion).categoria)"></fa-icon>{{regresaPapa(subFilas.idRelacion).categoria.catalogo}}
+                    </th>
                     <th  class="subtitulos-tabla" scope="row"> {{subFilas.catalogo}} </th>
                   </tr>
                 </tbody>

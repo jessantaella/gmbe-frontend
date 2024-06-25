@@ -35,6 +35,19 @@
           </tr>
         </tbody>
       </table>
+      <nav class="d-flex justify-content-center">
+        <ngb-pagination
+          [(page)]="page"
+          [collectionSize]="items"
+          [maxSize]="10"
+          [pageSize]="pageSize"
+          (pageChange)="loadPage($event)"
+          [rotate]="true"
+          [directionLinks]="true"
+          [boundaryLinks]="false"
+          >
+        </ngb-pagination>
+      </nav>
 </div>
 
 
@@ -47,7 +60,7 @@
     <div class="mb-3 row">
       <label for="usuario" class="col-sm-4 col-form-label text-end">Usuario</label>
       <div class="col-sm-6">
-        <input type="text" class="form-control" id="usuario" (input)="filterUsuarios($event)" formControlName="usuario" >
+        <input type="text" class="form-control" id="usuario" (input)="filterUsuarios($event)" formControlName="userName" >
         <datalist id="usuariosList" style="display: block !important;"  [ngStyle]="{'max-height': filteredUsuarios && filteredUsuarios.length > 3 ? '100px' : 'auto', 'overflow-y': filteredUsuarios && filteredUsuarios.length > 3 ? 'auto' : 'initial'}">
           <option *ngFor="let usuario of filteredUsuarios" [value]="usuario.samaccountname" (click)="selectUsuario(usuario)">{{ usuario.samaccountname }}</option>
         </datalist>
@@ -56,24 +69,22 @@
     <div class="mb-3 row">
       <label for="correo" class="col-sm-4 col-form-label text-end">Correo</label>
       <div class="col-sm-6">
-        <input type="text" class="form-control" id="correo" placeholder="ejemplo@ejemplo.com">
+        <input type="text" class="form-control" id="correo" placeholder="ejemplo@ejemplo.com" formControlName="correo">
       </div>
     </div>
     <div class="mb-3 row">
       <label for="rol" class="col-sm-4 col-form-label text-end">Rol</label>
       <div class="col-sm-6">
-        <select class="form-select" aria-label="Rol">
+        <select class="form-select" aria-label="Rol" formControlName="idRol">
           <option selected>Seleccione un rol</option>
-          <option value="1">One</option>
-          <option value="2">Two</option>
-          <option value="3">Three</option>
+          <option [value]="rol.idRol" *ngFor="let rol of roles">{{rol.rol}}</option>
         </select>
       </div>
     </div>
     <div class="mb-3 row">
       <label for="nombre" class="col-sm-4 col-form-label text-end">Nombre</label>
       <div class="col-sm-6">
-        <input type="text" class="form-control" id="nombre" placeholder="Nombre(s)">
+        <input type="text" class="form-control" id="nombre" placeholder="Nombre(s)" formControlName="nombre">
       </div>
     </div>
     <div class="mb-3 row">
@@ -94,7 +105,7 @@
       <fa-icon [icon]="faRotate"></fa-icon>
       Cancelar
     </button>
-    <button type="button" class="btn btn-sm btn-guardar" >
+    <button type="button" class="btn btn-sm btn-guardar" (click)="crear()" [disabled]="!usuarioForm.valid">
       <fa-icon [icon]="faFloppyDisk"></fa-icon>
       Guardar
     </button>
