@@ -1,7 +1,7 @@
 <div class="container-fluid">
     <div class="d-flex flex-row-reverse bd-highlight m-3">
         <div class="p-2 bd-highlight">
-            <button (click)="open(content)" class="btn-nuevo btn-sm">
+            <button (click)="open(crearModal)" class="btn-nuevo btn-sm">
               <em class='bi bi-plus'></em>
               Nuevo Usuario
               </button>
@@ -24,7 +24,7 @@
                 <fa-icon [icon]="faEye" class="btn-acciones"></fa-icon>
             </td>
             <td  class="text-center">
-                <fa-icon [icon]="faPencil" class="btn-acciones"></fa-icon>
+                <fa-icon [icon]="faPencil" class="btn-acciones" (click)="openEditar(editarModal,usuario)"></fa-icon>
             </td>
             <td  class="text-center ">
                 <fa-icon [icon]="faTrashCan" class="btn-acciones"></fa-icon>
@@ -51,7 +51,7 @@
 </div>
 
 
-<ng-template #content let-modal>
+<ng-template #crearModal let-modal>
   <div class="modal-header">
     <h4 class="modal-title w-100 text-center">Nuevo Usuario</h4>
   </div>
@@ -90,6 +90,72 @@
     <div class="mb-3 row">
       <label for="rol" class="col-sm-4 col-form-label">Mapas de Brechas de Evidencias</label>
       <div class="col-sm-6">
+        <div class="btn-group drop" dropdown #dropdown="bs-dropdown" [autoClose]="false">
+          <button dropdownToggle type="button" class="btn dropdown-toggle ">
+             <span class="caret icono-toogle"></span>
+          </button>
+          <ul id="dropdown-triggers-manual" *dropdownMenu class="dropdown-menu"
+              role="menu" aria-labelledby="button-triggers-manual">
+            <li role="menuitem" *ngFor="let mbe of listaMBE">
+              <input type="checkbox"  class="radio"/>{{mbe.nombre}}
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+    </div>
+  </form>
+  </div>
+  <div class="modal-footer justify-content-center">
+    <button type="button" class="btn btn-sm btn-cancelar" (click)="modal.dismiss('Cancelar')" >
+      <fa-icon [icon]="faRotate"></fa-icon>
+      Cancelar
+    </button>
+    <button type="button" class="btn btn-sm btn-guardar" (click)="crear()" [disabled]="!usuarioForm.valid">
+      <fa-icon [icon]="faFloppyDisk"></fa-icon>
+      Guardar
+    </button>
+  </div>
+</ng-template>
+
+
+
+<ng-template #editarModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title w-100 text-center">Editar Usuario</h4>
+  </div>
+  <div class="modal-body">
+<form [formGroup]="usuarioEditForm">
+    <div class="mb-3 row">
+      <label for="usuario" class="col-sm-4 col-form-label text-end">Usuario</label>
+      <div class="col-sm-6">
+        <input type="text" class="form-control" id="usuario" formControlName="userName">
+      </div>
+    </div>
+    <div class="mb-3 row">
+      <label for="correo" class="col-sm-4 col-form-label text-end">Correo</label>
+      <div class="col-sm-6">
+        <input type="text" class="form-control" id="correo" formControlName="correo">
+      </div>
+    </div>
+    <div class="mb-3 row">
+      <label for="rol" class="col-sm-4 col-form-label text-end">Rol</label>
+      <div class="col-sm-6">
+        <select class="form-select" aria-label="Rol" formControlName="idRol">
+          <option selected>Seleccione un rol</option>
+          <option [value]="rol.idRol" *ngFor="let rol of roles">{{rol.rol}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="mb-3 row">
+      <label for="nombre" class="col-sm-4 col-form-label text-end">Nombre</label>
+      <div class="col-sm-6">
+        <input type="text" class="form-control" id="nombre" formControlName="nombre">
+      </div>
+    </div>
+    <div class="mb-3 row">
+      <label for="rol" class="col-sm-4 col-form-label">Mapas de Brechas de Evidencias</label>
+      <div class="col-sm-6">
         <select class="form-select" aria-label="Mapas de brechas">
           <option selected>Seleccione los GMBE que desee.</option>
           <option value="1">One</option>
@@ -105,7 +171,7 @@
       <fa-icon [icon]="faRotate"></fa-icon>
       Cancelar
     </button>
-    <button type="button" class="btn btn-sm btn-guardar" (click)="crear()" [disabled]="!usuarioForm.valid">
+    <button type="button" class="btn btn-sm btn-guardar" (click)="editar()">
       <fa-icon [icon]="faFloppyDisk"></fa-icon>
       Guardar
     </button>

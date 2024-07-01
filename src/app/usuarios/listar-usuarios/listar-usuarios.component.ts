@@ -44,9 +44,13 @@ export class ListarUsuariosComponent implements OnInit {
   usuariosLdap!: any[];
   filteredUsuarios!: any[];
   roles!: any[];
+  listaMBE! : any[];
   selectedUsuario: any;
+  usuarioEditar:any;
+  seleccionados: number[] = [];
 
   usuarioForm: FormGroup;
+  usuarioEditForm: FormGroup;
 
   private modalRef: NgbModalRef | undefined;
 
@@ -64,6 +68,13 @@ export class ListarUsuariosComponent implements OnInit {
       idRol: ['', Validators.required],
       nombre: ['', Validators.required],
     });
+
+    this.usuarioEditForm = this.fb.group({
+      userName: ['', Validators.required],
+      correo: ['', Validators.required],
+      idRol: ['', Validators.required],
+      nombre: ['', Validators.required],
+    });
     this.usuarioForm.get('nombre')?.disable();
     this.usuarioForm.get('correo')?.disable();
   }
@@ -72,6 +83,7 @@ export class ListarUsuariosComponent implements OnInit {
     //this.obtenerUsuarios();
     this.usuariosLDAP();
     this.obtenerRoles();
+    this.obtenerMBEs();
   }
 
   obtenerRoles() {
@@ -98,25 +110,38 @@ export class ListarUsuariosComponent implements OnInit {
     );
   }
 
+  obtenerMBEs(){
+    this.usuariosService.listarMBE().subscribe(
+      res=>{
+        this.listaMBE = res;
+      }
+    )
+  }
+
   filterUsuarios(event: any) {
     const searchTerm = event.target.value.toLowerCase();
-    console.log(searchTerm);
-
     this.filteredUsuarios = this.usuariosLdap.filter((usuario) =>
       usuario.samaccountname.toLowerCase().includes(searchTerm)
     );
-    console.log(this.filteredUsuarios);
   }
 
   selectUsuario(usuario: any) {
     this.selectedUsuario = usuario;
-    console.log(usuario);
     this.usuarioForm.get('userName')?.setValue(usuario.samaccountname);
     this.usuarioForm.get('nombre')?.setValue(usuario.commonName);
     this.usuarioForm.get('correo')?.setValue(usuario.userPrincipal);
 
     this.filteredUsuarios = []; //this.usuarios.slice(); // Restablecer la lista filtrada
   }
+
+  onCheckboxChange(event: any, idMbe: number) {
+    if (event.target.checked) {
+      this.seleccionados.push(idMbe);
+    } else {
+      this.seleccionados = this.seleccionados.filter(id => id !== idMbe);
+    }
+  }
+
 
   open(content: TemplateRef<any>) {
     this.modalRef = this.modalService.open(content, {
@@ -126,12 +151,44 @@ export class ListarUsuariosComponent implements OnInit {
     });
   }
 
+  openEditar(content:TemplateRef<any>,usuario:any){
+    this.open(content);
+    console.log(usuario)
+    this.usuarioEditar = usuario;
+    this.usuarioEditForm = this.fb.group({
+      userName: [this.usuarioEditar.userName, Validators.required],
+      correo: [this.usuarioEditar.correo, Validators.required],
+      idRol: [this.usuarioEditar?.rolUsuario?.idRol, Validators.required],
+      nombre: [this.usuarioEditar?.nombre, Validators.required],
+    });
+
+    this.usuarioEditForm.get('userName')?.disable();
+    this.usuarioEditForm.get('correo')?.disable();
+    this.usuarioEditForm.get('nombre')?.disable();
+  }
+
   crear() {
     let usuarioObj = this.usuarioForm.getRawValue();
     usuarioObj.listaMBEs = [];
     this.usuariosService.crearUsuario(usuarioObj).subscribe(
       (res) => {
         swal.fire('', 'Usuario creado exitosamente', 'success');
+        if (this.modalRef) {
+          this.modalRef.close();
+          this.obtenerUsuarios();
+        }
+      },
+      (err) => {}
+    );
+  }
+
+  editar(){
+    let usuarioObj = this.usuarioEditForm.getRawValue();
+    usuarioObj.listaMBEs = [];
+    usuarioObj.idUsuario = this.usuarioEditar.idUsuario;
+    this.usuariosService.editarUsuario(usuarioObj).subscribe(
+      (res) => {
+        swal.fire('', 'Usuario actualizado exitosamente', 'success');
         if (this.modalRef) {
           this.modalRef.close();
           this.obtenerUsuarios();

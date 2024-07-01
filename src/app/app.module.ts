@@ -7,7 +7,7 @@ import { HeaderComponent } from './base/header/header.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdown, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { InicioComponent } from './base/inicio/inicio.component';
 import { FooterComponent } from './base/footer/footer.component';
@@ -24,6 +24,7 @@ import { CrearGmbeComponent } from './gmbe/crear-gmbe/crear-gmbe.component';
 import { StartBardComponent } from './base/start-bard/start-bard.component';
 import { BurbujasComponent } from './graficas/burbujas/burbujas.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
 
 
@@ -50,7 +51,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     NgbModule,
     FontAwesomeModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BsDropdownModule.forRoot()
   ],
   providers: [{provide: APP_BASE_HREF, useValue: '/GMBE/'}],
   bootstrap: [AppComponent]

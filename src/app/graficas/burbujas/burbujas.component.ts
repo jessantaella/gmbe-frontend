@@ -14,6 +14,8 @@ export class BurbujasComponent implements AfterViewInit {
   public chartOptions: any;
   isBrowser = false;
 
+
+
   constructor( @Inject(PLATFORM_ID) private platformId: any) {
    
   }

@@ -25,3 +25,27 @@
   div#usuariosList {
     display: block; /* o el valor necesario para que se muestre */
   }
+
+  .drop{
+    width: 100%;
+  }
+  .dropdown-toggle{
+    border: solid 2px #dee2e6;
+  }
+
+  .dropdown-menu{
+    height: 200px;
+    overflow: auto;
+  }
+
+  .icono-toogle{
+    margin-right: 80%;
+  }
+
+  li{
+    margin-left: 10px;
+  }
+
+  .radio{
+    margin-right: 5px;
+  }

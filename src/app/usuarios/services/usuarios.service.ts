@@ -29,4 +29,15 @@ export class UsuariosService {
     let urlCrear=this.serverConfigService.getServerConfig()+'api/gmbe-catalogos/api/usuarios/registrar';
     return this.http.post<any>(urlCrear,usuario,{});
   }
+
+  editarUsuario(usuario:any):Observable<any>{
+    let urlEditar=this.serverConfigService.getServerConfig()+'api/gmbe-catalogos/api/usuarios/actualizar';
+    return this.http.put<any>(urlEditar,usuario,{});
+  }
+
+  listarMBE():Observable<any>{
+    let url=this.serverConfigService.getServerConfig()+'api/gmbe-catalogos/api/mbe/all-by-activo';
+    return this.http.get<any>(url);
+
+  }
 }
