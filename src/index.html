@@ -32,7 +32,7 @@
 
 <body>
   <!--script>
-    function actualizarScripts(servidor) {
+    /*function actualizarScripts(servidor) {
             // Transforma la URL del servidor según la descripción
             if (servidor.startsWith('https://qa.coneval') || servidor.startsWith('https://sistemas.coneval')) {
                 // Es un dominio, mantener solo el dominio
@@ -60,7 +60,7 @@
                     document.body.appendChild(nuevoScript);
                 }
             });
-        }
+        }*/
 
         // La URL se inyectará aquí desde el servidor
     (function() {
@@ -73,8 +73,33 @@
       });
 
       function actualizarScripts(url) {
-        console.log('URL actual:', url);
-        // Implementa tu lógica aquí
+        // Transforma la URL del servidor según la descripción
+        if (servidor.startsWith('https://qa.coneval') || servidor.startsWith('https://sistemas.coneval')) {
+                // Es un dominio, mantener solo el dominio
+                servidor = new URL(servidor).origin;
+            } else if(servidor.startsWith('http://10')){
+                // Es una IP, quitar el puerto y agregar el puerto 81
+                //servidor = servidor.replace(/:\d+$/, '') + ':81';
+                servidor = servidor.replace('4002', '81'); 
+            }
+            // Agregar /conf/GMBE al final de la URL del servidor
+            const nuevaUrl = `${servidor}conf/GMBE`;
+
+            const scripts = document.querySelectorAll('script[type="module"]');
+            scripts.forEach(script => {
+                const src = script.getAttribute('src');
+                if (src) {
+                    const nuevoSrc = `${nuevaUrl}/${src}`;
+                    // Eliminar el script existente
+                    script.parentNode.removeChild(script);
+                    // Crear un nuevo script con la URL actualizada
+                    const nuevoScript = document.createElement('script');
+                    nuevoScript.setAttribute('type', 'module');
+                    nuevoScript.setAttribute('src', nuevoSrc);
+                    // Agregar el nuevo script al final del cuerpo del documento
+                    document.body.appendChild(nuevoScript);
+                }
+            });
       }
     })();
 </!--script-->

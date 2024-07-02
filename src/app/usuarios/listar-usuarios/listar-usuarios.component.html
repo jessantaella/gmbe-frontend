@@ -20,18 +20,20 @@
         </thead>
         <tbody>
           <tr *ngFor="let usuario of usuarios">
-            <td scope="row" class="text-center">
+            <td class="text-center align-middle">
                 <fa-icon [icon]="faEye" class="btn-acciones"></fa-icon>
             </td>
-            <td  class="text-center">
+            <td  class="text-center align-middle">
                 <fa-icon [icon]="faPencil" class="btn-acciones" (click)="openEditar(editarModal,usuario)"></fa-icon>
             </td>
-            <td  class="text-center ">
+            <td  class="text-center align-middle ">
                 <fa-icon [icon]="faTrashCan" class="btn-acciones"></fa-icon>
             </td>
-            <td>{{usuario?.nombre}}</td>
-            <td class="text-center">{{usuario?.userName}}</td>
-            <td>No definido por ahora</td>
+            <td class="align-middle">{{usuario?.nombre}}</td>
+            <td class="text-center align-middle">{{usuario?.userName}}</td>
+            <td class="nombreMBE align-middle">
+              {{resumeTablamMbe(usuario?.mbesAsociados)}}
+            </td>
           </tr>
         </tbody>
       </table>
@@ -97,7 +99,7 @@
           <ul id="dropdown-triggers-manual" *dropdownMenu class="dropdown-menu"
               role="menu" aria-labelledby="button-triggers-manual">
             <li role="menuitem" *ngFor="let mbe of listaMBE">
-              <input type="checkbox"  class="radio"/>{{mbe.nombre}}
+              <input type="checkbox"  class="radio" (change)="onCheckboxChangeMBE(mbe.idMbe)"/>{{mbe.nombre}}
             </li>
           </ul>
         </div>
@@ -156,12 +158,18 @@
     <div class="mb-3 row">
       <label for="rol" class="col-sm-4 col-form-label">Mapas de Brechas de Evidencias</label>
       <div class="col-sm-6">
-        <select class="form-select" aria-label="Mapas de brechas">
-          <option selected>Seleccione los GMBE que desee.</option>
-          <option value="1">One</option>
-          <option value="2">Two</option>
-          <option value="3">Three</option>
-        </select>
+        <div class="btn-group drop" dropdown #dropdown="bs-dropdown" [autoClose]="false">
+          <button dropdownToggle type="button" class="btn dropdown-toggle ">
+             <span class="caret icono-toogle" *ngIf="usuarioEditar?.mbesAsociados?.length>0">Seleccionados {{usuarioEditar?.mbesAsociados?.length}}</span>
+             <span class="caret icono-toogle" *ngIf="usuarioEditar?.mbesAsociados?.length<=0">Ningún seleccionado</span>
+          </button>
+          <ul id="dropdown-triggers-manual" *dropdownMenu class="dropdown-menu"
+              role="menu" aria-labelledby="button-triggers-manual">
+            <li role="menuitem" *ngFor="let mbe of listaMBE">
+              <input type="checkbox"  class="radio" [checked]="verificaAsociacionMBE(mbe?.idMbe)"/>{{mbe.nombre}}
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </form>

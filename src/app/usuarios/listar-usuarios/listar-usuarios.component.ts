@@ -10,7 +10,7 @@ import {
 import { TitulosService } from 'src/app/services/titulos.services';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { UsuariosService } from '../services/usuarios.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 declare var swal: any;
 
 @Component({
@@ -51,6 +51,8 @@ export class ListarUsuariosComponent implements OnInit {
 
   usuarioForm: FormGroup;
   usuarioEditForm: FormGroup;
+
+  mbeEditables : number[] = [];
 
   private modalRef: NgbModalRef | undefined;
 
@@ -114,8 +116,7 @@ export class ListarUsuariosComponent implements OnInit {
     this.usuariosService.listarMBE().subscribe(
       res=>{
         this.listaMBE = res;
-      }
-    )
+      });
   }
 
   filterUsuarios(event: any) {
@@ -130,7 +131,6 @@ export class ListarUsuariosComponent implements OnInit {
     this.usuarioForm.get('userName')?.setValue(usuario.samaccountname);
     this.usuarioForm.get('nombre')?.setValue(usuario.commonName);
     this.usuarioForm.get('correo')?.setValue(usuario.userPrincipal);
-
     this.filteredUsuarios = []; //this.usuarios.slice(); // Restablecer la lista filtrada
   }
 
@@ -142,8 +142,41 @@ export class ListarUsuariosComponent implements OnInit {
     }
   }
 
+  onCheckboxChangeMBE(valor:number) {
+    let index = this.mbeEditables?.indexOf(valor);
+      console.log(index)
+      if (index === -1 || index!=undefined) {
+        // Element does not exist, add it
+        this.mbeEditables.push(valor);
+      } else{
+        // Element exists, remove it
+        this.mbeEditables?.splice(index, 1);
+      }
+  }
+
+
+  resumeTablamMbe(mbesAsociados: any) {
+    let salida= '';
+    mbesAsociados.forEach((element: { idMbe: { activo: any; nombre: string; }; }) => {
+      if (element?.idMbe?.activo) {
+        if (salida) {
+          salida = salida.concat(', ');
+        }
+        salida = salida.concat(element.idMbe.nombre);
+      }
+    });
+    return salida;
+  }
+  
+
+  verificaAsociacionMBE(idMbe:number){
+    let salida = this.mbeEditables.find((m: any)=>m.idMbe === idMbe);
+    return salida
+  }
+
 
   open(content: TemplateRef<any>) {
+    this.mbeEditables = [];
     this.modalRef = this.modalService.open(content, {
       centered: true,
       size: 'lg',
@@ -153,23 +186,25 @@ export class ListarUsuariosComponent implements OnInit {
 
   openEditar(content:TemplateRef<any>,usuario:any){
     this.open(content);
-    console.log(usuario)
     this.usuarioEditar = usuario;
+    this.mbeEditables = this.usuarioEditar.mbesAsociados.map((item: any) => item.idMbe);
+    console.log(this.mbeEditables)
+
     this.usuarioEditForm = this.fb.group({
       userName: [this.usuarioEditar.userName, Validators.required],
       correo: [this.usuarioEditar.correo, Validators.required],
       idRol: [this.usuarioEditar?.rolUsuario?.idRol, Validators.required],
       nombre: [this.usuarioEditar?.nombre, Validators.required],
     });
-
     this.usuarioEditForm.get('userName')?.disable();
     this.usuarioEditForm.get('correo')?.disable();
     this.usuarioEditForm.get('nombre')?.disable();
+    
   }
 
   crear() {
     let usuarioObj = this.usuarioForm.getRawValue();
-    usuarioObj.listaMBEs = [];
+    usuarioObj.listaMBEs = this.mbeEditables;
     this.usuariosService.crearUsuario(usuarioObj).subscribe(
       (res) => {
         swal.fire('', 'Usuario creado exitosamente', 'success');
@@ -239,9 +274,7 @@ export class ListarUsuariosComponent implements OnInit {
   }
 
   searchCoincidences(page:number=0,size:number=10, bandUsers:string = ''){
-
     this.palabra = this.seachValue.trim()
-
     if (this.palabra===""){
       this.cambiarPaginaGetAll(0,10,'','TODOS');
     }
@@ -257,6 +290,7 @@ export class ListarUsuariosComponent implements OnInit {
     }
   }
 
+ 
 
 
 }

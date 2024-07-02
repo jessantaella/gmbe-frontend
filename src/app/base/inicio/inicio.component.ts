@@ -74,11 +74,11 @@ export class InicioComponent implements OnInit{
       window.history.replaceState(null, '', '/');
       this.router.navigateByUrl('/');
     }
-
     this.obtenerInformacion();
   }
 
   obtenerInformacion(){
+    if (this.isBrowser) {
     this.info.obtenerBienvenida().subscribe(
       res=>{
         console.log(res);
@@ -86,6 +86,7 @@ export class InicioComponent implements OnInit{
       },
       err=>{
       });
+    }
   }
 
 }
