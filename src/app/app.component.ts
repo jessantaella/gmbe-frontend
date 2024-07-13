@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID,  Renderer2, RendererFactory2 } from '@angular/core';
 import { Meta } from '@angular/platform-browser';
 import { DataDynamic } from './base/services/dinamic-data.services';
 import { isPlatformBrowser } from '@angular/common';
@@ -14,9 +14,11 @@ export class AppComponent implements OnInit {
   tags: any;
   ga: any;
   isBrowser = false;
+  private renderer: Renderer2;
 
 
-  constructor(private meta: Meta, private servicio: DataDynamic, @Inject(PLATFORM_ID) private platformId: any,private url:ServerConfigService) {
+  constructor(private meta: Meta, private servicio: DataDynamic, @Inject(PLATFORM_ID) private platformId: any,private url:ServerConfigService, rendererFactory: RendererFactory2) {
+    this.renderer = rendererFactory.createRenderer(null, null);
     this.isBrowser = isPlatformBrowser(this.platformId);
     this.url.loadServerConfig();
   }
@@ -48,6 +50,21 @@ export class AppComponent implements OnInit {
       "name": "charset",
       "content": "UTF-8"
     })
+
+
+    /*if(this.isBrowser){
+      console.log('voy por icon');
+      const link: HTMLLinkElement = this.renderer.createElement('link');
+      link.type = 'image/x-icon';
+      link.rel = 'icon';
+      link.href = 'https://sistemas.coneval.org.mx/conf/assets/favicon.ico';
+
+      const links = document.querySelectorAll("link[rel*='icon']");
+      links.forEach(link => link.parentNode?.removeChild(link));
+
+      const head = this.renderer.selectRootElement('head', true);
+      this.renderer.appendChild(head, link);
+    }*/
 
   }
 

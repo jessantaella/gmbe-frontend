@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Component, TemplateRef } from '@angular/core';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { TitulosService } from 'src/app/services/titulos.services';
 import {
   faX,
@@ -10,6 +10,9 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { GmbeServicesService } from '../services/gmbe-services.service';
+import { Router } from '@angular/router';
+
+declare var swal: any;
 
 @Component({
   selector: 'app-crear-gmbe',
@@ -24,7 +27,13 @@ export class CrearGmbeComponent {
   faPlus = faPlus;
   faTrash = faTrash;
 
+  private modalRef: NgbModalRef | undefined;
+
+
+
   generales: FormGroup;
+  categoriaForm: FormGroup;
+  subcategoriaForm: FormGroup;
 
   opcionesTipoEstructura!: any[];
 
@@ -37,6 +46,8 @@ export class CrearGmbeComponent {
     | undefined;
 
   subCategorias!: any[];
+
+  padreActual : number = 0;
 
   tipo = 0;
   categoria: any;
@@ -51,11 +62,13 @@ export class CrearGmbeComponent {
   imageUrl: string | ArrayBuffer | null | undefined = null;
   imageFile: File | null = null;
 
+
   constructor(
     private titulos: TitulosService,
     private modalService: NgbModal,
     private fb: FormBuilder,
-    private gmbeservice: GmbeServicesService
+    private gmbeservice: GmbeServicesService,
+    private router:Router
   ) {
     this.titulos.changePestaña('Creación de  GMBE');
     this.titulos.changeBienvenida(this.textoBienvenida);
@@ -63,9 +76,17 @@ export class CrearGmbeComponent {
     this.obtenerCategorias();
     this.generales = this.fb.group({
       nombre: ['', Validators.required],
-      objetivos: ['', Validators.required],
-      hallazgos: ['', Validators.required],
+      objetivo: ['', Validators.required],
+      resumen: ['', Validators.required],
     });
+
+    this.categoriaForm = this.fb.group({
+      nombre:['',Validators.required]
+    })
+    this.subcategoriaForm = this.fb.group({
+      categoria:[null,Validators.required],
+      nombre:['',Validators.required]
+    })
   }
 
   onFileChange(event: any): void {
@@ -274,6 +295,21 @@ export class CrearGmbeComponent {
   obtenerSubCategorias(idPadre: any) {
     let selectElement = idPadre.target as HTMLSelectElement;
     let selectedValue = Number(selectElement.value);
+    this.padreActual = selectedValue;
+    this.categoria = this.arregloCategorias.find(
+      (c) => c.idCatalogo === selectedValue
+    );
+    this.gmbeservice
+      .listarSubcategorias(this.categoria.idCatalogo)
+      .subscribe((res) => {
+        this.subCategorias = res;
+      });
+    this.subcategoriasAgregadas = [];
+    this.ver = false;
+  }
+
+  obtenerSubCategoriasConid(idPadre: number) {
+    let selectedValue = this.padreActual;
     this.categoria = this.arregloCategorias.find(
       (c) => c.idCatalogo === selectedValue
     );
@@ -317,11 +353,76 @@ export class CrearGmbeComponent {
     return arregloSalida;
   }
 
+  validarGuardar(){
+    return this.generales.valid && this.generaArregloEstructura().length>0 && this.imageFile;
+  }
+
   guardar() {
     console.log(this.generales.value);
+    let nombre = this.imageFile?.name ? this.imageFile.name : 'gmbeImage'+Math.random()+'.png';
     let estructura = this.generaArregloEstructura();
     let enviar = this.generales.value;
     enviar.estructura = estructura;
+    enviar.ruta= null;
     console.log(enviar);
+    this.gmbeservice.crearImagen(this.imageFile, nombre).subscribe(
+      response => {
+        console.log('Imagen subida con éxito', response);
+        // Maneja la respuesta exitosa aquí
+        enviar.ruta = response.remotePath;
+        this.gmbeservice.crearGmbe(enviar).subscribe(
+          res=>{
+            swal.fire('', 'Usuario actualizado exitosamente', 'success');
+            this.router.navigate(['/gmbe'])
+          },
+          err=>{}
+        );
+      },
+      error => {
+        console.error('Error al subir la imagen', error);
+        // Maneja el error aquí
+      }
+    );
   }
+
+  open(content: TemplateRef<any>) {
+    this.modalRef = this.modalService.open(content, {
+      centered: true,
+      size: 'lg',
+      backdrop: 'static',
+    });
+  }
+
+
+  crearCategoria(){
+    this.gmbeservice.crearCategoria(this.categoriaForm.get('nombre')?.value).subscribe(
+      res=>{
+        swal.fire('', 'Categoría creada exitosamente', 'success');
+        if (this.modalRef) {
+          this.modalRef.close();
+          this.obtenerCategorias();
+        }
+       
+      },
+      err=>{}
+    )
+  }
+
+
+  crearSubcategoria(){
+    this.gmbeservice.crearSubcategoria(this.subcategoriaForm.get('nombre')?.value,this.subcategoriaForm.get('categoria')?.value).subscribe(
+      res=>{
+        swal.fire('', 'Sub-categoría creada exitosamente', 'success');
+        if (this.modalRef) {
+          this.modalRef.close();
+          if(this.padreActual != 0){
+            this.obtenerSubCategoriasConid(this.padreActual);
+          }
+        }
+       
+      },
+      err=>{}
+    )
+  }
+
 }

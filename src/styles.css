@@ -13,6 +13,10 @@
     /* Ajusta estilos adicionales de tu header aquí si es necesario */
   }
   
+  .modal-header{
+    background-color: #2e3e97;
+    color: #ffffff;
+  }
 
  .btn-cancelar, .btn-cancelar:hover{
     background-color: #B3273E;

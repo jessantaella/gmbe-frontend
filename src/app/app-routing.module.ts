@@ -6,6 +6,8 @@ import { ListarUsuariosComponent } from "./usuarios/listar-usuarios/listar-usuar
 import { ListarGmbeComponent } from "./gmbe/listar-gmbe/listar-gmbe.component";
 import { CrearGmbeComponent } from "./gmbe/crear-gmbe/crear-gmbe.component";
 import { BurbujasComponent } from "./graficas/burbujas/burbujas.component";
+import { VistaPreviaComponent } from "./gmbe/vista-previa/vista-previa.component";
+import { EditarGmbeComponent } from "./gmbe/editar-gmbe/editar-gmbe.component";
 
 const routes: Routes = [
   { path: "", redirectTo: "inicio", pathMatch: "full" },
@@ -14,6 +16,8 @@ const routes: Routes = [
   { path: "usuarios", component: ListarUsuariosComponent },
   { path: "gmbe", component: ListarGmbeComponent },
   { path: "crear-gmbe", component: CrearGmbeComponent },
+  { path: "editar-gmbe/:id", component: EditarGmbeComponent },
+  { path: "vista-previa/:id", component: VistaPreviaComponent },
   { path: "grafica", component: BurbujasComponent },
 ];
 

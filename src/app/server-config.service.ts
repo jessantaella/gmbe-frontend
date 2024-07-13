@@ -37,7 +37,6 @@ export class ServerConfigService {
   
           this.http.get<any>(url,{ headers: headers })
             .subscribe(response => {
-              console.log('Configuración del servidor cargada:', response.servidor);
               this.serverConfig = response.servidor;
               if(localStorage.getItem('srv') !== this.serverConfig){
                 localStorage.setItem('srv',this.serverConfig);
@@ -50,7 +49,6 @@ export class ServerConfigService {
   }
 
   getServerConfig(): any {
-    console.log('Configuración del servidor:', this.serverConfig);
     return this.serverConfig === '' ? localStorage.getItem('srv'): this.serverConfig;
   }
 

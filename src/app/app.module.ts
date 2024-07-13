@@ -25,6 +25,8 @@ import { StartBardComponent } from './base/start-bard/start-bard.component';
 import { BurbujasComponent } from './graficas/burbujas/burbujas.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { VistaPreviaComponent } from './gmbe/vista-previa/vista-previa.component';
+import { EditarGmbeComponent } from './gmbe/editar-gmbe/editar-gmbe.component';
 
 
 
@@ -42,7 +44,8 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     StartBardComponent,
     ListarGmbeComponent,
     CrearGmbeComponent,
-    BurbujasComponent
+    EditarGmbeComponent,
+    BurbujasComponent,VistaPreviaComponent
   ],
   imports: [
     BrowserModule,

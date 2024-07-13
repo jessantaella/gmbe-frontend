@@ -1,0 +1,97 @@
+<div class="container">
+  <form [formGroup]="generales">
+    <div class="row">
+      <div class="col-6">
+        <div class="col-12 mt-2">
+          <div class="row">
+            <label for="nombre" class="col-sm-4 col-form-label text-end">Nombre :</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" id="nombre" formControlName="nombre">
+            </div>
+          </div>
+        </div>
+        <div class="col-12 mt-2">
+          <div class="row">
+            <label for="objetivos" class="col-sm-4 col-form-label text-end">Objetivos :</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" id="objetivos" formControlName="objetivos">
+            </div>
+          </div>
+        </div>
+        <div class="col-12 mt-2">
+          <div class="row">
+            <label for="nombre" class="col-sm-4 col-form-label text-end">Imagen :</label>
+            <div class="col-sm-8">
+              <div class="p-2 bd-highlight">
+                <img
+                *ngIf="imageUrl" [src]="imageUrl"
+                  alt="Imagen MBE" class="img-thumbnail imagen">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="col-12 mt-2">
+          <div class="row">
+            <label for="nombre" class="col-sm-4 col-form-label text-end">Resumen con principales hallazgos :</label>
+            <div class="col-sm-8">
+              <textarea formControlName="resumen"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <div class="d-flex align-items-center">
+    <div class="vertical-text" *ngIf="estructuraFinalColumnasTitulos.length >0 || estructuraFinalFilasTitulos.length>0">
+      Variable de resultados
+    </div>
+    <div class="table-responsive">
+      <table class="table table-bordered"
+        *ngIf="estructuraFinalColumnasTitulos.length >0 || estructuraFinalFilasTitulos.length>0">
+        <caption class="text-center caption-original">Variable de resultados</caption>
+        <thead>
+          <tr class="text-center">
+            <th id="tituloTablaColumna" colspan="2" class="titulos-tabla"
+              *ngIf="estructuraFinalColumnasTitulos.length>0"></th>
+            <th id="subtituloTablaColumna" scope="col" class="titulos-tabla"
+              *ngFor="let columna of estructuraFinalColumnasTitulos" [attr.colspan]="columna.countSubCats">
+              {{columna?.catalogo}}
+            </th>
+          </tr>
+          <tr>
+            <th id="tituloTablaFila" colspan="2" class="titulos-tabla" *ngIf="estructuraFinalColumnasTitulos.length>0">
+            </th>
+            <ng-container *ngFor="let subcolumna of estructuraFinalColumnasTitulos">
+              <!-- Iteramos sobre cada `hijo` de `subcolumna.hijos` -->
+              <th id="subtituloTablaFila" class="subtitulos-tabla" *ngFor="let hijo of subcolumna.hijos">
+                {{ hijo?.idSubCategoria?.catalogo }}
+              </th>
+            </ng-container>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="estructuraFinalFilasTitulos.length>0" class="titulos-tabla"></tr>
+          <tr *ngIf="estructuraFinalFilasTitulos.length>0" class="titulos-tabla"></tr>
+          <tr *ngFor="let subFilas of estructuraFinalFilasSubitulos;let i = index">
+            <th class="subtitulos-tabla" id="padre" [ngStyle]="{'padding-top': (subFilas?.countSubCats* 2)+'%'}"
+              [attr.rowspan]="subFilas?.countSubCats"
+              *ngIf="estructuraFinalFilasSubitulos[i-1]?.idCategoria?.idCatalogo !== subFilas?.idCategoria?.idCatalogo">
+              {{subFilas?.idCategoria?.catalogo}}
+            </th>
+            <th class="subtitulos-tabla" scope="row"> {{subFilas?.idSubCategoria?.catalogo}} </th>
+
+            <ng-container *ngFor="let subcolumna of estructuraFinalColumnasTitulos;let i = index;">
+              <th id="subtituloTablaFila" class="subtitulos-tabla" *ngFor="let hijo of subcolumna.hijos;let j = index">
+                <!--label>{{ hijo?.idSubCategoria?.catalogo }} {{datosInterseccion(hijo?.idEstructura,estructuraFinalFilasSubitulos[j]?.idEstructura)}}</!--label-->
+                <app-burbujas [chartId]="'chart-'+i + j"></app-burbujas>
+              </th>
+            </ng-container>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, OnInit, TemplateRef } from "@angular/core";
 import {
   faEye,
   faPencil,
@@ -6,20 +6,27 @@ import {
   faUserGroup,
   faRotate,
   faFloppyDisk,
-} from '@fortawesome/free-solid-svg-icons';
-import { TitulosService } from 'src/app/services/titulos.services';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { UsuariosService } from '../services/usuarios.service';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+} from "@fortawesome/free-solid-svg-icons";
+import { TitulosService } from "src/app/services/titulos.services";
+import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
+import { UsuariosService } from "../services/usuarios.service";
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from "@angular/forms";
 declare var swal: any;
+import { debounceTime } from "rxjs/internal/operators/debounceTime";
 
 @Component({
-  selector: 'app-listar-usuarios',
-  templateUrl: './listar-usuarios.component.html',
-  styleUrls: ['./listar-usuarios.component.scss'],
+  selector: "app-listar-usuarios",
+  templateUrl: "./listar-usuarios.component.html",
+  styleUrls: ["./listar-usuarios.component.scss"],
 })
 export class ListarUsuariosComponent implements OnInit {
-  textoBienvenida = 'Gestión de usuarios';
+  textoBienvenida = "Gestión de usuarios";
 
   //Paginación
   currentPage: number = 0;
@@ -27,10 +34,11 @@ export class ListarUsuariosComponent implements OnInit {
   pageSize: number = 10;
   items: number = 0;
   totalPage: number = 0;
-  seachValue: string = '';
+  seachValue: string = "";
   isModeSearch: boolean = false;
   desde: number = 0;
-  palabra :string  = '';
+  palabra: string = "";
+  searchValue = new FormControl("", { nonNullable: true });
 
   //iconos
   faEye = faEye;
@@ -44,15 +52,15 @@ export class ListarUsuariosComponent implements OnInit {
   usuariosLdap!: any[];
   filteredUsuarios!: any[];
   roles!: any[];
-  listaMBE! : any[];
+  listaMBE!: any[];
   selectedUsuario: any;
-  usuarioEditar:any;
+  usuarioEditar: any;
   seleccionados: number[] = [];
 
   usuarioForm: FormGroup;
   usuarioEditForm: FormGroup;
 
-  mbeEditables : number[] = [];
+  mbeEditables: number[] = [];
 
   private modalRef: NgbModalRef | undefined;
 
@@ -63,29 +71,30 @@ export class ListarUsuariosComponent implements OnInit {
     private fb: FormBuilder
   ) {
     this.titulos.changeBienvenida(this.textoBienvenida);
-    this.titulos.changePestaña('Gestión de usuarios');
+    this.titulos.changePestaña("Gestión de usuarios");
     this.usuarioForm = this.fb.group({
-      userName: ['', Validators.required],
-      correo: ['', Validators.required],
-      idRol: ['', Validators.required],
-      nombre: ['', Validators.required],
+      userName: ["", Validators.required],
+      correo: ["", Validators.required],
+      idRol: ["", Validators.required],
+      nombre: ["", Validators.required],
     });
 
     this.usuarioEditForm = this.fb.group({
-      userName: ['', Validators.required],
-      correo: ['', Validators.required],
-      idRol: ['', Validators.required],
-      nombre: ['', Validators.required],
+      userName: ["", Validators.required],
+      correo: ["", Validators.required],
+      idRol: ["", Validators.required],
+      nombre: ["", Validators.required],
     });
-    this.usuarioForm.get('nombre')?.disable();
-    this.usuarioForm.get('correo')?.disable();
+    this.usuarioForm.get("nombre")?.disable();
+    this.usuarioForm.get("correo")?.disable();
   }
   ngOnInit(): void {
-    this.cambiarPaginaGetAll(0,10,'','TODOS');
+    this.cambiarPaginaGetAll(0, 10, "", "TODOS");
     //this.obtenerUsuarios();
     this.usuariosLDAP();
     this.obtenerRoles();
     this.obtenerMBEs();
+    this.buscar();
   }
 
   obtenerRoles() {
@@ -96,7 +105,7 @@ export class ListarUsuariosComponent implements OnInit {
   }
 
   obtenerUsuarios() {
-    this.usuariosService.listarUsuarios(0, 10, '', 'TODOS').subscribe((res) => {
+    this.usuariosService.listarUsuarios(0, 10, "", "TODOS").subscribe((res) => {
       console.log(res);
       this.usuarios = res.content;
     });
@@ -112,11 +121,10 @@ export class ListarUsuariosComponent implements OnInit {
     );
   }
 
-  obtenerMBEs(){
-    this.usuariosService.listarMBE().subscribe(
-      res=>{
-        this.listaMBE = res;
-      });
+  obtenerMBEs() {
+    this.usuariosService.listarMBE().subscribe((res) => {
+      this.listaMBE = res;
+    });
   }
 
   filterUsuarios(event: any) {
@@ -128,9 +136,9 @@ export class ListarUsuariosComponent implements OnInit {
 
   selectUsuario(usuario: any) {
     this.selectedUsuario = usuario;
-    this.usuarioForm.get('userName')?.setValue(usuario.samaccountname);
-    this.usuarioForm.get('nombre')?.setValue(usuario.commonName);
-    this.usuarioForm.get('correo')?.setValue(usuario.userPrincipal);
+    this.usuarioForm.get("userName")?.setValue(usuario.samaccountname);
+    this.usuarioForm.get("nombre")?.setValue(usuario.commonName);
+    this.usuarioForm.get("correo")?.setValue(usuario.userPrincipal);
     this.filteredUsuarios = []; //this.usuarios.slice(); // Restablecer la lista filtrada
   }
 
@@ -138,57 +146,55 @@ export class ListarUsuariosComponent implements OnInit {
     if (event.target.checked) {
       this.seleccionados.push(idMbe);
     } else {
-      this.seleccionados = this.seleccionados.filter(id => id !== idMbe);
+      this.seleccionados = this.seleccionados.filter((id) => id !== idMbe);
     }
   }
 
-  onCheckboxChangeMBE(valor:number) {
+  onCheckboxChangeMBE(valor: number) {
     let index = this.mbeEditables?.indexOf(valor);
-      console.log(index)
-      if (index === -1 || index!=undefined) {
-        // Element does not exist, add it
-        this.mbeEditables.push(valor);
-      } else{
-        // Element exists, remove it
-        this.mbeEditables?.splice(index, 1);
-      }
+    console.log(index);
+    if (index === -1 || index != undefined) {
+      // Element does not exist, add it
+      this.mbeEditables.push(valor);
+    } else {
+      // Element exists, remove it
+      this.mbeEditables?.splice(index, 1);
+    }
   }
-
 
   resumeTablamMbe(mbesAsociados: any) {
-    let salida= '';
-    mbesAsociados.forEach((element: { idMbe: { activo: any; nombre: string; }; }) => {
-      if (element?.idMbe?.activo) {
-        if (salida) {
-          salida = salida.concat(', ');
+    let salida: any[] = [];
+    mbesAsociados.forEach(
+      (element: { idMbe: { activo: any; nombre: string } }) => {
+        if (element?.idMbe?.activo) {
+          salida.push(element?.idMbe?.nombre);
         }
-        salida = salida.concat(element.idMbe.nombre);
       }
-    });
+    );
     return salida;
   }
-  
 
-  verificaAsociacionMBE(idMbe:number){
-    let salida = this.mbeEditables.find((m: any)=>m.idMbe === idMbe);
-    return salida
+  verificaAsociacionMBE(idMbe: number) {
+    let salida = this.mbeEditables.find((m: any) => m.idMbe === idMbe);
+    return salida;
   }
-
 
   open(content: TemplateRef<any>) {
     this.mbeEditables = [];
     this.modalRef = this.modalService.open(content, {
       centered: true,
-      size: 'lg',
-      backdrop: 'static',
+      size: "lg",
+      backdrop: "static",
     });
   }
 
-  openEditar(content:TemplateRef<any>,usuario:any){
+  openEditar(content: TemplateRef<any>, usuario: any) {
     this.open(content);
     this.usuarioEditar = usuario;
-    this.mbeEditables = this.usuarioEditar.mbesAsociados.map((item: any) => item.idMbe);
-    console.log(this.mbeEditables)
+    this.mbeEditables = this.usuarioEditar.mbesAsociados.map(
+      (item: any) => item.idMbe
+    );
+    console.log(this.mbeEditables);
 
     this.usuarioEditForm = this.fb.group({
       userName: [this.usuarioEditar.userName, Validators.required],
@@ -196,10 +202,9 @@ export class ListarUsuariosComponent implements OnInit {
       idRol: [this.usuarioEditar?.rolUsuario?.idRol, Validators.required],
       nombre: [this.usuarioEditar?.nombre, Validators.required],
     });
-    this.usuarioEditForm.get('userName')?.disable();
-    this.usuarioEditForm.get('correo')?.disable();
-    this.usuarioEditForm.get('nombre')?.disable();
-    
+    this.usuarioEditForm.get("userName")?.disable();
+    this.usuarioEditForm.get("correo")?.disable();
+    this.usuarioEditForm.get("nombre")?.disable();
   }
 
   crear() {
@@ -207,7 +212,7 @@ export class ListarUsuariosComponent implements OnInit {
     usuarioObj.listaMBEs = this.mbeEditables;
     this.usuariosService.crearUsuario(usuarioObj).subscribe(
       (res) => {
-        swal.fire('', 'Usuario creado exitosamente', 'success');
+        swal.fire("", "Usuario creado exitosamente", "success");
         if (this.modalRef) {
           this.modalRef.close();
           this.obtenerUsuarios();
@@ -217,13 +222,13 @@ export class ListarUsuariosComponent implements OnInit {
     );
   }
 
-  editar(){
+  editar() {
     let usuarioObj = this.usuarioEditForm.getRawValue();
     usuarioObj.listaMBEs = [];
     usuarioObj.idUsuario = this.usuarioEditar.idUsuario;
     this.usuariosService.editarUsuario(usuarioObj).subscribe(
       (res) => {
-        swal.fire('', 'Usuario actualizado exitosamente', 'success');
+        swal.fire("", "Usuario actualizado exitosamente", "success");
         if (this.modalRef) {
           this.modalRef.close();
           this.obtenerUsuarios();
@@ -233,33 +238,58 @@ export class ListarUsuariosComponent implements OnInit {
     );
   }
 
+  eliminar(usuario: any) {
+    console.log(usuario);
+
+    if (usuario?.mbesAsociados.length > 0) {
+      swal.fire("", "No se puede eliminar este usuario", "error");
+    } else {
+      this.usuariosService.eliminarUsuario(usuario?.idUsuario).subscribe(
+        (res) => {
+          swal.fire("", "Usuario eliminado exitosamente", "success");
+          this.cambiarPaginaGetAll(0, 10, "", "TODOS");
+        },
+        (err) => {}
+      );
+    }
+  }
+
+  buscar() {
+    this.searchValue.valueChanges.pipe(debounceTime(500)).subscribe((e) => {
+      if (e === "") {
+        this.seachValue = "";
+        this.isModeSearch = false;
+        this.cambiarPaginaGetAll(0, this.pageSize,this.seachValue,'TODOS');
+      } else {
+        this.seachValue = e;
+        this.isModeSearch = true;
+        this.searchCoincidences(0, this.pageSize,'TODOS');
+      }
+    });
+  }
+
   loadPage(e: number) {
-    console.log('seaqrchvalue');
+    console.log("seaqrchvalue");
     console.log(this.seachValue);
-    console.log('loadPage');
+    console.log("loadPage");
     if (e !== this.currentPage) {
-      console.log('currentPage');
+      console.log("currentPage");
       console.log(this.currentPage);
       if (this.isModeSearch) {
-        console.log('Busqueda');
-        if (this.seachValue === '') {
-          this.cambiarPaginaGetAll(e - 1, this.pageSize, '', 'TODOS');
+        console.log("Busqueda");
+        if (this.seachValue === "") {
+          this.cambiarPaginaGetAll(e - 1, this.pageSize, "", "TODOS");
         } else {
-          this.searchCoincidences(e - 1, this.pageSize, 'TODOS');
+          this.searchCoincidences(e - 1, this.pageSize, "TODOS");
         }
       } else {
-        console.log('Paginacion');
-        this.cambiarPaginaGetAll(e - 1, this.pageSize,'', 'TODOS');
+        console.log("Paginacion");
+        this.cambiarPaginaGetAll(e - 1, this.pageSize, "", "TODOS");
       }
     }
   }
 
-  cambiarPaginaGetAll(
-    page: number = 0,
-    size: number = 10,
-    busqueda: string,
-    bandUsers: string
-  ) {
+  cambiarPaginaGetAll(page: number = 0,size: number = 10,busqueda: string,bandUsers: string) {
     this.usuarios = [];
     this.usuariosService
       .listarUsuarios(page, size, busqueda, bandUsers)
@@ -273,24 +303,26 @@ export class ListarUsuariosComponent implements OnInit {
       });
   }
 
-  searchCoincidences(page:number=0,size:number=10, bandUsers:string = ''){
-    this.palabra = this.seachValue.trim()
-    if (this.palabra===""){
-      this.cambiarPaginaGetAll(0,10,'','TODOS');
+  searchCoincidences(
+    page: number = 0,
+    size: number = 10,
+    bandUsers: string = ""
+  ) {
+    this.palabra = this.seachValue.trim();
+    if (this.palabra === "") {
+      this.cambiarPaginaGetAll(0, 10, "", "TODOS");
     }
-    if(this.palabra.length>=2){
-        this.usuariosService.listarUsuarios(page, size, this.palabra.trim() ,bandUsers).subscribe(data => {
-          this.usuarios = data?.content!
+    if (this.palabra.length >= 2) {
+      this.usuariosService
+        .listarUsuarios(page, size, this.palabra.trim(), bandUsers)
+        .subscribe((data) => {
+          this.usuarios = data?.content!;
           this.items = data?.totalElements;
           this.page = data?.pageable?.pageNumber + 1;
-          this.currentPage = data?.pageable?.pageNumber + 1
-          this.totalPage = data?.totalPages
-          this.desde = ((this.page - 1) * this.pageSize) + 1;
-        })
+          this.currentPage = data?.pageable?.pageNumber + 1;
+          this.totalPage = data?.totalPages;
+          this.desde = (this.page - 1) * this.pageSize + 1;
+        });
     }
   }
-
- 
-
-
 }

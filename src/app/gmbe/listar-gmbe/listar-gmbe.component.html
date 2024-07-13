@@ -20,20 +20,40 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td scope="row" class="text-center">
-                <fa-icon [icon]="faEye" class="btn-acciones"></fa-icon>
+          <tr *ngFor="let mbe of listaMBE">
+            <td class="text-center">
+                <fa-icon [icon]="faEye" class="btn-acciones" [routerLink]="['/vista-previa',mbe.idMbe]"></fa-icon>
             </td>
             <td  class="text-center">
                 <fa-icon [icon]="faEllipsisVertical" class="btn-acciones"></fa-icon>
             </td>
-            <td  class="text-center">
+            <td  class="text-start">
+              {{mbe?.nombre}}
             </td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td class="text-center">{{mbe?.idUsuario?.nombre}}</td>
+            <td class="text-center">{{ mbe?.created | date: 'dd/MM/yyyy' }}</td>
+            <td class="text-center">{{mbe?.fechaPublicacion |  date: 'dd/MM/yyyy'}}</td>
+            <td>
+              <fa-icon [icon]="faUpload" class="btn-acciones m-2"></fa-icon>
+              <fa-icon [icon]="faPencil" class="btn-acciones m-2" [routerLink]="['/editar-gmbe',mbe.idMbe]"></fa-icon>
+              <fa-icon [icon]="faCircleCheck" class="btn-acciones m-2"></fa-icon>
+              <fa-icon [icon]="faTrashCan" class="btn-acciones m-2"></fa-icon>
+
+            </td>
           </tr>
         </tbody>
       </table>
+      <nav class="d-flex justify-content-center">
+        <ngb-pagination
+          [(page)]="page"
+          [collectionSize]="items"
+          [maxSize]="10"
+          [pageSize]="pageSize"
+          (pageChange)="loadPage($event)"
+          [rotate]="true"
+          [directionLinks]="true"
+          [boundaryLinks]="false"
+          >
+        </ngb-pagination>
+      </nav>
 </div>

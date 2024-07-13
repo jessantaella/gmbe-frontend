@@ -23,7 +23,7 @@
                         <div class="row">
                             <label for="objetivos" class="col-sm-4 col-form-label text-end">* Objetivos :</label>
                             <div class="col-sm-8">
-                              <input type="text" class="form-control" id="objetivos" formControlName="objetivos">
+                              <input type="text" class="form-control" id="objetivos" formControlName="objetivo">
                             </div>
                           </div>
                     </div>
@@ -32,7 +32,7 @@
                         <div class="row">
                             <label for="hallazgos" class="col-sm-2 col-form-label text-end">* Resumen con principales hallazgos :</label>
                             <div class="col-sm-10">
-                                <textarea class="form-control" placeholder="" id="hallazgos" style="height: 100px;" formControlName="hallazgos"></textarea>
+                                <textarea class="form-control" placeholder="" id="hallazgos" style="height: 100px;" formControlName="resumen"></textarea>
                             </div>
                           </div>
                     </div>
@@ -93,7 +93,7 @@
                               </select>
                         </div>
                         <div class="col-sm-1">
-                            <fa-icon [icon]="faPlus" class="btnOtrasAcciones"></fa-icon>
+                            <fa-icon [icon]="faPlus" class="btnOtrasAcciones" (click)="open(crearCategoriaModal)"></fa-icon>
                         </div>
                       </div>
                 </div>
@@ -109,7 +109,7 @@
                               </div>
                         </div>
                         <div class="col-sm-1">
-                            <fa-icon [icon]="faPlus" class="btnOtrasAcciones"></fa-icon>
+                            <fa-icon [icon]="faPlus" class="btnOtrasAcciones" (click)="open(crearSubcategoriaModal)"></fa-icon>
                         </div>
                       </div>
                       <div class="text-center">
@@ -163,8 +163,72 @@
         <fa-icon [icon]="faRotateLeft"></fa-icon>
         Cancelar
     </button>
-    <button class="btn btn-sm btn-guardar m-2" (click)="guardar()">
+    <button class="btn btn-sm btn-guardar m-2" (click)="guardar()" [disabled]="!validarGuardar()">
         <fa-icon [icon]="faFloppyDisk"></fa-icon>
         Guardar
     </button>
 </div>
+
+
+
+<ng-template #crearCategoriaModal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title w-100 text-center">Nueva Categoría</h4>
+    </div>
+    <div class="modal-body">
+  <form [formGroup]="categoriaForm">     
+      <div class="mb-3 row">
+        <label for="nombre" class="col-sm-4 col-form-label text-end">* Nombre categoría :</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" id="nombre" placeholder="Categoría" formControlName="nombre">
+        </div>
+      </div>
+    </form>
+    </div>
+    <div class="modal-footer justify-content-center">
+      <button type="button" class="btn btn-sm btn-cancelar" (click)="modal.dismiss('Cancelar')" >
+        <fa-icon [icon]="faRotateLeft"></fa-icon>
+        Cancelar
+      </button>
+      <button type="button" class="btn btn-sm btn-guardar" (click)="crearCategoria()">
+        <fa-icon [icon]="faFloppyDisk"></fa-icon>
+        Guardar
+      </button>
+    </div>
+  </ng-template>
+
+
+  <ng-template #crearSubcategoriaModal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title w-100 text-center">Nueva sub-categoría</h4>
+    </div>
+    <div class="modal-body">
+  <form [formGroup]="subcategoriaForm">   
+    <div class="mb-3 row">
+        <label for="nombre" class="col-sm-4 col-form-label text-end">* Categoría :</label>
+        <div class="col-sm-6">
+          <select class="form-select" aria-label="Seleccione una opción" formControlName="categoria">
+            <option [value]="categoria.idCatalogo" *ngFor="let categoria of arregloCategorias">{{categoria.catalogo}}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="mb-3 row">
+        <label for="nombre" class="col-sm-4 col-form-label text-end">* Nombre :</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" id="nombre" placeholder="Categoría" formControlName="nombre">
+        </div>
+      </div>
+    </form>
+    </div>
+    <div class="modal-footer justify-content-center">
+      <button type="button" class="btn btn-sm btn-cancelar" (click)="modal.dismiss('Cancelar')" >
+        <fa-icon [icon]="faRotateLeft"></fa-icon>
+        Cancelar
+      </button>
+      <button type="button" class="btn btn-sm btn-guardar"  (click)="crearSubcategoria()">
+        <fa-icon [icon]="faFloppyDisk"></fa-icon>
+        Guardar
+      </button>
+    </div>
+  </ng-template>

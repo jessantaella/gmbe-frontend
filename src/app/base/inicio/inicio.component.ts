@@ -78,7 +78,7 @@ export class InicioComponent implements OnInit{
   }
 
   obtenerInformacion(){
-    if (this.isBrowser) {
+   // if (this.isBrowser) {
     this.info.obtenerBienvenida().subscribe(
       res=>{
         console.log(res);
@@ -86,7 +86,7 @@ export class InicioComponent implements OnInit{
       },
       err=>{
       });
-    }
+    //}
   }
 
 }

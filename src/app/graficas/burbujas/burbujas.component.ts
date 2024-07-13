@@ -1,140 +1,155 @@
-import { isPlatformBrowser } from '@angular/common';
-import { AfterViewInit, Component, Inject, PLATFORM_ID, ViewChild } from '@angular/core';
-
+import { isPlatformBrowser } from "@angular/common";
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Inject,
+  Input,
+  PLATFORM_ID,
+  ViewChild,
+} from "@angular/core";
 
 declare var ApexCharts: any;
 
 @Component({
-  selector: 'app-burbujas',
-  templateUrl: './burbujas.component.html',
-  styleUrls: ['./burbujas.component.scss']
+  selector: "app-burbujas",
+  templateUrl: "./burbujas.component.html",
+  styleUrls: ["./burbujas.component.scss"],
 })
 export class BurbujasComponent implements AfterViewInit {
-  @ViewChild("chart") chart: any;
+  @ViewChild("chartContainer", { static: false }) chartContainer: ElementRef | undefined;
+  @Input() chartId: string | undefined; // Input property to accept dynamic ID
+
   public chartOptions: any;
   isBrowser = false;
 
-
-
-  constructor( @Inject(PLATFORM_ID) private platformId: any) {
-   
-  }
-
+  constructor(@Inject(PLATFORM_ID) private platformId: any) {}
 
   ngAfterViewInit(): void {
     this.isBrowser = isPlatformBrowser(this.platformId);
-    this.chartOptions = {
-      grid: {
-        xaxis: {
-          lines: {
-            show: false
-          }
-        },   
-        yaxis: {
-          lines: {
-            show: false
-          }
-        }
-      },
-      series: [
-        {
-          name: "Bubble1",
-          data: this.generateData(new Date("11 Feb 2017 GMT").getTime(), 20, {
-            min: 10,
-            max: 60
-          })
-        },
-        {
-          name: "Bubble2",
-          data: this.generateData(new Date("11 Feb 2017 GMT").getTime(), 20, {
-            min: 10,
-            max: 60
-          })
-        },
-        {
-          name: "Bubble3",
-          data: this.generateData(new Date("11 Feb 2017 GMT").getTime(), 20, {
-            min: 10,
-            max: 60
-          })
-        },
-        {
-          name: "Bubble4",
-          data: this.generateData(new Date("11 Feb 2017 GMT").getTime(), 20, {
-            min: 10,
-            max: 60
-          })
-        }
-      ],
-      chart: {
-        height: 150,
-        width: 150,
-        type: "bubble",
-        toolbar: {
-          show: false
-        },
-        background: 'transparent', // Cambia el fondo a transparente
-      },
-      dataLabels: {
-        enabled: false
-      },
-      fill: {
-        opacity: 0.8
-      },
-      title: {
-        text: ""
-      },
-      xaxis: {
-        labels: {
-          show: false
-        },
-        axisBorder: {
-          show: false
-        },
-        axisTicks: {
-          show: false
-        },
-      },
-      yaxis: {
-        labels: {
-          show: false
-        },
-        axisBorder: {
-          show: false
-        },
-        axisTicks: {
-          show: false
-        },
-        
-        max: 70
-      },
-      legend: {
-        show: false // Oculta las leyendas del gráfico
-      }
-    };
-    if(this.isBrowser)
-    {
-      // Espera a que el DOM esté completamente cargado antes de intentar renderizar el gráfico
-    document.addEventListener('DOMContentLoaded', () => {
-      const chart = new ApexCharts(document.querySelector('#chart'), this.chartOptions);
-      chart.render();
-    });
+    this.chartOptions = this.getCharOptions();
+    if (this.isBrowser) {
+      setTimeout(() => {
+        const chart = new ApexCharts(this.chartContainer?.nativeElement, this.chartOptions);
+        chart.render();
+      }, 0);
     }
   }
 
-  public generateData(baseval: number, count: number, yrange: { min: any; max: any; }) {
-    var i = 0;
-    var series = [];
-    while (i < count) {
-      var x = Math.floor(Math.random() * (750 - 1 + 1)) + 1;
-      var y =
-        Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
-      var z = Math.floor(Math.random() * (75 - 15 + 1)) + 15;
 
-      series.push([x, y, z]);
-      baseval += 86400000;
-      i++;
-    }
-    return series;
+  getCharOptions(){
+    return {
+      grid: {
+        xaxis: {
+          lines: {
+            show: false,
+          },
+        },
+        yaxis: {
+          lines: {
+            show: false,
+          },
+        },
+      },
+      series: [
+        {
+          name: "Gpo:156",
+          data: [this.generateBubbleData(6)],
+        },
+        {
+          name: "otro",
+          data: [this.generateBubbleData(12)],
+        },
+        {
+          name: "otro",
+          data: [this.generateBubbleData(16)],
+        },
+        {
+          name: "otro",
+          data: [this.generateBubbleData(6)],
+        },
+        {
+          name: "otro",
+          data: [this.generateBubbleData(20)],
+        },
+
+        /*{
+          name:'Gpo:158',
+          data:[{x:5,y:30,z:10}]
+        }*/
+      ],
+      chart: {
+        height: 100,
+        width: 150,
+        type: "bubble",
+        toolbar: {
+          show: false,
+        },
+        background: "transparent", // Cambia el fondo a transparente
+        zoom: {
+          enabled: false, // Deshabilita el zoom
+        },
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      fill: {
+        opacity: 0.8,
+      },
+      title: {
+        text: "",
+      },
+      xaxis: {
+        min: 0, // Define el valor mínimo del eje x
+        labels: {
+          show: false,
+        },
+        axisBorder: {
+          show: false,
+        },
+        axisTicks: {
+          show: false,
+        },
+      },
+      yaxis: {
+        min: 0, // Define el valor mínimo del eje y
+        labels: {
+          show: false,
+        },
+        axisBorder: {
+          show: false,
+        },
+        axisTicks: {
+          show: false,
+        },
+      },
+
+      legend: {
+        show: false, // Oculta las leyendas del gráfico
+      },
+      tooltip: {
+        enabled: false, // Deshabilita el tooltip
+      },
+    };
+  }
+
+  generateBubbleData(z: number): { x: number; y: number; z: number } {
+    const xMargin = z; // Margen para centrar las burbujas en el eje x
+    const yMargin = z; // Margen para centrar las burbujas en el eje y
+    const chartWidth = 50;
+    const chartHeight = 50;
+    const x = xMargin + Math.random() * (chartWidth - 2 * xMargin); // Genera un valor x dentro de los márgenes
+    const y = yMargin + Math.random() * (chartHeight - 2 * yMargin); // Genera un valor y dentro de los márgenes
+    /*var x = Math.floor(Math.random() * (750 - 50 + 1)) + 50;
+    x = (x+z) > 250 ? x-z : x;
+
+    
+    var y = Math.floor(Math.random() * (50 - 1 + 1)) + 1;
+    y = y+z > 30 ? y - (z+10) : y;
+
+    y = y < 2 ? y+ (z+10) : y;
+
+    console.log({ x, y, z });*/
+    return { x, y, z };
   }
 }

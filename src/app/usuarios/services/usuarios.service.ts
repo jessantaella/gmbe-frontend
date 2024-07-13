@@ -38,6 +38,10 @@ export class UsuariosService {
   listarMBE():Observable<any>{
     let url=this.serverConfigService.getServerConfig()+'api/gmbe-catalogos/api/mbe/all-by-activo';
     return this.http.get<any>(url);
+  }
 
+  eliminarUsuario(idUsuario:number):Observable<any>{
+    let url=this.serverConfigService.getServerConfig()+'api/gmbe-catalogos/api/usuarios/eliminar/'+idUsuario;
+    return this.http.post<any>(url,{});
   }
 }
