@@ -100,7 +100,10 @@
         <div class="col-sm-6">
           <div class="btn-group drop" dropdown #dropdown="bs-dropdown" [autoClose]="false">
             <button dropdownToggle type="button" class="btn dropdown-toggle ">
-              <span class="caret icono-toogle"></span>
+              <span class="caret icono-toogle" *ngIf="mbeEditables!.length>0">Seleccionados
+                {{mbeEditables?.length}}</span>
+              <span class="caret icono-toogle" *ngIf="mbeEditables!.length<=0">Ningún
+                seleccionado</span>
             </button>
             <ul id="dropdown-triggers-manual" *dropdownMenu class="dropdown-menu" role="menu"
               aria-labelledby="button-triggers-manual">

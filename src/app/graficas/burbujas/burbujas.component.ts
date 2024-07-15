@@ -36,8 +36,21 @@ export class BurbujasComponent implements AfterViewInit {
     }
   }
 
-
   getCharOptions(){
+    const seriesData = [
+      this.generateBubbleData(6),
+      this.generateBubbleData(12),
+      this.generateBubbleData(16),
+      this.generateBubbleData(6),
+      this.generateBubbleData(20)
+    ];
+
+    // Calcular los límites de los ejes basados en los valores de las burbujas
+    const maxX = Math.max(...seriesData.map(d => d.x + d.z));
+    const maxY = Math.max(...seriesData.map(d => d.y + d.z));
+    const minX = Math.min(...seriesData.map(d => d.x - d.z));
+    const minY = Math.min(...seriesData.map(d => d.y - d.z));
+
     return {
       grid: {
         xaxis: {
@@ -54,33 +67,29 @@ export class BurbujasComponent implements AfterViewInit {
       series: [
         {
           name: "Gpo:156",
-          data: [this.generateBubbleData(6)],
+          data: [seriesData[0]],
         },
         {
           name: "otro",
-          data: [this.generateBubbleData(12)],
+          data: [seriesData[1]],
         },
         {
           name: "otro",
-          data: [this.generateBubbleData(16)],
+          data: [seriesData[2]],
         },
         {
           name: "otro",
-          data: [this.generateBubbleData(6)],
+          data: [seriesData[3]],
         },
         {
           name: "otro",
-          data: [this.generateBubbleData(20)],
+          data: [seriesData[4]],
         },
-
-        /*{
-          name:'Gpo:158',
-          data:[{x:5,y:30,z:10}]
-        }*/
       ],
       chart: {
-        height: 100,
-        width: 150,
+        responsive: true,
+        height: 150,
+        width: 200,
         type: "bubble",
         toolbar: {
           show: false,
@@ -100,7 +109,8 @@ export class BurbujasComponent implements AfterViewInit {
         text: "",
       },
       xaxis: {
-        min: 0, // Define el valor mínimo del eje x
+        min: minX, // Define el valor mínimo del eje x basado en los datos
+        max: maxX, // Define el valor máximo del eje x basado en los datos
         labels: {
           show: false,
         },
@@ -112,7 +122,8 @@ export class BurbujasComponent implements AfterViewInit {
         },
       },
       yaxis: {
-        min: 0, // Define el valor mínimo del eje y
+        min: minY, // Define el valor mínimo del eje y basado en los datos
+        max: maxY, // Define el valor máximo del eje y basado en los datos
         labels: {
           show: false,
         },
@@ -134,22 +145,10 @@ export class BurbujasComponent implements AfterViewInit {
   }
 
   generateBubbleData(z: number): { x: number; y: number; z: number } {
-    const xMargin = z; // Margen para centrar las burbujas en el eje x
-    const yMargin = z; // Margen para centrar las burbujas en el eje y
-    const chartWidth = 50;
-    const chartHeight = 50;
-    const x = xMargin + Math.random() * (chartWidth - 2 * xMargin); // Genera un valor x dentro de los márgenes
-    const y = yMargin + Math.random() * (chartHeight - 2 * yMargin); // Genera un valor y dentro de los márgenes
-    /*var x = Math.floor(Math.random() * (750 - 50 + 1)) + 50;
-    x = (x+z) > 250 ? x-z : x;
-
-    
-    var y = Math.floor(Math.random() * (50 - 1 + 1)) + 1;
-    y = y+z > 30 ? y - (z+10) : y;
-
-    y = y < 2 ? y+ (z+10) : y;
-
-    console.log({ x, y, z });*/
+    const chartWidth = 200;
+    const chartHeight = 150;
+    const x = Math.random() * chartWidth; // Genera un valor x dentro del ancho del gráfico
+    const y = Math.random() * chartHeight; // Genera un valor y dentro de la altura del gráfico
     return { x, y, z };
   }
 }

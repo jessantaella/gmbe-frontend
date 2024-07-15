@@ -40,6 +40,21 @@
   }
 
   .table-responsive{
-    height: 40vh;
+    height: 60vh;
     overflow: scroll;
+    position: relative;
   }
+
+  
+  .sticky-header {
+    position: sticky;
+    top: 0;
+    background: white; /* Para que el fondo del encabezado sea blanco */
+    z-index: 10; /* Asegura que el encabezado esté por encima de otras filas */
+  }
+  
+  th{
+    width: 200px !important;
+  }
+
+  

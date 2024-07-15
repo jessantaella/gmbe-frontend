@@ -33,27 +33,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-12 mt-2">
-                                    <div class="row">
-                                        <label for="icono" class="col-sm-2 col-form-label text-end">* Carga de ícono MBE :</label>
-                                        <div class="col-sm-10">
-                                            <div class="d-flex flex-row bd-highlight mb-3">
-                                                <div class="p-2 bd-highlight">
-                                                    <img [src]="imageUrl" alt="icono" class="img-thumbnail imagen">
-                                                </div>
-                                                <div class="p-2 bd-highlight">
-                                                    <div class="file-upload-wrapper">
-                                                        <input type="file" class="file-upload-input" >
-                                                        <i class="fas fa-upload upload-icon"></i>
-                                                      </div> 
-                                                </div>
-                                                <div class="p-2 bd-highlight">
-                                                    <fa-icon [icon]="faX" class="btnOtrasAcciones" ></fa-icon>
-                                                </div>
-                                              </div>
-                                      </div>
-                                </div>
-                            </div>
                             </div>
                             <div class="col-6">
                                 <div class="col-12 mt-2">
@@ -67,6 +46,28 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="col-12 mt-2">
+                                <div class="row">
+                                    <label for="icono" class="col-sm-2 col-form-label text-end">* Carga de ícono MBE :</label>
+                                    <div class="col-sm-10">
+                                        <div class="d-flex flex-row bd-highlight mb-3">
+                                            <div class="p-2 bd-highlight" *ngIf="imageUrl">
+                                                <img [src]="imageUrl" alt="icono" class="img-thumbnail imagen">
+                                            </div>
+                                            <div class="p-2 bd-highlight">
+                                                <div class="file-upload-wrapper">
+                                                    <input type="file" class="file-upload-input" >
+                                                    <i class="fas fa-upload upload-icon"></i>
+                                                  </div> 
+                                            </div>
+                                            <div class="p-2 bd-highlight">
+                                                <fa-icon [icon]="faX" class="btnOtrasAcciones" (click)="borrarImagen()"></fa-icon>
+                                            </div>
+                                          </div>
+                                  </div>
+                            </div>
+                        </div>
                         </div>
                     </form>
                 </div>

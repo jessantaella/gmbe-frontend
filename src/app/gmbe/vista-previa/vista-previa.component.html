@@ -48,7 +48,7 @@
     <div class="vertical-text" *ngIf="estructuraFinalColumnasTitulos.length >0 || estructuraFinalFilasTitulos.length>0">
       Variable de resultados
     </div>
-    <div class="table-responsive">
+    <!---div class="table-responsive">
       <table class="table table-bordered"
         *ngIf="estructuraFinalColumnasTitulos.length >0 || estructuraFinalFilasTitulos.length>0">
         <caption class="text-center caption-original">Variable de resultados</caption>
@@ -66,9 +66,9 @@
             </th>
             <ng-container *ngFor="let subcolumna of estructuraFinalColumnasTitulos">
               <!-- Iteramos sobre cada `hijo` de `subcolumna.hijos` -->
-              <th id="subtituloTablaFila" class="subtitulos-tabla" *ngFor="let hijo of subcolumna.hijos">
+              <!--th id="subtituloTablaFila" class="subtitulos-tabla" *ngFor="let hijo of subcolumna.hijos">
                 {{ hijo?.idSubCategoria?.catalogo }}
-              </th>
+              </!--th>
             </ng-container>
           </tr>
         </thead>
@@ -84,14 +84,57 @@
             <th class="subtitulos-tabla" scope="row"> {{subFilas?.idSubCategoria?.catalogo}} </th>
 
             <ng-container *ngFor="let subcolumna of estructuraFinalColumnasTitulos;let i = index;">
-              <th id="subtituloTablaFila" class="subtitulos-tabla" *ngFor="let hijo of subcolumna.hijos;let j = index">
+              <th id="contenidoFila" class="contenido-tabla" *ngFor="let hijo of subcolumna.hijos;let j = index">
                 <!--label>{{ hijo?.idSubCategoria?.catalogo }} {{datosInterseccion(hijo?.idEstructura,estructuraFinalFilasSubitulos[j]?.idEstructura)}}</!--label-->
-                <app-burbujas [chartId]="'chart-'+i + j"></app-burbujas>
+                <!--app-burbujas [chartId]="'chart-'+i + j"></!--app-burbujas>
+              </th>
+            </ng-container>
+          </tr>
+        </tbody>
+      </table>
+    </!---div-->
+    <div class="table-responsive" style="height: 60vh; overflow-y: auto;">
+      <table class="table table-bordered"
+        *ngIf="estructuraFinalColumnasTitulos.length > 0 || estructuraFinalFilasTitulos.length > 0">
+        <caption class="text-center caption-original">Variable de resultados</caption>
+        <thead class="sticky-header">
+          <tr class="text-center ">
+            <th id="tituloTablaColumna" colspan="2" class="titulos-tabla" *ngIf="estructuraFinalColumnasTitulos.length > 0"></th>
+            <th id="subtituloTablaColumna" scope="col" class="titulos-tabla"
+              *ngFor="let columna of estructuraFinalColumnasTitulos" [attr.colspan]="columna.countSubCats">
+              {{ columna?.catalogo }}
+            </th>
+          </tr>
+          <tr>
+            <th id="tituloTablaFila" colspan="2" class="titulos-tabla" *ngIf="estructuraFinalColumnasTitulos.length > 0">
+            </th>
+            <ng-container *ngFor="let subcolumna of estructuraFinalColumnasTitulos">
+              <th id="subtituloTablaFila" class="subtitulos-tabla" *ngFor="let hijo of subcolumna.hijos">
+                {{ hijo?.idSubCategoria?.catalogo }}
+              </th>
+            </ng-container>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="estructuraFinalFilasTitulos.length > 0" class="titulos-tabla"></tr>
+          <tr *ngIf="estructuraFinalFilasTitulos.length > 0" class="titulos-tabla"></tr>
+          <tr *ngFor="let subFilas of estructuraFinalFilasSubitulos; let i = index">
+            <th class="subtitulos-tabla align-middle" id="padre" 
+              [attr.rowspan]="subFilas?.countSubCats"
+              *ngIf="estructuraFinalFilasSubitulos[i - 1]?.idCategoria?.idCatalogo !== subFilas?.idCategoria?.idCatalogo">
+              {{ subFilas?.idCategoria?.catalogo }}
+            </th>
+            <th class="subtitulos-tabla align-middle" scope="row"> {{ subFilas?.idSubCategoria?.catalogo }} </th>
+    
+            <ng-container *ngFor="let subcolumna of estructuraFinalColumnasTitulos; let i = index;">
+              <th id="contenidoFila" class="contenido-tabla" *ngFor="let hijo of subcolumna.hijos; let j = index">
+                <app-burbujas [chartId]="'chart-' + i + j"></app-burbujas>
               </th>
             </ng-container>
           </tr>
         </tbody>
       </table>
     </div>
+    
   </div>
 </div>

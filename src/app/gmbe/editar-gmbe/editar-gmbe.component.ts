@@ -48,12 +48,9 @@ export class EditarGmbeComponent {
           objetivo: [res?.objetivo],
           resumen: [res?.resumen],
         });
-        console.log(res);
         this.obtenerImagen(res.ruta);
       },
-      err=>{
-        console.log('Se tron')
-      }
+      err=>{}
     )
   }
 
@@ -61,13 +58,15 @@ export class EditarGmbeComponent {
     this.gmbservices.getImage(ruta).subscribe(
       res=>{
         this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(res);
-        console.log(res);
-
     },
       err=>{
         console.log('Error al traer la imagen',err)
       }
     );
+  }
+
+  borrarImagen(){
+    this.imageUrl = null;
   }
 
 
