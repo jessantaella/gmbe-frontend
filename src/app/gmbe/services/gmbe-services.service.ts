@@ -25,6 +25,21 @@ export class GmbeServicesService {
     return this.http.post<any>(urlCrear,gmbe,{});
   }
 
+  actualizarGmbe(gmbe:any):Observable<any>{
+    let urlactualizar=this.serverConfigService.getServerConfig()+'api/gmbe-catalogos/api/mbe/actualizar';
+    return this.http.put<any>(urlactualizar,gmbe,{});
+  }
+
+  cambiarEstatus(idMbe:number,estatus:boolean):Observable<any>{
+    let urlactualizar=this.serverConfigService.getServerConfig()+'api/gmbe-catalogos/api/mbe/bloqueo?idMbe='+idMbe+'&bloqueo='+estatus;
+    return this.http.put<any>(urlactualizar,{});
+  }
+
+  bloquearMbe(idMbe:number,estatus:boolean):Observable<any>{
+    let urlactualizar=this.serverConfigService.getServerConfig()+'api/gmbe-catalogos/api/mbe/activar-desactivar?idMbe='+idMbe+'&activo='+estatus;
+    return this.http.put<any>(urlactualizar,{});
+  }
+
   listarGmbes(pagina:number,size:number):Observable<any>{
     let url = this.serverConfigService.getServerConfig()+'api/gmbe-catalogos/api/mbe/paginated?page='+pagina+'&size='+size;
     return this.http.get<any>(url);
@@ -90,6 +105,15 @@ export class GmbeServicesService {
         })
       );
     }
+
+    actualizarImagen(imagen:any,nombre:string){
+      const formData = new FormData();
+      formData.append('file', imagen);
+      formData.append('remotePath',nombre.replace(/_/g, ''));
+      formData.append('sistema','GMBE');
+      let url: string =`${this.serverConfigService.getServerConfig()}api/coneval-ms-storage/api/storage/update-file`;
+      return this.http.post<any>(url, formData, {});
+     }
 
 
 }

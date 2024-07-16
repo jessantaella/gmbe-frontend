@@ -53,4 +53,28 @@
   cursor: pointer;
  }
 
+
+ .btn-acciones-inabil{
+  color:gray;
+ }
+
  
+ .custom-swal-title {
+  font-size: 16px;
+  font-family: Arial, sans-serif;
+}
+
+.custom-swal-html {
+  font-size: 16px;
+  font-family: Arial, sans-serif;
+}
+
+.custom-swal-confirm-button {
+  font-size: 16px;
+  font-family: Arial, sans-serif;
+}
+
+.custom-swal-cancel-button {
+  font-size: 16px;
+  font-family: Arial, sans-serif;
+}

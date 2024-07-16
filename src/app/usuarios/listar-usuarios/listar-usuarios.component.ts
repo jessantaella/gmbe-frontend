@@ -239,19 +239,36 @@ export class ListarUsuariosComponent implements OnInit {
   }
 
   eliminar(usuario: any) {
-    console.log(usuario);
 
-    if (usuario?.mbesAsociados.length > 0) {
-      swal.fire("", "No se puede eliminar este usuario", "error");
-    } else {
-      this.usuariosService.eliminarUsuario(usuario?.idUsuario).subscribe(
-        (res) => {
-          swal.fire("", "Usuario eliminado exitosamente", "success");
-          this.cambiarPaginaGetAll(0, 10, "", "TODOS");
-        },
-        (err) => {}
-      );
-    }
+    swal.fire({
+      title: '¿Está seguro de eliminar el usuario?',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar',
+      reverseButtons: true,
+      customClass: {
+        title: 'custom-swal-title',
+        htmlContainer: 'custom-swal-html',
+        confirmButton: 'custom-swal-confirm-button',
+        cancelButton: 'custom-swal-cancel-button'
+      }
+    }).then((result: { isConfirmed: any; }) => {
+      if (result.isConfirmed) {
+        if (usuario?.mbesAsociados.length > 0) {
+          swal.fire("", "No se puede eliminar este usuario", "error");
+        } else {
+          this.usuariosService.eliminarUsuario(usuario?.idUsuario).subscribe(
+            (res) => {
+              swal.fire("", "Usuario eliminado exitosamente", "success");
+              this.cambiarPaginaGetAll(0, 10, "", "TODOS");
+            },
+            (err) => {}
+          );
+        }
+      }
+    });
   }
 
   buscar() {

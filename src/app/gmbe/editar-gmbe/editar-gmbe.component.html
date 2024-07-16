@@ -57,7 +57,7 @@
                                             </div>
                                             <div class="p-2 bd-highlight">
                                                 <div class="file-upload-wrapper">
-                                                    <input type="file" class="file-upload-input" >
+                                                    <input type="file" class="file-upload-input" (change)="onFileChange($event)">
                                                     <i class="fas fa-upload upload-icon"></i>
                                                   </div> 
                                             </div>
@@ -78,7 +78,7 @@
                 <fa-icon [icon]="faRotateLeft"></fa-icon>
                 Cancelar
             </button>
-            <button class="btn btn-sm btn-guardar m-2">
+            <button class="btn btn-sm btn-guardar m-2" [disabled]="!validarGuardar()" (click)="guardar()">
                 <fa-icon [icon]="faFloppyDisk"></fa-icon>
                 Guardar
             </button>

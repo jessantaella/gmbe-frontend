@@ -1,8 +1,11 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TitulosService } from 'src/app/services/titulos.services';
-import { faEllipsisVertical, faEye,faTrashCan,faUserGroup, faUpload, faPencil, faCircleCheck } from '@fortawesome/free-solid-svg-icons';
+import { faEllipsisVertical, faEye,faTrashCan,faUserGroup, faUpload, faPencil, faCircleCheck, faXmarkCircle } from '@fortawesome/free-solid-svg-icons';
 import { GmbeServicesService } from '../services/gmbe-services.service';
+import { StorageService } from 'src/app/services/storage-service.service';
+import { CifradoService } from 'src/app/services/cifrado.service';
+declare var swal: any;
 
 @Component({
   selector: 'app-listar-gmbe',
@@ -33,11 +36,20 @@ listaMBE:any[]=[];
   faUpload = faUpload;
   faPencil = faPencil;
   faCircleCheck = faCircleCheck;
+  faXmarkCircle = faXmarkCircle;
+
+  usuario: any;
 
 
-  constructor(private titulos :TitulosService,private modalService: NgbModal, private gmbeServices:GmbeServicesService) {
+  constructor(private titulos :TitulosService,
+    private modalService: NgbModal, 
+    private gmbeServices:GmbeServicesService,
+    private storage: StorageService,
+    private cifrado: CifradoService) {
     this.titulos.changePestaña('GMBE');
     this.titulos.changeBienvenida(this.textoBienvenida);
+    this.usuario = JSON.parse(this.cifrado.descifrar(this.storage.getItem('usr')!));
+
   }
 
 
@@ -49,6 +61,10 @@ listaMBE:any[]=[];
     const modalRef = this.modalService.open(content,{centered:true,size: 'lg'});
   }
 
+
+  validarRol(){
+    return  this.usuario?.rolUsuario?.idRol === 1;
+  }
 
   cambiarPaginaGetAll(
     page: number = 0,
@@ -74,6 +90,64 @@ listaMBE:any[]=[];
       console.log(this.currentPage);
         this.cambiarPaginaGetAll(e - 1, this.pageSize);
     }
+  }
+
+  cambiarEstatus(idMbe:number,estatusActual:boolean){
+    let mensaje = estatusActual ? 'desactivar' : 'activar' ;
+    swal.fire({
+      title: '¿Está seguro de '+mensaje+' el MBE?',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar',
+      reverseButtons: true,
+      customClass: {
+        title: 'custom-swal-title',
+        htmlContainer: 'custom-swal-html',
+        confirmButton: 'custom-swal-confirm-button',
+        cancelButton: 'custom-swal-cancel-button'
+      }
+    }).then((result: { isConfirmed: any; }) => {
+      if (result.isConfirmed) {
+        this.gmbeServices.cambiarEstatus(idMbe,!estatusActual).subscribe(
+          res=>{
+            swal.fire("", "MBE actualizado exitosamente", "success");
+            this.cambiarPaginaGetAll(this.page-1,10);
+          },err=>{
+    
+          });
+      }
+    });
+  }
+
+  bloquearMbe(idMbe:number,estatusActual:boolean){
+    let mensaje = !estatusActual ? 'bloquear' : 'desbloquear' ;
+    swal.fire({
+      title: '¿Está seguro de '+mensaje+' el MBE?',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar',
+      reverseButtons: true,
+      customClass: {
+        title: 'custom-swal-title',
+        htmlContainer: 'custom-swal-html',
+        confirmButton: 'custom-swal-confirm-button',
+        cancelButton: 'custom-swal-cancel-button'
+      }
+    }).then((result: { isConfirmed: any; }) => {
+      if (result.isConfirmed) {
+        this.gmbeServices.cambiarEstatus(idMbe,!estatusActual).subscribe(
+          res=>{
+            swal.fire("", "MBE actualizado exitosamente", "success");
+            this.cambiarPaginaGetAll(this.page-1,10);
+          },err=>{
+    
+          });
+      }
+    });
   }
 
 }

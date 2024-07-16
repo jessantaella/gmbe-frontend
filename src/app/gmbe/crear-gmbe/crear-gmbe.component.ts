@@ -372,7 +372,7 @@ export class CrearGmbeComponent {
         enviar.ruta = response.remotePath;
         this.gmbeservice.crearGmbe(enviar).subscribe(
           res=>{
-            swal.fire('', 'Usuario actualizado exitosamente', 'success');
+            swal.fire('', 'MBE actualizado exitosamente', 'success');
             this.router.navigate(['/gmbe'])
           },
           err=>{}

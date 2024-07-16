@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { GmbeServicesService } from '../services/gmbe-services.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { TitulosService } from 'src/app/services/titulos.services';
 
 @Component({
   selector: 'app-vista-previa',
@@ -13,14 +14,16 @@ export class VistaPreviaComponent {
   id:number = 0;
   generales: FormGroup;
   imageUrl: SafeUrl | null = null;
-
+  textoBienvenida = "Vista Previa";
 
   estructuraFinalColumnasTitulos:any[] = [];
   estructuraFinalFilasTitulos:any[] = [];
   estructuraFinalFilasSubitulos:any[] = [];
   datosIntersecciones:any [] = [];
 
-  constructor(private route: ActivatedRoute, private gmbservices:GmbeServicesService,private fb: FormBuilder,private sanitizer: DomSanitizer){
+  constructor(private route: ActivatedRoute, private gmbservices:GmbeServicesService,private fb: FormBuilder,private sanitizer: DomSanitizer,private titulos: TitulosService){
+    this.titulos.changeBienvenida(this.textoBienvenida);
+    this.titulos.changePestaña(this.textoBienvenida);
     this.id = parseInt(this.route.snapshot.paramMap.get('id')!);
     this.generales = this.fb.group({
       nombre: [''],

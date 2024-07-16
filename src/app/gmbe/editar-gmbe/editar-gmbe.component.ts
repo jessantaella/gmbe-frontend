@@ -9,6 +9,10 @@ import {
   faFloppyDisk,
   faX
 } from '@fortawesome/free-solid-svg-icons';
+import { StorageService } from 'src/app/services/storage-service.service';
+import { CifradoService } from 'src/app/services/cifrado.service';
+import { Router } from '@angular/router';
+declare var swal: any;
 
 @Component({
   selector: 'app-editar-gmbe',
@@ -17,18 +21,31 @@ import {
 })
 export class EditarGmbeComponent {
 
-  faFloppyDisk=faFloppyDisk;
-  faRotateLeft=faRotateLeft;
-  faX=faX;
+  faFloppyDisk = faFloppyDisk;
+  faRotateLeft = faRotateLeft;
+  faX = faX;
 
-  id:number = 0;
+  id: number = 0;
   generales: FormGroup;
-  imageUrl: SafeUrl | null = null;
+  imageUrl: string | SafeUrl | null | undefined = null;
+  imageFile: File | null = null;
+  subiImagen: boolean = false;
+  nombreImagen: string = '';
+  usuario: any;
+
   textoBienvenida = 'Edición de GMBE';
 
-  constructor(private titulos: TitulosService,private route: ActivatedRoute,private gmbservices:GmbeServicesService,private fb: FormBuilder,private sanitizer: DomSanitizer){
-    this.titulos.changePestaña('Edición de  GMBE');
+  constructor(private titulos: TitulosService, 
+    private route: ActivatedRoute, 
+    private gmbservices: GmbeServicesService, 
+    private fb: FormBuilder, 
+    private router:Router,
+    private sanitizer: DomSanitizer,
+    private storage: StorageService,
+    private cifrado: CifradoService) {
+    this.titulos.changePestaña(this.textoBienvenida);
     this.titulos.changeBienvenida(this.textoBienvenida);
+    this.usuario = JSON.parse(this.cifrado.descifrar(this.storage.getItem('usr')!));
 
     this.id = parseInt(this.route.snapshot.paramMap.get('id')!);
     this.generales = this.fb.group({
@@ -37,37 +54,86 @@ export class EditarGmbeComponent {
       resumen: [''],
     });
     this.cargaMBE();
-    
+
   }
 
-  cargaMBE(){
+  cargaMBE() {
     this.gmbservices.obtenerInfoGMBE(this.id).subscribe(
-      res=>{
+      res => {
         this.generales = this.fb.group({
           nombre: [res?.nombre],
           objetivo: [res?.objetivo],
           resumen: [res?.resumen],
         });
+        this.nombreImagen = res.ruta;
         this.obtenerImagen(res.ruta);
       },
-      err=>{}
+      err => { }
     )
   }
 
-  obtenerImagen(ruta:string){
+  obtenerImagen(ruta: string) {
     this.gmbservices.getImage(ruta).subscribe(
-      res=>{
+      res => {
         this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(res);
-    },
-      err=>{
-        console.log('Error al traer la imagen',err)
+      },
+      err => {
+        console.log('Error al traer la imagen', err)
       }
     );
   }
 
-  borrarImagen(){
+  borrarImagen() {
     this.imageUrl = null;
   }
+
+  validarGuardar() {
+    return this.generales.valid && this.imageUrl != null;
+  }
+
+  onFileChange(event: any): void {
+    this.subiImagen = true;
+    const file = event.target.files[0];
+    if (file) {
+      this.imageFile = file;
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        this.imageUrl = e.target?.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  guardar() {
+    if (this.subiImagen) {
+      let nombre = this.nombreImagen;
+      let enviar = this.generales.value;
+      enviar.idUsuario = this.usuario?.idUsuario;
+      enviar.idMbe = this.id;
+        this.gmbservices.actualizarImagen(this.imageFile, nombre).subscribe(
+          res => {
+            enviar.ruta = res.remotePath;
+            this.gmbservices.actualizarGmbe(enviar).subscribe(res=>{
+              swal.fire('', 'MBE actualizado exitosamente', 'success');
+              this.router.navigate(['/gmbe'])
+            })
+          },
+          err => { }
+        )
+
+    } else {
+      let enviar = this.generales.value;
+      enviar.ruta = this.nombreImagen;
+      enviar.idUsuario = this.usuario?.idUsuario;
+      enviar.idMbe = this.id;
+          this.gmbservices.actualizarGmbe(enviar).subscribe(res=>{
+            swal.fire('', 'MBE actualizado exitosamente', 'success');
+            this.router.navigate(['/gmbe'])
+          })
+    }
+  }
+
 
 
 }
