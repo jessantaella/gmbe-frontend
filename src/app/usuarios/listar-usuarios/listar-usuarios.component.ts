@@ -188,6 +188,25 @@ export class ListarUsuariosComponent implements OnInit {
     });
   }
 
+  openVer(content: TemplateRef<any>, usuario: any) {
+    this.open(content);
+    this.usuarioEditar = usuario;
+    this.mbeEditables = this.usuarioEditar.mbesAsociados.map(
+      (item: any) => item.idMbe
+    );
+    console.log(this.mbeEditables);
+
+    this.usuarioEditForm = this.fb.group({
+      userName: [this.usuarioEditar.userName, Validators.required],
+      correo: [this.usuarioEditar.correo, Validators.required],
+      idRol: [this.usuarioEditar?.rolUsuario?.idRol, Validators.required],
+      nombre: [this.usuarioEditar?.nombre, Validators.required],
+    });
+    this.usuarioEditForm.get("userName")?.disable();
+    this.usuarioEditForm.get("correo")?.disable();
+    this.usuarioEditForm.get("nombre")?.disable();
+  }
+
   openEditar(content: TemplateRef<any>, usuario: any) {
     this.open(content);
     this.usuarioEditar = usuario;

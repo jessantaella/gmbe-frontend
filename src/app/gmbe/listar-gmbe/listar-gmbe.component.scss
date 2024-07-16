@@ -31,3 +31,30 @@ th{
    .inactivo{
     color: red;
    }
+
+   .file-upload-wrapper {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+  }
+  
+  .file-upload-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
+  
+  .upload-icon {
+    font-size: 24px;
+    color: #21409a;
+    background-color: none;
+    cursor: pointer;
+  }
+
+  .eliminarImagen{
+    color: #21409A;
+  }

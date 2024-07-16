@@ -1,10 +1,13 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { TitulosService } from 'src/app/services/titulos.services';
-import { faEllipsisVertical, faEye,faTrashCan,faUserGroup, faUpload, faPencil, faCircleCheck, faXmarkCircle } from '@fortawesome/free-solid-svg-icons';
+import { faEllipsisVertical, faEye,faTrashCan,faUserGroup,
+   faUpload, faPencil, faCircleCheck, faXmarkCircle, faRotate,
+    faFloppyDisk, faX } from '@fortawesome/free-solid-svg-icons';
 import { GmbeServicesService } from '../services/gmbe-services.service';
 import { StorageService } from 'src/app/services/storage-service.service';
 import { CifradoService } from 'src/app/services/cifrado.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
 declare var swal: any;
 
 @Component({
@@ -25,6 +28,9 @@ desde: number = 0;
 
 listaMBE:any[]=[];
 
+private modalRef: NgbModalRef | undefined;
+
+
   textoBienvenida =
     "MBE";
 
@@ -37,18 +43,28 @@ listaMBE:any[]=[];
   faPencil = faPencil;
   faCircleCheck = faCircleCheck;
   faXmarkCircle = faXmarkCircle;
+  faRotate = faRotate;
+  faFloppyDisk = faFloppyDisk;
+  faX = faX;
 
   usuario: any;
 
+  cargaDatos: FormGroup;
+  imageUrl: string | ArrayBuffer | null | undefined = null;
+  imageFile: File | null = null;
 
   constructor(private titulos :TitulosService,
     private modalService: NgbModal, 
     private gmbeServices:GmbeServicesService,
     private storage: StorageService,
+    private fb: FormBuilder,
     private cifrado: CifradoService) {
     this.titulos.changePestaña('GMBE');
     this.titulos.changeBienvenida(this.textoBienvenida);
     this.usuario = JSON.parse(this.cifrado.descifrar(this.storage.getItem('usr')!));
+    this.cargaDatos = this.fb.group({
+      nombre: [''],
+    });
 
   }
 
@@ -57,9 +73,9 @@ listaMBE:any[]=[];
     this.cambiarPaginaGetAll(0,10);  
   }
 
-  open(content: TemplateRef<any>) {
+  /*open(content: TemplateRef<any>) {
     const modalRef = this.modalService.open(content,{centered:true,size: 'lg'});
-  }
+  }*/
 
 
   validarRol(){
@@ -148,6 +164,47 @@ listaMBE:any[]=[];
           });
       }
     });
+  }
+
+  openCarga(content: TemplateRef<any>) {
+    this.modalRef = this.modalService.open(content, {
+      size:'lg',
+      centered: true,
+      backdrop: "static",
+    });
+  }
+
+  cargardatos(){
+
+  }
+
+  onFileChange(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.imageFile = file;
+
+      this.cargaDatos = this.fb.group({
+        nombre: [this.imageFile?.name],
+      });
+
+      this.cargaDatos.get("nombre")?.disable();
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        this.imageUrl = e.target?.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  clearImage(): void {
+    this.imageUrl = null;
+    this.imageFile = null;
+    this.cargaDatos = this.fb.group({
+      nombre: [''],
+    });
+
+    this.cargaDatos.get("nombre")?.enable();
   }
 
 }

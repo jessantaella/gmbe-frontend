@@ -38,7 +38,7 @@
             <td class="text-center">{{ mbe?.created | date: 'dd/MM/yyyy' }}</td>
             <td class="text-center">{{mbe?.fechaPublicacion |  date: 'dd/MM/yyyy'}}</td>
             <td>
-              <fa-icon [icon]="faUpload" class="btn-acciones m-2" *ngIf="!mbe?.bloqueado"></fa-icon>
+              <fa-icon [icon]="faUpload" class="btn-acciones m-2" *ngIf="!mbe?.bloqueado" (click)="openCarga(cargaModal)"></fa-icon>
               <fa-icon [icon]="faUpload" class="btn-acciones-inabil m-2" *ngIf="mbe?.bloqueado"></fa-icon>
               
               <fa-icon [icon]="faPencil" class="btn-acciones m-2" [routerLink]="['/editar-gmbe',mbe?.idMbe]" *ngIf="!mbe?.bloqueado"></fa-icon>
@@ -68,3 +68,39 @@
         </ngb-pagination>
       </nav>
 </div>
+
+
+<ng-template #cargaModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title w-100 text-center">Cargar base de datos</h4>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="cargaDatos">
+      <div class="mb-3 row">
+        <label for="usuario" class="col-sm-2 col-form-label text-end">Archivo:</label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" id="usuario" formControlName="nombre">
+        </div>
+        <div class="col-sm-2">
+          <div class="p-2 bd-highlight">
+            <div class="file-upload-wrapper m-2">
+                <input type="file" class="file-upload-input" accept=".xlsx" (change)="onFileChange($event)">
+                <i class="fas fa-upload upload-icon"></i>
+            </div> 
+            <fa-icon [icon]="faX" class="btnOtrasAcciones m-2 eliminarImagen" (click)="clearImage()"></fa-icon>
+        </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer justify-content-center">
+    <button type="button" class="btn btn-sm btn-cancelar" (click)="modal.dismiss('Cancelar')">
+      <fa-icon [icon]="faRotate"></fa-icon>
+      Cancelar
+    </button>
+    <button type="button" class="btn btn-sm btn-guardar" (click)="cargardatos()">
+      <fa-icon [icon]="faFloppyDisk"></fa-icon>
+      Guardar
+    </button>
+  </div>
+</ng-template>
