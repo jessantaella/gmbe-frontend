@@ -38,7 +38,6 @@ export class VistaPreviaComponent {
   cargaMBE(){
     this.gmbservices.obtenerInfoGMBE(this.id).subscribe(
       res=>{
-        console.log(res)
         this.generales = this.fb.group({
           nombre: [res?.nombre],
           objetivos: [res?.objetivo],
@@ -54,7 +53,6 @@ export class VistaPreviaComponent {
   obtenerImagen(ruta:string){
     this.gmbservices.getImage(ruta).subscribe(
       res=>{
-        console.log(res);
         this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(res);
     },
       err=>{}
@@ -99,7 +97,6 @@ cargarEstructuraMbe(){
 cargarDatosMbe(){
   this.gmbservices.obtenerDatosGMBE(this.id).subscribe(
     res=>{
-      console.log(res);
       this.datosIntersecciones = res;
     },
     err=>{}
@@ -129,13 +126,12 @@ filtrarCategoriasUnicas(arreglo: any){
 }
 
 
-datosInterseccion(fila:number,columna:number){
-  console.log(fila,columna);
+datosInterseccion(columna:number,fila:number){
   let respuesta =  this.datosIntersecciones.find(
     obj => obj.idFila === fila && obj.idColumna === columna
   );
   console.log(respuesta);
-  return 1;
+  return respuesta?.arrConteoDisenioEval
 }
 
 }

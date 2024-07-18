@@ -16,9 +16,9 @@
     <table class="table table-striped table-bordered custom-striped-table">
       <thead class="cabecera-tabla">
         <tr class="text-center ">
-          <th scope="col" class="columna-acciones">Ver</th>
-          <th scope="col" class="columna-acciones">Editar</th>
-          <th scope="col" class="columna-acciones">Eliminar</th>
+          <th scope="col" class="columna-acciones columnaAccion">Ver</th>
+          <th scope="col" class="columna-acciones columnaAccion">Editar</th>
+          <th scope="col" class="columna-acciones columnaAccion">Eliminar</th>
           <th scope="col">Nombre</th>
           <th scope="col">Usuario</th>
           <th scope="col">MBE</th>
@@ -48,7 +48,7 @@
       </tbody>
     </table>
   </div>
-  <nav class="d-flex justify-content-center">
+  <nav class="d-flex justify-content-center" *ngIf="totalPage>1">
     <ngb-pagination [(page)]="page" [collectionSize]="items" [maxSize]="10" [pageSize]="pageSize"
       (pageChange)="loadPage($event)" [rotate]="true" [directionLinks]="true" [boundaryLinks]="false">
     </ngb-pagination>
@@ -63,7 +63,7 @@
   <div class="modal-body">
     <form [formGroup]="usuarioForm">
       <div class="mb-3 row">
-        <label for="usuario" class="col-sm-4 col-form-label text-end">Usuario</label>
+        <label for="usuario" class="col-sm-4 col-form-label text-md-end text-sm-start">Usuario</label>
         <div class="col-sm-6">
           <input type="text" class="form-control" id="usuario" (input)="filterUsuarios($event)"
             formControlName="userName">
@@ -75,14 +75,14 @@
         </div>
       </div>
       <div class="mb-3 row">
-        <label for="correo" class="col-sm-4 col-form-label text-end">Correo</label>
+        <label for="correo" class="col-sm-4 col-form-label text-md-end text-sm-start">Correo : </label>
         <div class="col-sm-6">
           <input type="text" class="form-control" id="correo" placeholder="ejemplo@ejemplo.com"
             formControlName="correo">
         </div>
       </div>
       <div class="mb-3 row">
-        <label for="rol" class="col-sm-4 col-form-label text-end">Rol</label>
+        <label for="rol" class="col-sm-4 col-form-label text-md-end text-sm-start">Rol : </label>
         <div class="col-sm-6">
           <select class="form-select" aria-label="Rol" formControlName="idRol">
             <option selected>Seleccione un rol</option>
@@ -91,13 +91,13 @@
         </div>
       </div>
       <div class="mb-3 row">
-        <label for="nombre" class="col-sm-4 col-form-label text-end">Nombre</label>
+        <label for="nombre" class="col-sm-4 col-form-label text-md-end">Nombre : </label>
         <div class="col-sm-6">
           <input type="text" class="form-control" id="nombre" placeholder="Nombre(s)" formControlName="nombre">
         </div>
       </div>
       <div class="mb-3 row">
-        <label for="rol" class="col-sm-4 col-form-label">Mapas de Brechas de Evidencias</label>
+        <label for="rol" class="col-sm-4 col-form-label">Mapas de Brechas de Evidencias : </label>
         <div class="col-sm-6">
           <div class="btn-group drop" dropdown #dropdown="bs-dropdown" [autoClose]="false">
             <button dropdownToggle type="button" class="btn dropdown-toggle ">
@@ -170,7 +170,7 @@
         <div class="col-sm-6">
           <div class="btn-group drop" dropdown #dropdown="bs-dropdown" [autoClose]="false">
             <button dropdownToggle type="button" class="btn dropdown-toggle ">
-              <span class="caret icono-toogle" *ngIf="usuarioEditar?.mbesAsociados?.length>0">Seleccionados
+              <span class="caret icono-toogle" *ngIf="usuarioEditar?.mbesAsociados?.length>0 || mbeEditables.length>0">Seleccionados
                 {{usuarioEditar?.mbesAsociados?.length}}</span>
               <span class="caret icono-toogle" *ngIf="usuarioEditar?.mbesAsociados?.length<=0">Ningún
                 seleccionado</span>
@@ -178,7 +178,7 @@
             <ul id="dropdown-triggers-manual" *dropdownMenu class="dropdown-menu" role="menu"
               aria-labelledby="button-triggers-manual">
               <li role="menuitem" *ngFor="let mbe of listaMBE">
-                <input type="checkbox" class="radio" [checked]="verificaAsociacionMBE(mbe?.idMbe)" />{{mbe.nombre}}
+                <input type="checkbox" class="radio" [checked]="verificaAsociacionMBE(mbe?.idMbe)" (change)="onCheckboxChangeMBE(mbe.idMbe)"/>{{mbe.nombre}}
               </li>
             </ul>
           </div>
@@ -244,8 +244,8 @@
             </button>
             <ul id="dropdown-triggers-manual" *dropdownMenu class="dropdown-menu" role="menu"
               aria-labelledby="button-triggers-manual">
-              <li role="menuitem" *ngFor="let mbe of listaMBE">
-                <input type="checkbox" class="radio" [checked]="verificaAsociacionMBE(mbe?.idMbe)"  disabled/>{{mbe.nombre}}
+              <li role="menuitem" *ngFor="let mbe of this.usuarioEditar.mbesAsociados">
+                {{mbe.nombreMbe}}
               </li>
             </ul>
           </div>

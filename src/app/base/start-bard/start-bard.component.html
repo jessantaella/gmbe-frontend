@@ -25,36 +25,28 @@
         </div>
   
   
-      <div class="navbar movil p-0 m-0" *ngIf="validaToken()">
+      <div class="navbar movil p-0 m-0">
         <button class="white-button mx-0 text-nowrap" type="button" (click)="desplegar();">
           <span class="navbar-toggler-icon color-menu"></span>
         </button>
       </div>
     </div>
   </nav>
-  <div [ngClass]="{'navbar-collapse color-opciones collapsing movil':!abrir,'navbar-collapse color-opciones collapse movil show': abrir}" *ngIf="validaToken()">
+  <div [ngClass]="{'navbar-collapse color-opciones collapsing movil':!abrir,'navbar-collapse color-opciones collapse movil show': abrir}">
     <ul class="navbar-nav me-auto mb-2 mb-lg-0 movil d-flex justify-content-start">
-      <li class="nav-item dropdown div-nav" *ngIf="this.rolUsuario() != 2">
-        <a class="dropdown-toggle nav-link link-color" aria-expanded="false" data-bs-toggle="dropdown" href="#"
-          (click)="desplegarAdmin();" >Administración</a>
-        <div
-          [ngClass]="{'dropdown-menu color-opciones nav-color texto': !abrirAdmin, 'dropdown-menu color-opciones nav-color texto show': abrirAdmin}">
-            <a class="nav-link link-color"  [routerLink]="['/usuarios/usuarios']" *ngIf="this.rolUsuario() != 2 && abrirAdmin" >Usuarios</a>
-            <a class="nav-link link-color" [routerLink]="['/planeacion/planeacion']" *ngIf="this.rolUsuario() != 3 && this.rolUsuario() != 2 && abrirAdmin" >Gestión de la Planeación Anual</a>
-        </div>
+      <li class="nav-item div-nav"  *ngIf="validaToken()">
+        <a class="nav-link link-color" *ngIf="rolUsuario() === 1" [routerLink]="['/usuarios']">Usuarios</a>
+      </li>
+      <li class="nav-item div-nav" *ngIf="validaToken()">
+        <a class="nav-link link-color" [routerLink]="['/gmbe']" >MBE's</a>
       </li>
       <li class="nav-item div-nav">
-        <a class="nav-link link-color" [routerLink]="['/requerimientos/requerimientos']">Requerimientos</a>
+        <a class="nav-link link-color cursor" (click)="cerrarSesion()" *ngIf="validaToken()">Cerrar sesión</a>
       </li>
       <li class="nav-item div-nav">
-        <a class="nav-link link-color" [routerLink]="['/aplicativos/aplicativos']">Aplicativos</a>
+        <a class="nav-link link-color cursor" [routerLink]="['/login']" *ngIf="!validaToken()">Iniciar sesión</a>
       </li>
-      <li class="nav-item div-nav">
-        <a class="nav-link link-color" [routerLink]="['/necesidades/necesidades']">Necesidades</a>
-      </li>
-      <li class="nav-item div-nav">
-        <a class="nav-link link-color cursor" (click)="cerrarSesion()">Cerrar sesión</a>
-      </li>
+
     </ul>
   </div>
   

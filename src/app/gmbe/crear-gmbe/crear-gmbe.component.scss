@@ -68,7 +68,9 @@
   }
 
   .listado{
-    height: 200px;
+    height: 150px;
+    width: 50%;
+    margin-left: 10px;
     overflow: auto;
   }
 
@@ -107,3 +109,11 @@
     height: 40vh;
     overflow: scroll;
   }
+
+  /* Estilos para pantallas pequeñas (móviles) */
+@media (max-width: 767px) {
+  .listado {
+    width: 100%;
+    margin-left: 0; /* Opcional: Ajusta el margen para móviles si es necesario */
+  }
+}

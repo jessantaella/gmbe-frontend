@@ -11,6 +11,8 @@ import {
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { GmbeServicesService } from '../services/gmbe-services.service';
 import { Router } from '@angular/router';
+import { StorageService } from 'src/app/services/storage-service.service';
+import { CifradoService } from 'src/app/services/cifrado.service';
 
 declare var swal: any;
 
@@ -29,7 +31,7 @@ export class CrearGmbeComponent {
 
   private modalRef: NgbModalRef | undefined;
 
-
+  usuario : any ;
 
   generales: FormGroup;
   categoriaForm: FormGroup;
@@ -68,8 +70,10 @@ export class CrearGmbeComponent {
     private modalService: NgbModal,
     private fb: FormBuilder,
     private gmbeservice: GmbeServicesService,
-    private router:Router
+    private router:Router,
+    private storage:StorageService, private cifrado:CifradoService
   ) {
+    this.usuario = JSON.parse(this.cifrado.descifrar(this.storage.getItem('usr')!));
     this.titulos.changePestaña('Creación de  GMBE');
     this.titulos.changeBienvenida(this.textoBienvenida);
     this.tipoEstructura();
@@ -159,7 +163,6 @@ export class CrearGmbeComponent {
       let existe = this.estructuraFinalFilasTitulos.some(
         (obj: any) => obj.categoria.idCatalogo === this.categoria.idCatalogo
       );
-      console.log(existe);
       if (existe) {
         console.log(this.estructuraFinalFilasTitulos);
         console.log(this.categoria);
@@ -195,6 +198,20 @@ export class CrearGmbeComponent {
         });
       }
 
+      if(this.subcategoriasAgregadas.length<1){
+        this.subcategoriasAgregadas.push({
+          activo:true,
+          catalogo:'',
+          complemento:null,
+          created:null,
+          idCatalogo:null,
+          idRelacion:this.categoria?.idCatalogo,
+          idTipoCatalogo:null,
+          esAuxiliar:true
+        })
+      }
+
+
       this.estructuraFinalFilasSubitulos = [];
       this.estructuraFinalFilasSubitulos =
         this.estructuraFinalFilasTitulos.reduce(
@@ -203,18 +220,73 @@ export class CrearGmbeComponent {
           []
         );
     } else {
-      //Columnas
-      this.estructuraFinalColumnasTitulos.push({
-        categoria: this.categoria,
-        subcategorias: this.subcategoriasAgregadas,
-      });
+      console.log('Columnas');
+
+      let existe = this.estructuraFinalColumnasTitulos.some(
+        (obj: any) => obj.categoria.idCatalogo === this.categoria.idCatalogo
+      );
+
+      if (existe) {
+        console.log(this.estructuraFinalColumnasTitulos);
+        console.log(this.categoria);
+
+        let arregloOriginal = this.estructuraFinalColumnasTitulos.find(
+          (e: any) => {
+            return e.categoria.idCatalogo == this.categoria.idCatalogo;
+          }
+        );
+
+        let nuevasSubcategorias = this.mergeAndRemoveDuplicates(
+          arregloOriginal.subcategorias,
+          this.subcategoriasAgregadas
+        );
+
+        this.estructuraFinalColumnasTitulos =
+        this.estructuraFinalColumnasTitulos.filter(
+          (item: { categoria: { idCatalogo: any } }) =>
+            item.categoria.idCatalogo !== this.categoria.idCatalogo
+        );
+
+        console.log(this.estructuraFinalColumnasTitulos);
+
+        this.estructuraFinalColumnasTitulos.push({
+          categoria: this.categoria,
+          subcategorias: nuevasSubcategorias,
+        });
+        console.log(this.estructuraFinalColumnasTitulos);
+
+      }else{
+        this.estructuraFinalColumnasTitulos.push({
+          categoria: this.categoria,
+          subcategorias: this.subcategoriasAgregadas,
+        });
+      }
+      // agrega auxiliar para espacios en blanco no subcategorias
+      if(this.subcategoriasAgregadas.length<1){
+        this.subcategoriasAgregadas.push({
+          activo:true,
+          catalogo:'',
+          complemento:null,
+          created:null,
+          idCatalogo:null,
+          idRelacion:this.categoria?.idCatalogo,
+          idTipoCatalogo:null,
+          esAuxiliar:true
+        })
+      }
       this.estructuraFinalColumnasSubitulos =
         this.estructuraFinalColumnasSubitulos.concat(
           this.subcategoriasAgregadas
         );
     }
+
+
     console.log(this.estructuraFinalFilasTitulos);
     console.log(this.estructuraFinalColumnasTitulos);
+    console.log(this.subcategoriasAgregadas);
+
+    this.obtenerCategorias();
+    this.subCategorias = [];
   }
 
   regresaPapa(idPadre: number) {
@@ -329,23 +401,37 @@ export class CrearGmbeComponent {
     let arregloSalida: {
       tipo: number;
       idCategoria: any;
-      idSubcategoria: any;
+      idSubCategoria: any;
     }[] = [];
     this.estructuraFinalFilasSubitulos.forEach(
-      (element: { idCatalogo: any; idRelacion: any }) => {
+      (element: { idCatalogo: any; idRelacion: any; esAuxiliar:boolean }) => {
+        if(!element.esAuxiliar)
         arregloSalida.push({
           tipo: 2,
-          idCategoria: element.idCatalogo,
-          idSubcategoria: element.idRelacion,
+          idCategoria: element.idRelacion,
+          idSubCategoria: element.idCatalogo,
+        });
+        else
+        arregloSalida.push({
+          tipo: 2,
+          idCategoria: element.idRelacion,
+          idSubCategoria: null,
         });
       }
     );
     this.estructuraFinalColumnasSubitulos.forEach(
-      (element: { idCatalogo: any; idRelacion: any }) => {
+      (element: { idCatalogo: any; idRelacion: any; esAuxiliar:boolean }) => {
+        if(!element.esAuxiliar)
         arregloSalida.push({
           tipo: 1,
-          idCategoria: element.idCatalogo,
-          idSubcategoria: element.idRelacion,
+          idCategoria: element.idRelacion,
+          idSubCategoria: element.idCatalogo,
+        });
+        else
+        arregloSalida.push({
+          tipo: 1,
+          idCategoria: element.idRelacion,
+          idSubCategoria: null,
         });
       }
     );
@@ -364,6 +450,8 @@ export class CrearGmbeComponent {
     let enviar = this.generales.value;
     enviar.estructura = estructura;
     enviar.ruta= null;
+    enviar.idUsuario = this.usuario?.idUsuario;
+
     console.log(enviar);
     this.gmbeservice.crearImagen(this.imageFile, nombre).subscribe(
       response => {

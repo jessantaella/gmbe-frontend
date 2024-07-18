@@ -18,7 +18,8 @@ declare var ApexCharts: any;
 })
 export class BurbujasComponent implements AfterViewInit {
   @ViewChild("chartContainer", { static: false }) chartContainer: ElementRef | undefined;
-  @Input() chartId: string | undefined; // Input property to accept dynamic ID
+  @Input() chartId: string | undefined;
+  @Input() bubbleData: { idGpo: number; nombreGpo: string; colorBubble: string; count: number }[] = [];
 
   public chartOptions: any;
   isBrowser = false;
@@ -27,29 +28,26 @@ export class BurbujasComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.isBrowser = isPlatformBrowser(this.platformId);
-    this.chartOptions = this.getCharOptions();
-    if (this.isBrowser) {
-      setTimeout(() => {
-        const chart = new ApexCharts(this.chartContainer?.nativeElement, this.chartOptions);
-        chart.render();
-      }, 0);
+    if (this.bubbleData && this.bubbleData.length > 0) {
+      this.chartOptions = this.getCharOptions();
+      if (this.isBrowser) {
+        setTimeout(() => {
+          const chart = new ApexCharts(this.chartContainer?.nativeElement, this.chartOptions);
+          chart.render();
+        }, 0);
+      }
+    } else {
+      console.warn("No bubble data provided");
     }
   }
 
-  getCharOptions(){
-    const seriesData = [
-      this.generateBubbleData(6),
-      this.generateBubbleData(12),
-      this.generateBubbleData(16),
-      this.generateBubbleData(6),
-      this.generateBubbleData(20)
-    ];
+  getCharOptions() {
+    const seriesData = this.bubbleData.map(bubble => this.generateBubbleData(bubble.count, bubble.nombreGpo, bubble.colorBubble));
 
-    // Calcular los límites de los ejes basados en los valores de las burbujas
-    const maxX = Math.max(...seriesData.map(d => d.x + d.z));
-    const maxY = Math.max(...seriesData.map(d => d.y + d.z));
-    const minX = Math.min(...seriesData.map(d => d.x - d.z));
-    const minY = Math.min(...seriesData.map(d => d.y - d.z));
+    const maxX = Math.max(...seriesData.map(d => d.x + d.z), 0);
+    const maxY = Math.max(...seriesData.map(d => d.y + d.z), 0);
+    const minX = Math.min(...seriesData.map(d => d.x - d.z), 0);
+    const minY = Math.min(...seriesData.map(d => d.y - d.z), 0);
 
     return {
       grid: {
@@ -66,37 +64,21 @@ export class BurbujasComponent implements AfterViewInit {
       },
       series: [
         {
-          name: "Gpo:156",
-          data: [seriesData[0]],
-        },
-        {
-          name: "otro",
-          data: [seriesData[1]],
-        },
-        {
-          name: "otro",
-          data: [seriesData[2]],
-        },
-        {
-          name: "otro",
-          data: [seriesData[3]],
-        },
-        {
-          name: "otro",
-          data: [seriesData[4]],
+          name: "Burbujas",
+          data: seriesData,
         },
       ],
       chart: {
         responsive: true,
         height: 150,
-        width: 200,
+        width: 100,
         type: "bubble",
         toolbar: {
           show: false,
         },
-        background: "transparent", // Cambia el fondo a transparente
+        background: "transparent",
         zoom: {
-          enabled: false, // Deshabilita el zoom
+          enabled: false,
         },
       },
       dataLabels: {
@@ -109,8 +91,8 @@ export class BurbujasComponent implements AfterViewInit {
         text: "",
       },
       xaxis: {
-        min: minX, // Define el valor mínimo del eje x basado en los datos
-        max: maxX, // Define el valor máximo del eje x basado en los datos
+        min: minX,
+        max: maxX,
         labels: {
           show: false,
         },
@@ -122,8 +104,8 @@ export class BurbujasComponent implements AfterViewInit {
         },
       },
       yaxis: {
-        min: minY, // Define el valor mínimo del eje y basado en los datos
-        max: maxY, // Define el valor máximo del eje y basado en los datos
+        min: minY,
+        max: maxY,
         labels: {
           show: false,
         },
@@ -134,21 +116,26 @@ export class BurbujasComponent implements AfterViewInit {
           show: false,
         },
       },
-
       legend: {
-        show: false, // Oculta las leyendas del gráfico
+        show: false,
       },
       tooltip: {
-        enabled: false, // Deshabilita el tooltip
+        enabled: true,
+        y: {
+          formatter: function (val: number, opts: any) {
+            return opts.w.config.series[0].data[opts.dataPointIndex].nombreGpo;
+          },
+        },
       },
     };
   }
 
-  generateBubbleData(z: number): { x: number; y: number; z: number } {
-    const chartWidth = 200;
+  generateBubbleData(z: number, nombreGpo: string, colorBubble: string): { x: number; y: number; z: number; nombreGpo: string; colorBubble: string } {
+    const chartWidth = 100;
     const chartHeight = 150;
-    const x = Math.random() * chartWidth; // Genera un valor x dentro del ancho del gráfico
-    const y = Math.random() * chartHeight; // Genera un valor y dentro de la altura del gráfico
-    return { x, y, z };
+    const x = Math.random() * chartWidth;
+    const y = Math.random() * chartHeight;
+    const zAdjusted = Math.max(z, 5); // Asegura que el valor mínimo de z sea 5
+    return { x, y, z: zAdjusted, nombreGpo, colorBubble };
   }
 }

@@ -1,9 +1,11 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { TitulosService } from 'src/app/services/titulos.services';
-import { faEllipsisVertical, faEye,faTrashCan,faUserGroup,
-   faUpload, faPencil, faCircleCheck, faXmarkCircle, faRotate,
-    faFloppyDisk, faX } from '@fortawesome/free-solid-svg-icons';
+import {
+  faEllipsisVertical, faEye, faTrashCan, faUserGroup,
+  faUpload, faPencil, faCircleCheck, faXmarkCircle, faRotate,
+  faFloppyDisk, faX
+} from '@fortawesome/free-solid-svg-icons';
 import { GmbeServicesService } from '../services/gmbe-services.service';
 import { StorageService } from 'src/app/services/storage-service.service';
 import { CifradoService } from 'src/app/services/cifrado.service';
@@ -15,26 +17,29 @@ declare var swal: any;
   templateUrl: './listar-gmbe.component.html',
   styleUrls: ['./listar-gmbe.component.scss']
 })
-export class ListarGmbeComponent implements OnInit{
+export class ListarGmbeComponent implements OnInit {
 
-//Paginación
-currentPage: number = 0;
-page: number = 0;
-pageSize: number = 10;
-items: number = 0;
-totalPage: number = 0;
-isModeSearch: boolean = false;
-desde: number = 0;
+  @ViewChild('fileInput') fileInput: ElementRef | undefined;
 
-listaMBE:any[]=[];
 
-private modalRef: NgbModalRef | undefined;
+  //Paginación
+  currentPage: number = 0;
+  page: number = 0;
+  pageSize: number = 10;
+  items: number = 0;
+  totalPage: number = 0;
+  isModeSearch: boolean = false;
+  desde: number = 0;
 
+  listaMBE: any[] = [];
+
+  private modalRef: NgbModalRef | undefined;
+  idMbe:number = 0;
 
   textoBienvenida =
     "MBE";
 
-    //iconos
+  //iconos
   faEye = faEye;
   faEllipsisVertical = faEllipsisVertical;
   faTrashCan = faTrashCan;
@@ -51,15 +56,15 @@ private modalRef: NgbModalRef | undefined;
 
   cargaDatos: FormGroup;
   imageUrl: string | ArrayBuffer | null | undefined = null;
-  imageFile: File | null = null;
+  archivoCarga: File | null = null;
 
-  constructor(private titulos :TitulosService,
-    private modalService: NgbModal, 
-    private gmbeServices:GmbeServicesService,
+  constructor(private titulos: TitulosService,
+    private modalService: NgbModal,
+    private gmbeServices: GmbeServicesService,
     private storage: StorageService,
     private fb: FormBuilder,
     private cifrado: CifradoService) {
-    this.titulos.changePestaña('GMBE');
+    this.titulos.changePestaña(this.textoBienvenida);
     this.titulos.changeBienvenida(this.textoBienvenida);
     this.usuario = JSON.parse(this.cifrado.descifrar(this.storage.getItem('usr')!));
     this.cargaDatos = this.fb.group({
@@ -70,16 +75,11 @@ private modalRef: NgbModalRef | undefined;
 
 
   ngOnInit(): void {
-    this.cambiarPaginaGetAll(0,10);  
+    this.cambiarPaginaGetAll(0, 10);
   }
 
-  /*open(content: TemplateRef<any>) {
-    const modalRef = this.modalService.open(content,{centered:true,size: 'lg'});
-  }*/
-
-
-  validarRol(){
-    return  this.usuario?.rolUsuario?.idRol === 1;
+  validarRol() {
+    return this.usuario?.rolUsuario?.idRol === 1;
   }
 
   cambiarPaginaGetAll(
@@ -104,14 +104,14 @@ private modalRef: NgbModalRef | undefined;
     if (e !== this.currentPage) {
       console.log('currentPage');
       console.log(this.currentPage);
-        this.cambiarPaginaGetAll(e - 1, this.pageSize);
+      this.cambiarPaginaGetAll(e - 1, this.pageSize);
     }
   }
 
-  cambiarEstatus(idMbe:number,estatusActual:boolean){
-    let mensaje = estatusActual ? 'desactivar' : 'activar' ;
+  cambiarEstatus(idMbe: number, estatusActual: boolean) {
+    let mensaje = estatusActual ? 'desactivar' : 'activar';
     swal.fire({
-      title: '¿Está seguro de '+mensaje+' el MBE?',
+      title: '¿Está seguro de ' + mensaje + ' el MBE?',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
@@ -126,21 +126,21 @@ private modalRef: NgbModalRef | undefined;
       }
     }).then((result: { isConfirmed: any; }) => {
       if (result.isConfirmed) {
-        this.gmbeServices.cambiarEstatus(idMbe,!estatusActual).subscribe(
-          res=>{
+        this.gmbeServices.cambiarEstatus(idMbe, !estatusActual).subscribe(
+          res => {
             swal.fire("", "MBE actualizado exitosamente", "success");
-            this.cambiarPaginaGetAll(this.page-1,10);
-          },err=>{
-    
+            this.cambiarPaginaGetAll(this.page - 1, 10);
+          }, err => {
+
           });
       }
     });
   }
 
-  bloquearMbe(idMbe:number,estatusActual:boolean){
-    let mensaje = !estatusActual ? 'bloquear' : 'desbloquear' ;
+  bloquearMbe(idMbe: number, estatusActual: boolean) {
+    let mensaje = !estatusActual ? 'bloquear' : 'desbloquear';
     swal.fire({
-      title: '¿Está seguro de '+mensaje+' el MBE?',
+      title: '¿Desea ' + mensaje + ' este MBE?',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
@@ -155,36 +155,44 @@ private modalRef: NgbModalRef | undefined;
       }
     }).then((result: { isConfirmed: any; }) => {
       if (result.isConfirmed) {
-        this.gmbeServices.cambiarEstatus(idMbe,!estatusActual).subscribe(
-          res=>{
-            swal.fire("", "MBE actualizado exitosamente", "success");
-            this.cambiarPaginaGetAll(this.page-1,10);
-          },err=>{
-    
+        this.gmbeServices.cambiarEstatus(idMbe, !estatusActual).subscribe(
+          res => {
+            let mensaje = !estatusActual ? 'bloqueado' : 'desbloqueado';
+            swal.fire("", 'Se ha '+mensaje+'el MBE', "success");
+            this.cambiarPaginaGetAll(this.page - 1, 10);
+          }, err => {
+
           });
       }
     });
   }
 
-  openCarga(content: TemplateRef<any>) {
+  openCarga(content: TemplateRef<any>,idmbe:number) {
+    this.clearImage(this.fileInput?.nativeElement);
     this.modalRef = this.modalService.open(content, {
-      size:'lg',
+      size: 'lg',
       centered: true,
       backdrop: "static",
     });
+    this.idMbe = idmbe;
   }
 
-  cargardatos(){
-
+  cargardatos() {
+    this.gmbeServices.cargarInformación(this.archivoCarga,this.idMbe).subscribe(res=>{
+      console.log(res);
+      swal.fire("", "Base de datos cargada con éxito", "success");
+    },err=>{
+      console.log(err);
+      swal.fire("", "Error en la carga, revisar el archivo", "error");
+    })
   }
 
   onFileChange(event: any): void {
     const file = event.target.files[0];
     if (file) {
-      this.imageFile = file;
-
+      this.archivoCarga = file;
       this.cargaDatos = this.fb.group({
-        nombre: [this.imageFile?.name],
+        nombre: [this.archivoCarga?.name],
       });
 
       this.cargaDatos.get("nombre")?.disable();
@@ -197,14 +205,48 @@ private modalRef: NgbModalRef | undefined;
     }
   }
 
-  clearImage(): void {
+  clearImage(fileInput: HTMLInputElement | undefined): void {
     this.imageUrl = null;
-    this.imageFile = null;
+    this.archivoCarga = null;
     this.cargaDatos = this.fb.group({
       nombre: [''],
     });
 
     this.cargaDatos.get("nombre")?.enable();
+
+    // Restablece el valor del input file
+    if (fileInput) {
+      fileInput.value = '';
+    }
   }
+
+  eliminarGmbe(idMbe: number) {
+    swal.fire({
+      title: '¿Está seguro de que quiere eliminar este MBE?',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar',
+      reverseButtons: true,
+      customClass: {
+        title: 'custom-swal-title',
+        htmlContainer: 'custom-swal-html',
+        confirmButton: 'custom-swal-confirm-button',
+        cancelButton: 'custom-swal-cancel-button'
+      }
+    }).then((result: { isConfirmed: any; }) => {
+      if (result.isConfirmed) {
+        this.gmbeServices.eliminarGmbe(idMbe).subscribe(
+          res => {
+            swal.fire("", "Registro eliminado exitosamente", "success");
+            this.cambiarPaginaGetAll(this.page - 1, 10);
+          }, err => {
+
+          });
+      }
+    });
+  }
+
 
 }

@@ -152,7 +152,6 @@ export class ListarUsuariosComponent implements OnInit {
 
   onCheckboxChangeMBE(valor: number) {
     let index = this.mbeEditables?.indexOf(valor);
-    console.log(index);
     if (index === -1 || index != undefined) {
       // Element does not exist, add it
       this.mbeEditables.push(valor);
@@ -165,10 +164,10 @@ export class ListarUsuariosComponent implements OnInit {
   resumeTablamMbe(mbesAsociados: any) {
     let salida: any[] = [];
     mbesAsociados.forEach(
-      (element: { idMbe: { activo: any; nombre: string } }) => {
-        if (element?.idMbe?.activo) {
-          salida.push(element?.idMbe?.nombre);
-        }
+      (element: { nombreMbe: any; }) => {
+        //if (element?.idMbe?.activo) {
+          salida.push(element?.nombreMbe);
+        //}
       }
     );
     return salida;
@@ -194,7 +193,7 @@ export class ListarUsuariosComponent implements OnInit {
     this.mbeEditables = this.usuarioEditar.mbesAsociados.map(
       (item: any) => item.idMbe
     );
-    console.log(this.mbeEditables);
+    console.log(this.usuarioEditar.mbesAsociados);
 
     this.usuarioEditForm = this.fb.group({
       userName: [this.usuarioEditar.userName, Validators.required],
@@ -211,7 +210,7 @@ export class ListarUsuariosComponent implements OnInit {
     this.open(content);
     this.usuarioEditar = usuario;
     this.mbeEditables = this.usuarioEditar.mbesAsociados.map(
-      (item: any) => item.idMbe
+      (item: any) => item
     );
     console.log(this.mbeEditables);
 
@@ -243,7 +242,7 @@ export class ListarUsuariosComponent implements OnInit {
 
   editar() {
     let usuarioObj = this.usuarioEditForm.getRawValue();
-    usuarioObj.listaMBEs = [];
+    usuarioObj.listaMBEs = this.mbeEditables;
     usuarioObj.idUsuario = this.usuarioEditar.idUsuario;
     this.usuariosService.editarUsuario(usuarioObj).subscribe(
       (res) => {
