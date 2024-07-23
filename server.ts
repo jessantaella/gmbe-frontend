@@ -16,6 +16,10 @@ import { AppServerModule } from './src/main.server';
 import { environment } from './src/environments/environment'; // Importa el entorno aquí
 import { enableProdMode } from '@angular/core';
 
+//Compilado único
+
+
+
 const cors = require("cors");
 // Habilita el modo de producción si estás en producción
 if (environment.production) {
@@ -26,8 +30,8 @@ if (environment.production) {
 export function app(): express.Express {
   const server = express();
 
-  //const distFolder = join(process.cwd(), '/GMBE/browser');  //Despliegue en servidor CONEVAL
-  const distFolder = join(process.cwd(), 'dist/GMBE/browser'); //LOCAL 
+  const distFolder = join(process.cwd(), '/GMBE/browser');  //Despliegue en servidor CONEVAL
+  //const distFolder = join(process.cwd(), 'dist/GMBE/browser'); //LOCAL 
   const indexHtml = existsSync(join(distFolder, 'index.original.html')) ? 'index.original.html' : 'index';
 
   // Our Universal express-engine (found @ https://github.com/angular/universal/tree/main/modules/express-engine)

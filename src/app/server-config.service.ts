@@ -1,6 +1,7 @@
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { isPlatformBrowser } from '@angular/common';
+import { StorageService } from './services/storage-service.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +9,9 @@ import { isPlatformBrowser } from '@angular/common';
 export class ServerConfigService {
   private serverConfig: string = '';
   isBrowser = false;
-  constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: any,) {
+  constructor(
+     private http: HttpClient,
+     @Inject(PLATFORM_ID) private platformId: any, private storage:StorageService) {
 
     this.isBrowser = isPlatformBrowser(this.platformId);
    }
@@ -38,10 +41,9 @@ export class ServerConfigService {
           this.http.get<any>(url,{ headers: headers })
             .subscribe(response => {
               this.serverConfig = response.servidor;
-              if(localStorage.getItem('srv') !== this.serverConfig){
-                localStorage.setItem('srv',this.serverConfig);
+              if(this.storage.getItem('srv') !== this.serverConfig){
+                  this.storage.setItem('srv',this.serverConfig)
               }
-              
             }, error => {
               console.error('Error al cargar la configuración del servidor:', error);
             });
@@ -49,7 +51,7 @@ export class ServerConfigService {
   }
 
   getServerConfig(): any {
-    return this.serverConfig === '' ? localStorage.getItem('srv'): this.serverConfig;
+    return this.serverConfig === '' ? this.storage.getItem('srv') : this.serverConfig;
   }
 
   setServerConfig(config: any): void {

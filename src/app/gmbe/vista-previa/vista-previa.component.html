@@ -100,8 +100,8 @@
         <thead class="sticky-header">
           <tr class="text-center ">
             <th id="tituloTablaColumna" colspan="2" class="titulos-tabla" *ngIf="estructuraFinalColumnasTitulos.length > 0"></th>
-            <th id="subtituloTablaColumna" scope="col" class="titulos-tabla"
-              *ngFor="let columna of estructuraFinalColumnasTitulos" [attr.colspan]="columna.countSubCats">
+            <th id="subtituloTablaColumna" scope="col" class="titulos-tabla" 
+              *ngFor="let columna of estructuraFinalColumnasTitulos" [attr.colspan]="columna.countSubCats > 0 ? columna.countSubCats : 1">
               {{ columna?.catalogo }}
             </th>
           </tr>
@@ -109,10 +109,14 @@
             <th id="tituloTablaFila" colspan="2" class="titulos-tabla" *ngIf="estructuraFinalColumnasTitulos.length > 0">
             </th>
             <ng-container *ngFor="let subcolumna of estructuraFinalColumnasTitulos">
-              <th id="subtituloTablaFila" class="subtitulos-tabla" *ngFor="let hijo of subcolumna.hijos">
-                {{ hijo?.idSubCategoria?.catalogo }}
-              </th>
-            </ng-container>
+              <ng-container *ngFor="let hijo of subcolumna.hijos">
+                  <th id="subtituloTablaFila" class="subtitulos-tabla" *ngIf="!hijo?.auxiliar">
+                    {{ hijo?.idSubCategoria?.catalogo }}
+                  </th>
+                  <th id="subtituloTablaFila" class="subtitulos-tabla" *ngIf="hijo.auxiliar">
+                  </th>
+              </ng-container>
+            </ng-container>            
           </tr>
         </thead>
         <tbody>
@@ -124,6 +128,7 @@
               *ngIf="estructuraFinalFilasSubitulos[i - 1]?.idCategoria?.idCatalogo !== subFilas?.idCategoria?.idCatalogo">
               {{ subFilas?.idCategoria?.catalogo }}
             </th>
+            
             <th class="subtitulos-tabla align-middle" scope="row"> {{ subFilas?.idSubCategoria?.catalogo }} </th>
     
             <ng-container *ngFor="let subcolumna of estructuraFinalColumnasTitulos; let i = index;">
