@@ -82,6 +82,8 @@ cargarEstructuraMbe(){
         }
       }
 
+      console.log(this.estructuraFinalColumnasTitulos);
+
       //obtiene categorias de columnas
       this.estructuraFinalFilasTitulos = this.filtrarCategoriasUnicas(this.obtenerTipo(res,2));
 
@@ -107,7 +109,8 @@ cargarEstructuraMbe(){
               idCategoria:{
                 idCatalogo:this.estructuraFinalFilasTitulos[a].idCatalogo,
                 catalogo:this.estructuraFinalFilasTitulos[a].catalogo
-              }
+              },
+              idEstructura:this.estructuraFinalFilasTitulos[a].idEstructura
             });
         }
       }
@@ -115,13 +118,6 @@ cargarEstructuraMbe(){
       for(let a=0;a<this.estructuraFinalFilasTitulos.length;a++){
         this.estructuraFinalFilasSubitulos = this.estructuraFinalFilasSubitulos.concat(this.estructuraFinalFilasTitulos[a].hijos);
       }
-
-      /*this.estructuraFinalFilasTitulos.forEach(e=>{
-        console.log(e);
-        this.estructuraFinalFilasSubitulos= this.estructuraFinalFilasSubitulos.concat(e.hijos)
-      })*/
-
-
       console.log('Columnas',this.estructuraFinalColumnasTitulos)
       console.log('subtitulos',this.estructuraFinalFilasSubitulos);
       console.log('hijos filas',this.estructuraFinalFilasTitulos)
@@ -164,7 +160,6 @@ filtrarCategoriasUnicas(arreglo: any){
 
 
 datosInterseccion(columna:number,fila:number){
-  console.log(columna,fila)
   let respuesta =  this.datosIntersecciones.find(
     obj => obj.idFila === columna && obj.idColumna === fila
   );

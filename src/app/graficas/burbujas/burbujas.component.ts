@@ -43,12 +43,12 @@ export class BurbujasComponent implements AfterViewInit {
 
   getCharOptions() {
     const seriesData = this.bubbleData.map(bubble => this.generateBubbleData(bubble.count, bubble.nombreGpo, bubble.colorBubble));
-
+  
     const maxX = Math.max(...seriesData.map(d => d.x + d.z), 0);
     const maxY = Math.max(...seriesData.map(d => d.y + d.z), 0);
     const minX = Math.min(...seriesData.map(d => d.x - d.z), 0);
     const minY = Math.min(...seriesData.map(d => d.y - d.z), 0);
-
+  
     return {
       grid: {
         xaxis: {
@@ -127,8 +127,13 @@ export class BurbujasComponent implements AfterViewInit {
           },
         },
       },
+      markers: {
+        size: 0,
+        colors: seriesData.map(d => d.colorBubble), // Utiliza el color de cada burbuja
+      },
     };
   }
+  
 
   generateBubbleData(z: number, nombreGpo: string, colorBubble: string): { x: number; y: number; z: number; nombreGpo: string; colorBubble: string } {
     const chartWidth = 100;
