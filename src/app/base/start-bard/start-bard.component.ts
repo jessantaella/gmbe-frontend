@@ -37,7 +37,7 @@ export class StartBardComponent {
     return objeto.userName;
   }
 
-  rolUsuario(): Number{
+  rolUsuario(): number{
     return 1 ;//Number(localStorage.getItem('idRol'));
   }
 

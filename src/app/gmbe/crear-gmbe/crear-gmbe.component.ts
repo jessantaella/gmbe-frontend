@@ -406,33 +406,40 @@ export class CrearGmbeComponent {
     this.estructuraFinalFilasSubitulos.forEach(
       (element: { idCatalogo: any; idRelacion: any; esAuxiliar:boolean }) => {
         if(!element.esAuxiliar)
+        {
         arregloSalida.push({
           tipo: 2,
           idCategoria: element.idRelacion,
           idSubCategoria: element.idCatalogo,
         });
-        else
+      }
+        else{
         arregloSalida.push({
           tipo: 2,
           idCategoria: element.idRelacion,
           idSubCategoria: null,
         });
       }
+      }
     );
     this.estructuraFinalColumnasSubitulos.forEach(
       (element: { idCatalogo: any; idRelacion: any; esAuxiliar:boolean }) => {
         if(!element.esAuxiliar)
+        {
         arregloSalida.push({
           tipo: 1,
           idCategoria: element.idRelacion,
           idSubCategoria: element.idCatalogo,
         });
+      }
         else
+        {
         arregloSalida.push({
           tipo: 1,
           idCategoria: element.idRelacion,
           idSubCategoria: null,
         });
+      }
       }
     );
 

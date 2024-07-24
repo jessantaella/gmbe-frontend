@@ -157,8 +157,8 @@ export class ListarGmbeComponent implements OnInit {
       if (result.isConfirmed) {
         this.gmbeServices.cambiarEstatus(idMbe, !estatusActual).subscribe(
           res => {
-            let mensaje = !estatusActual ? 'bloqueado' : 'desbloqueado';
-            swal.fire("", 'Se ha '+mensaje+'el MBE', "success");
+            let mensajeBloqueo = !estatusActual ? 'bloqueado' : 'desbloqueado';
+            swal.fire("", 'Se ha '+mensajeBloqueo+'el MBE', "success");
             this.cambiarPaginaGetAll(this.page - 1, 10);
           }, err => {
 

@@ -114,7 +114,7 @@ export class EditarGmbeComponent {
         this.gmbservices.actualizarImagen(this.imageFile, nombre).subscribe(
           res => {
             enviar.ruta = res.remotePath;
-            this.gmbservices.actualizarGmbe(enviar).subscribe(res=>{
+            this.gmbservices.actualizarGmbe(enviar).subscribe(()=>{
               swal.fire('', 'MBE actualizado exitosamente', 'success');
               this.router.navigate(['/gmbe'])
             })
