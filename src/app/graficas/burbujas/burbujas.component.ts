@@ -21,6 +21,10 @@ export class BurbujasComponent implements AfterViewInit {
   @Input() chartId: string | undefined;
   @Input() bubbleData: { idGpo: number; nombreGpo: string; colorBubble: string; count: number }[] = [];
 
+
+  w:number = 150;
+  h:number = 100;
+
   public chartOptions: any;
   isBrowser = false;
 
@@ -70,8 +74,8 @@ export class BurbujasComponent implements AfterViewInit {
       ],
       chart: {
         responsive: true,
-        height: 150,
-        width: 100,
+        height: this.h,
+        width: this.w,
         type: "bubble",
         toolbar: {
           show: false,
@@ -136,8 +140,8 @@ export class BurbujasComponent implements AfterViewInit {
   
 
   generateBubbleData(z: number, nombreGpo: string, colorBubble: string): { x: number; y: number; z: number; nombreGpo: string; colorBubble: string } {
-    const chartWidth = 100;
-    const chartHeight = 150;
+    const chartWidth = this.w;
+    const chartHeight = this.h;
     const x = Math.random() * chartWidth;
     const y = Math.random() * chartHeight;
     const zAdjusted = Math.max(z, 5); // Asegura que el valor mínimo de z sea 5
